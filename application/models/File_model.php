@@ -1,0 +1,572 @@
+<?php
+class File_model extends CI_Model{
+
+// INFO FUNCTIONS
+//-----------------------------------------------------------------------------
+
+    function basic($file_id)
+    {
+        $row = $this->Db_model->row_id('file', $file_id);
+
+        $data['file_id'] = $file_id;
+        $data['row'] = $row;
+        $data['url_file'] = URL_UPLOADS . $row->folder . $row->file_name;
+        $data['path_file'] = PATH_UPLOADS . $row->folder . $row->file_name;
+        $data['head_title'] = substr($data['row']->title, 0, 50);
+        $data['head_title'] = substr($data['row']->title, 0, 50);
+
+        return $data;
+    }
+    
+//UPLOADS
+//---------------------------------------------------------------------------------------------------
+    
+    /**
+     * Realiza el upload de un file al servidor, crea el registro asociado en
+     * la tabla "file".
+     * 
+     * @return type
+     */
+    function upload($file_id = NULL)
+    {
+        $config_upload = $this->config_upload();
+        $this->load->library('upload', $config_upload);
+
+        if ( $this->upload->do_upload('file_field') )  //Campo "file_field" del formulario
+        {
+            //Guardar registro en la tabla "file"
+                $row = $this->save($file_id, $this->upload->data());
+                
+            //Si es imagen, se generan miniaturas y edita imagen original
+                if ( $row->is_image )
+                {
+                    $this->create_thumbnails($row->id);     //Crear miniaturas de la imagen
+                    $this->modify_image($row->id);          //Modificar imagen original después de crear miniaturas
+                }
+            
+            //Array resultado
+                $data = array('status' => 1, 'message' => 'Archivo cargado');
+                $data['upload_data'] = $this->upload->data();
+                $data['row'] = $row;
+        }
+        else    //No se cargó
+        {
+            $data = array('status' => 0, 'message' => 'El archivo no fue cargado');
+            $data['html'] = $this->upload->display_errors('<div role="alert" class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><i class="fa fa-warning"></i> ', '</div>');
+        }
+        
+        return $data;
+    }
+    
+    /**
+     * Configuración para cargue de files, algunas propiedades solo se aplican
+     * para files de imagen.
+     * @return boolean
+     */
+    function config_upload()
+    {
+        $this->load->helper('string');  //Para activar función random_string
+        
+        $config['upload_path'] = PATH_UPLOADS . date('Y/m');    //Carpeta año y mes
+        $config['allowed_types'] = 'zip|gif|jpg|png|jpeg|pdf|json';
+        $config['max_size']	= '3000';       //Tamaño máximo en Kilobytes
+        $config['max_width']  = '5000';     //Ancho máxima en pixeles
+        $config['max_height']  = '5000';    //Altura máxima en pixeles
+        $config['file_name']  = $this->session->userdata('user_id') . '_' . date('YmdHis') . '_' . random_string('numeric', 2);
+        
+        return $config;
+    }
+    
+// GESTIÓN DE REGISTROS EN LA TABLA file
+//-----------------------------------------------------------------------------
+
+    /**
+     * Determina si un archivo puede ser editado o no por parte de un usuario en sesión
+     * 2019-05-21
+     */
+    function editable($file_id)
+    {
+        $row = $this->Db_model->row_id('file', $file_id);
+
+        $editable = FALSE;
+
+        //Administradores y editores
+        if ( $this->session->userdata('role') <= 2 ) { $editable = TRUE; }   
+
+        //Es el creador, puede editarlo
+        if ( $row->creator_id == $this->session->userdata('user_id') )
+        {
+            $editable = TRUE;
+        }
+
+        return $editable;
+    }
+
+    /**
+     * Guardar registro del archivo en la tabla file
+     */
+    function save($file_id, $upload_data)
+    {
+        if ( is_null($file_id) ) {
+            $file_id = $this->insert($upload_data);  //Crear nuevo registro
+        } else {
+            $this->change($file_id, $upload_data);  //Cambiar el archivo y modificar el registro
+        }
+
+        $row = $this->Db_model->row_id('file', $file_id);
+
+        return $row;
+    }
+    
+    /**
+     * Crea el registro del file en la tabla file
+     * @param type $upload_data
+     */
+    function insert($upload_data)
+    {
+        //Construir registro
+            $arr_row['file_name'] = $upload_data['file_name'];
+            $arr_row['ext'] = $upload_data['file_ext'];
+            $arr_row['keywords'] = $this->pml->if_strlen($this->input->post('keywords'), '');
+            $arr_row['title'] = str_replace($upload_data['file_ext'], '', $upload_data['client_name']);  //Para quitar la extensión y punto
+            $arr_row['folder'] = date('Y/m/');
+            $arr_row['type'] = $upload_data['file_type'];
+            $arr_row['is_image'] = $upload_data['is_image'];    //Definir si es imagen o no
+            $arr_row['meta'] = json_encode($upload_data);
+            $arr_row['edited_at'] = date('Y-m-d H:i:s');
+            $arr_row['editor_id'] = $this->session->userdata('user_id');
+            $arr_row['created_at'] = date('Y-m-d H:i:s');
+            $arr_row['creator_id'] = $this->session->userdata('user_id');
+            
+        //Insertar
+            $this->db->insert('file', $arr_row);
+
+        return $this->db->insert_id();
+    }
+    
+    /**
+     * Edita el registro del file, tabla file. El file en el servidor
+     * es cambiado, y el registro en la tabla registro es actualizado.
+     * 
+     * @param type $upload_data
+     */
+    function change($file_id, $upload_data)
+    {
+        //Construir registro
+            $arr_row['file_name'] = $upload_data['file_name'];
+            $arr_row['folder'] = date('Y/m/');
+            $arr_row['ext'] = $upload_data['file_ext'];
+            $arr_row['type'] = $upload_data['file_type'];
+            $arr_row['is_image'] = $upload_data['is_image'];    //Definir si es imagen o no
+            $arr_row['meta'] = json_encode($upload_data);
+            $arr_row['editor_id'] = $this->session->userdata('user_id');
+            $arr_row['edited_at'] = date('Y-m-d H:i:s');
+            
+        //Actualizar
+            $this->db->where('id', $file_id);
+            $this->db->update('file', $arr_row);
+            
+        return $this->db->affected_rows();
+    }
+    
+// ELIMINACIÓN
+//-----------------------------------------------------------------------------
+    
+    /**
+     * Elimina file del servidor y sus miniaturas y el el registro en la 
+     * tabla file.
+     * 
+     * @param type $file_id
+     */
+    function delete($file_id)
+    {   
+        //Eliminar files del servidor
+            $row_file = $this->Db_model->row_id('file', $file_id);
+            if ( ! is_null($row_file) ) 
+            {
+                $this->unlink($row_file->folder, $row_file->file_name);
+            }
+        
+        //Eliminar registros de la base de datos
+            $this->delete_rows($file_id);
+    }
+    
+    /**
+     * Elimina de la BD los registros asociados al file
+     */
+    function delete_rows($file_id)
+    {
+        //Desvincular registro de files con otros elementos
+            $this->delete_related_rows($file_id);
+        
+        //Tabla file
+            if ( $file_id > 0 )
+            {
+                $this->db->where('id', $file_id);
+                $this->db->delete('file');
+            }
+    }
+    
+    /**
+     * Elimina los registros que relacionan al file con otros elementos de la
+     * base de datos. Tambien edita los fields de registros referentes al 
+     * file_id
+     */
+    function delete_related_rows($file_id)
+    {
+        //Imagen de perfil de usuario
+            $arr_row['image_id'] = 0;
+            $arr_row['src_image'] = '';
+            $arr_row['src_thumbnail'] = '';
+            $this->db->where('image_id', $file_id);
+            $this->db->update('user', $arr_row);
+    }
+    
+// GESTIÓN DE IMÁGENES
+//-----------------------------------------------------------------------------
+    
+    /**
+     * Devuelve un array con los atributos de una imagen, para ser usado con la funcion img();
+     * 2019-10-30
+     * 
+     * @param type $file_id
+     * @param type $prefix
+     * @return string
+     */
+    function att_img($file_id, $prefix = '')
+    {
+        $att_img = array(
+            'src' => URL_IMG . 'app/sm_nd_square.png',
+            'alt' => 'Imagen no disponible',
+            'onerror' => "this.src='" . URL_IMG . 'app/' . $prefix . 'nd_square.png' . "'"
+        );
+        
+        $row_file = $this->Db_model->row_id('file', $file_id);
+
+        if ( ! is_null($row_file) )
+        {
+            $att_img = array(
+                'src' => URL_UPLOADS . $row_file->folder . $prefix . $row_file->file_name,
+                'alt' => $row_file->file_name,
+                'style' => 'width: 100%',
+                'onerror' => "this.src='" . URL_IMG . 'app/' . $prefix . 'nd_square.png' . "'"
+            );
+        }
+        
+        return $att_img;
+    }
+    
+    /**
+     * Array con atributos de la miniatura de un archivo imagen
+     * 2019-08-01
+     */
+    function att_thumbnail($file_id)
+    {
+        $src = URL_IMG . 'app/sm_nd_square.png';
+
+        $row_file = $this->Db_model->row_id('file', $file_id);
+
+        if ( ! is_null($row_file))
+        {
+            $src = URL_UPLOADS . $row_file->folder . 'sm_' . $row_file->file_name;
+            if ( ! $row_file->is_image ) { $src = URL_IMG . 'app/file.png'; }
+        }
+        
+        $att_img = array(
+            'src' => $src,
+            'alt' => 'Miniatura',
+            'style' => 'width: 100%',
+        );
+        
+        return $att_img;
+    }
+    
+    function row_img($file_id, $prefix = '')
+    {
+        $row_img = NULL;
+        
+        $select = '*, CONCAT("' . URL_UPLOADS . '", (folder), "' . $prefix . '", (file_name)) AS src';
+        
+        $this->db->select($select);
+        $this->db->where('id', $file_id);
+        $query = $this->db->get('file');
+        
+        if ( $query->num_rows() > 0 ) { $row_img = $query->row(); }
+        
+        return $row_img;
+        
+    }
+    
+    /**
+     * Modificar la imagen original con un tamaño específico máximo, tomando el 
+     * file.id
+     * 
+     * @param type $file_id
+     * @return type
+     */
+    function modify_image($file_id)
+    {
+        $row_file = $this->Db_model->row_id('file', $file_id);
+        $modified = $this->mod_original($row_file->folder, $row_file->file_name);
+        
+        return $modified;
+    }
+    
+    /**
+     * Modifica la imagen original con un tamaño específico máximo
+     * 
+     * @param type $row_file
+     */
+    function mod_original($folder, $file_name)
+    {
+        $modified = 0;
+        $image_size = getimagesize(PATH_UPLOADS . $folder . $file_name);
+        
+        $width = 800;   //Tamaño 800px
+        
+        $quan_condiciones = 0;
+        
+        if ( $image_size[0] > $width ) { $quan_condiciones++; }
+        if ( $image_size[1] > $width ) { $quan_condiciones++; }
+        
+        if ( $quan_condiciones > 0 )
+        {
+            
+            $modified = 1;
+            
+            $this->load->library('image_lib');
+
+            //Config
+                $config['image_library'] = 'gd2';
+                $config['source_image'] = PATH_UPLOADS . $folder . $file_name;
+                $config['maintain_ratio'] = TRUE;
+                $config['width'] = $width;
+                $config['height'] = $width;
+                //$config['quality'] = 100;
+
+                $this->image_lib->initialize($config);
+                $this->image_lib->resize();
+                $this->image_lib->clear();
+        }
+        
+        return $modified;
+        
+    }
+    
+// MINIATURAS
+//-----------------------------------------------------------------------------
+    
+    /**
+     * Crea los files miniaturas de una imagen
+     * 
+     * @param type $file_id
+     */
+    function create_thumbnails($file_id)
+    {
+        $sizes = $this->sizes();
+        $row_file = $this->Db_model->row_id('file', $file_id);
+        
+        foreach( $sizes as $prefix => $width)
+        {
+            $this->create_thumbnail($row_file, $prefix, $width);
+        }
+    }
+    
+    /**
+     * Crea la miniatura de una imagen
+     * 
+     * @param type $row_file
+     * @param type $prefix - valor en pixeles de la miniatura
+     */
+    function create_thumbnail($row_file, $prefix, $width)
+    {
+        $this->load->library('image_lib');
+        
+        //Config
+            $config['image_library'] = 'gd2';
+            $config['source_image'] = PATH_UPLOADS . $row_file->folder . $row_file->file_name;
+            $config['new_image'] = PATH_UPLOADS . $row_file->folder . $prefix . '_' . $row_file->file_name;
+            $config['maintain_ratio'] = TRUE;
+            $config['width'] = $width;
+            $config['height'] = $width;
+
+            $this->image_lib->initialize($config);
+            $this->image_lib->resize();
+            $this->image_lib->clear();
+    }
+    
+    /**
+     * Array con los prefixes sizes en pixeles de las diferentes miniaturas que
+     * se generan para los files de imagen.
+     * 
+     * @return int
+     */
+    function sizes()
+    {
+        $sizes = array('sm' => 100);
+        return $sizes;
+    }
+    
+    /**
+     * Array con los prefixes de files miniatura de files de imágenes, se
+     * incluye el string vacío '', es decir sin prefijo para incluir el file
+     * original.
+     */
+    function prefixes()
+    {        
+        $prefixs = array('', 'sm_');
+        return $prefixs;
+    }
+    
+    /**
+     * Le quita el prefijo a un nombre de file
+     * 
+     * @param type $file_name
+     * @return type
+     */
+    function remove_prefix($file_name)
+    {
+        $prefixs = $this->prefixes();
+        $without_prefix = $file_name;
+        
+        foreach ( $prefixs as $prefix ) 
+        {
+            $prefix = $prefix . '_';
+            $without_prefix = str_replace($prefix, '', $without_prefix);
+        }
+        
+        return $without_prefix;
+    }
+    
+    /**
+     * Recorta una imagen con unos datos específicos, actualiza las miniaturas
+     * según el recorte.
+     * 
+     * @param type $file_id
+     * @return type
+     */
+    function crop($file_id)
+    {
+        
+        //Valores iniciales
+            $row = $this->Db_model->row_id('file', $file_id);
+            $data = array('status' => 0, 'message' => 'Imagen NO recortada');
+        
+        //Configuración de recorte
+            $this->load->library('image_lib');
+            
+            $config['image_library'] = 'gd2';
+            $config['library_path'] = '/usr/X11R6/bin/';
+            $config['source_image'] = PATH_UPLOADS . $row->folder . $row->file_name;
+            $config['width'] = $this->input->post('width');
+            $config['height'] = $this->input->post('height');
+            $config['x_axis'] = $this->input->post('x_axis');
+            $config['y_axis'] = $this->input->post('y_axis');
+            $config['maintain_ratio'] = FALSE;
+        
+            $this->image_lib->initialize($config);
+            
+        //Ejecutar recorte
+            if ( $this->image_lib->crop() )
+            {
+                $this->create_thumbnails($file_id);
+                $data = array('status' => 1, 'message' => 'Imagen recortada');
+            } else {
+                $data['html'] = $this->image_lib->display_errors();
+            }
+        
+        return $data;
+    }
+    
+//GESTIÓN DE ARCHIVOS EN CARPETAS
+//---------------------------------------------------------------------------------------------------
+    
+    /**
+     * Listado de files en una folder
+     * 
+     * @param type $year
+     * @param type $month
+     * @return type
+     */
+    function files($year, $month)
+    {
+        $this->load->helper('file');
+        $files = get_filenames(PATH_UPLOADS . $year . '/' . $month);
+        
+        return $files;
+    }
+    
+    /**
+     * Elimina los files que no están siendo utilizados en la herramienta
+     * Se considera no usado si no tiene registro asociado en la tabla "file"
+     * 
+     * @param type $year
+     * @param type $month
+     * @return type
+     */
+    function unlink_unused($year, $month)
+    {
+        $quan_deleted = 0;
+        $this->load->helper('file');
+        $files = get_filenames(PATH_UPLOADS . $year . '/' . $month);
+        
+        $folder = "{$year}/{$month}/";
+        
+        foreach( $files as $file_name )
+        {    
+            $without_prefix = $this->remove_prefix($file_name);
+            $has_row = $this->has_row($folder, $without_prefix);
+            
+            if ( ! $has_row ) { 
+                $quan_deleted += $this->unlink($folder, $without_prefix);
+            }
+        }
+        
+        return $quan_deleted;
+    }
+    
+    /**
+     * Elimina un archivo y sus miniaturas del servidor
+     * 
+     * @param type $folder
+     * @param type $file_name
+     */
+    function unlink($folder, $file_name)
+    {
+        $quan_deleted = 0;
+        $prefixs = $this->prefixes();  //Prefijos de miniaturas
+        
+        foreach( $prefixs as $prefix )
+        {
+            $path = PATH_UPLOADS . "{$folder}{$prefix}{$file_name}";
+            if ( file_exists($path) ) 
+            {
+                unlink($path);
+                $quan_deleted++;
+            }
+        }
+        
+        return $quan_deleted;
+    }
+    
+    /**
+     * Devuelve 1/0, verifica si un file tiene registro relacionado
+     * en la tabla "file"
+     * 
+     * @param type $folder
+     * @param type $file_name
+     * @return int
+     */
+    function has_row($folder, $file_name)
+    {
+        $has_row = 0;
+        
+        $this->db->where('folder', $folder);
+        $this->db->where('file_name', $file_name);
+        $query = $this->db->get('file');
+        
+        if ( $query->num_rows() > 0 ) { $has_row = 1; }
+        
+        return $has_row;
+    }
+}

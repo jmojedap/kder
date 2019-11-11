@@ -1,0 +1,28 @@
+.btn_google{
+    background-color: #FFFFFF;
+    border: 1px solid #d9d9d9;
+}
+
+.btn_google:hover{
+    background-color: #DDD;
+    border: 1px solid #d1d1d1;
+}
+
+.page-register:before {
+  background-image: url("../templates/remark/base/assets/examples/images/login-3.jpg"); }
+
+.page-register form {
+    margin: 22px auto;
+    width: 302px;
+}
+
+@media (max-width: 479.98px) {
+  .page-register form {
+    width: auto; } }
+
+.inicio_marco{
+    background-color: rgba(50,50,50,0.75);
+    padding: 20px;
+    border-radius: 4px;
+    
+}

@@ -1,0 +1,10 @@
+/* Elementos fijos */
+
+.center_box_750{
+    max-width: 750px; margin: 0 auto;
+}
+
+/* Ahchos en Pixeles */
+.w50p { width: 50px; }
+.w100p { width: 100px; }
+.w120p { width: 120px; }

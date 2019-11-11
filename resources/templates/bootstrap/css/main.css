@@ -1,0 +1,19 @@
+body {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    position: relative;
+    background-color: #FBFBFB;
+}
+
+h1,h2,h3,h4,h5 {    
+    color: #666666;
+    font-weight: 300;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+body > .container {
+  padding: 60px 15px 0;
+}
+
+body > .container-fluid {
+  padding: 60px 15px 0;
+}
