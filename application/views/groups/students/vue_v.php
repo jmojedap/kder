@@ -1,5 +1,5 @@
 <script>
-    var random = '16073' + Math.floor(Math.random() * 100000);
+    /*var random = '16073' + Math.floor(Math.random() * 100000);
     var form_values = {};
     var form_values = {
         first_name: 'Natalia',
@@ -11,9 +11,9 @@
         //username: '',
         birth_date: '2015-06-10',
         gender: '01'
-    };
+    };*/
     
-    /*var form_values = {
+    var form_values = {
         first_name: '',
         last_name: '',
         display_name: '',
@@ -26,7 +26,7 @@
         birth_date: '2016-01-01',
         role: '015',
         gender: '01'
-    };*/
+    };
     new Vue({
         el: '#app_students',
         created: function(){
@@ -34,8 +34,10 @@
         },
         data: {
             group_id: '<?php echo $row->id ?>',
+            key: 0,
+            gu_id: 0,
             list: [],
-            //show_form = false;
+            show_form: false,
             form_values: form_values,
             validation: {
                 id_number_is_unique: true,
@@ -73,8 +75,9 @@
                     if ( response.data.status == 1 )
                     {
                         this.get_list();
-                        /*this.row_id = response.data.saved_id;
-                        this.clean_form();*/
+                        /*this.row_id = response.data.saved_id;*/
+                        this.clean_form();
+                        toastr['success']('El estudiante fue agregado al grupo');
                     }
                 })
                 .catch(function (error) {
@@ -108,13 +111,33 @@
                 for ( key in form_values ) {
                     this.form_values[key] = '';
                 }
+                $('#field-first_name').focus();
             },
             generate_display_name: function(){
                 form_values.display_name = form_values.first_name + ' ' + form_values.last_name;
             },
             empty_generate_display_name: function(){
                 if ( form_values.display_name.length < 2 ) { this.generate_display_name(); }
-            }
+            },
+            toggle_show_form: function(){
+                this.show_form = ! this.show_form;
+            },
+            set_current: function(key){
+                this.key = key;
+            },
+            remove_student: function(){
+                this.gu_id = this.list[this.key].gu_id;
+                axios.get(app_url + 'groups/remove_student/' + this.group_id + '/' + this.gu_id)
+                .then(response => {
+                    var type = 'info';
+                    if ( response.data.status == 1 ) { type = 'success' }
+                    toastr[type](response.data.message);
+                    this.get_list();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
         }
     });
 </script>

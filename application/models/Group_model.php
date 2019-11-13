@@ -476,9 +476,10 @@ class Group_model extends CI_Model{
 
     function students($group_id)
     {
-        $this->db->select('user.id, user.display_name, user.src_thumbnail');
+        $this->db->select('group_user.id AS gu_id, user.id, user.display_name, user.src_thumbnail, user.username');
         $this->db->join('group_user', 'user.id = group_user.user_id');
         $this->db->where('group_user.group_id', $group_id);
+        $this->db->order_by('last_name', 'ASC');    
         $students = $this->db->get('user');
 
         return $students;
@@ -521,5 +522,28 @@ class Group_model extends CI_Model{
     {
         $arr_row['group_id'] = $group_id;
         $this->Db_model->save('user', "id = {$user_id}", $arr_row);
+    }
+
+    /**
+     * Quita un estudiante de un grupo. No lo elimina de la plataforma.
+     * gu_id corresponde a (group_user.id). Por seguridad y confirmación se solicita
+     * también el grupo_id.
+     * 2019-11-13
+     */
+    function remove_student($group_id, $gu_id)
+    {
+        $data = array('status' => 0, 'message' => 'El estudiante NO fue removido');
+
+        //Eliminando
+            $this->db->where('id', $gu_id);
+            $this->db->where('group_id', $group_id);
+            $this->db->delete('group_user');
+            
+            $quan_deleted = $this->db->affected_rows();
+    
+        //Verificando resultado
+        if ( $quan_deleted > 0 ) { $data = array('status' => 1, 'message' => 'El estudiante fue removido'); }
+    
+        return $data;
     }
 }

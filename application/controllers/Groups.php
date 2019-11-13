@@ -176,9 +176,6 @@ class Groups extends CI_Controller{
     {
         $students = $this->Group_model->students($group_id);
 
-        /*$data['list'] = $students->result();
-        $data['num_rows'] = $students->num_rows();*/
-
         $this->output->set_content_type('application/json')->set_output(json_encode($students->result()));
     }
 
@@ -207,6 +204,17 @@ class Groups extends CI_Controller{
     function add_student($group_id, $user_id)
     {
         $data = $this->Group_model->add_student($group_id, $user_id);
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    /**
+     * Quita un estudiante de un grupo. No lo elimina de la plataforma.
+     * gu_id corresponde a (group_user.id)
+     * 2019-11-13
+     */
+    function remove_student($group_id, $gu_id)
+    {
+        $data = $this->Group_model->remove_student($group_id, $gu_id);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 

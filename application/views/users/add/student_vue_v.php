@@ -12,6 +12,17 @@
         birth_date: '2015-06-10',
         gender: '01'
     };
+
+    const empty_form = {
+        first_name: '',
+        last_name: '',
+        display_name: '',
+        id_number: '',
+        id_number_type: '06',
+        username: '',
+        birth_date: '2015-06-10',
+        gender: '01'
+    };
     
     /*var form_values = {
         first_name: '',
@@ -94,6 +105,7 @@
             clean_form: function() {
                 for ( key in form_values ) {
                     this.form_values[key] = '';
+                    console.log('Limpiando: ' + this.form_values[key]);
                 }
             },
             go_created: function() {

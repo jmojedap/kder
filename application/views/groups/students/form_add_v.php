@@ -138,6 +138,9 @@
             <button class="btn btn-success w120p" type="submit">
                 Crear
             </button>
+            <button class="btn btn-secondary w120p" type="button" v-on:click="toggle_show_form">
+                Cancelar
+            </button>
         </div>
     </div>
 </form>
