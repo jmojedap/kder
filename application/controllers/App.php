@@ -69,9 +69,7 @@ class App extends CI_Controller {
         
         $unique_slug = $this->Db_model->unique_slug($text, $table, $field);
         
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output($unique_slug);
+        $this->output->set_content_type('application/json')->set_output($unique_slug);
     }    
 
     function test()
@@ -82,5 +80,37 @@ class App extends CI_Controller {
     function maps()
     {
         $this->load->view('app/map_v');
+    }
+
+//AUTOCOMPLETAR
+//---------------------------------------------------------------------------------------------------
+    
+    function autocomplete()
+    {
+        $data['head_title'] = 'Autocomplete';
+        $data['view_a'] = 'app/autocomplete_v';
+        $this->load->view(TPL_ADMIN, $data);
+    }
+
+    function arr_elements($table)
+    {
+        $this->load->model('Search_model');
+        $filters = $this->Search_model->filters();
+        $filters['q'] = $this->input->get('term');
+        
+        switch ($table) 
+        {
+            case 'user':
+                $this->load->model('User_model');
+                $elements = $this->User_model->autocomplete($filters);
+                break;
+
+            default:
+                break;
+        }
+        
+        $arr_elements = $elements->result_array();
+        
+        $this->output->set_content_type('application/json')->set_output(json_encode($arr_elements));
     }
 }

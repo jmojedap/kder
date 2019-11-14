@@ -197,6 +197,38 @@ class User_model extends CI_Model{
         return TRUE;
     }
 
+    /**
+     * Opciones de usuario en campos de autollenado, como agregar usuarios a una conversación
+     * 2019-11-13
+     */
+    function autocomplete($filters, $limit = 15)
+    {
+        $role_filter = $this->role_filter();
+
+        //Construir búsqueda
+        //Crear array con términos de búsqueda
+            if ( strlen($filters['q']) > 2 )
+            {
+                $words = $this->Search_model->words($filters['q']);
+
+                foreach ($words as $word) {
+                    $this->db->like('CONCAT(first_name, last_name, username)', $word);
+                }
+            }
+        
+        //Especificaciones de consulta
+            $this->db->select('id, CONCAT((display_name), " | ",(username)) AS value');
+            $this->db->where($role_filter); //Filtro según el rol de usuario que se tenga
+            $this->db->order_by('last_name', 'ASC');
+            
+        //Otros filtros
+            if ( $filters['condition'] != '' ) { $this->db->where($filters['condition']); }    //Condición adicional
+            
+        $query = $this->db->get('user', $limit); //Resultados por página
+        
+        return $query;
+    }
+
 // CRUD
 //-----------------------------------------------------------------------------
     

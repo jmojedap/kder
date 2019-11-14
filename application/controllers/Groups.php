@@ -162,6 +162,11 @@ class Groups extends CI_Controller{
 // GESTIÓN DE ESTUDIANTES
 //-----------------------------------------------------------------------------
 
+    /**
+     * VISTA
+     * Listado de estudiantes que pertenecen a un grupo
+     * 2019-11-14
+     */
     function students($group_id)
     {
         $data = $this->Group_model->basic($group_id);
@@ -172,6 +177,11 @@ class Groups extends CI_Controller{
         $this->App_model->view(TPL_ADMIN, $data);
     }
 
+    /**
+     * AJAX JSON
+     * Listado de estudiantes que pertenecen a un grupo
+     * 2016-11-14
+     */
     function get_students($group_id)
     {
         $students = $this->Group_model->students($group_id);
@@ -212,10 +222,27 @@ class Groups extends CI_Controller{
      * gu_id corresponde a (group_user.id)
      * 2019-11-13
      */
-    function remove_student($group_id, $gu_id)
+    function remove_student($group_id, $user_id, $gu_id)
     {
-        $data = $this->Group_model->remove_student($group_id, $gu_id);
+        $data = $this->Group_model->remove_student($group_id, $user_id, $gu_id);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    /**
+     * Listado de usuarios candidatos para ser agregados a un grupo de estudiantes
+     * 2019-11-14
+     */
+    function students_autocomplete($group_id)
+    {
+        $filters['condition'] = "id NOT IN (SELECT user_id FROM group_user WHERE group_id = {$group_id})";
+        $filters['q'] = $this->input->get('term');
+
+        $this->load->model('Search_model');
+        $this->load->model('User_model');
+        $elements = $this->User_model->autocomplete($filters);
+        $arr_elements = $elements->result_array();
+        
+        $this->output->set_content_type('application/json')->set_output(json_encode($arr_elements));
     }
 
 }

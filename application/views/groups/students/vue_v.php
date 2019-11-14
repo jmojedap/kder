@@ -127,7 +127,7 @@
             },
             remove_student: function(){
                 this.gu_id = this.list[this.key].gu_id;
-                axios.get(app_url + 'groups/remove_student/' + this.group_id + '/' + this.gu_id)
+                axios.get(app_url + 'groups/remove_student/' + this.group_id + '/' + this.list[this.key].id + '/' + this.gu_id)
                 .then(response => {
                     var type = 'info';
                     if ( response.data.status == 1 ) { type = 'success' }

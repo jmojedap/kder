@@ -135,11 +135,11 @@
 
     <div class="form-group row">
         <div class="offset-4 col-md-8">
-            <button class="btn btn-success w120p" type="submit">
-                Crear
-            </button>
             <button class="btn btn-secondary w120p" type="button" v-on:click="toggle_show_form">
                 Cancelar
+            </button>
+            <button class="btn btn-success w120p" type="submit">
+                Crear
             </button>
         </div>
     </div>

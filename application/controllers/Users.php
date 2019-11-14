@@ -56,10 +56,10 @@ class Users extends CI_Controller{
             $data['html'] = $this->load->view('users/explore/table_v', $data, TRUE);
         
         //Salida
-            $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($data));
+            $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
+
+    
 
     /**
      * AJAX JSON

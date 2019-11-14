@@ -506,7 +506,7 @@ class Group_model extends CI_Model{
             $data = array('status' => 1, 'message' => 'El estudiante fue agregado', 'ug_id' => $ug_id);
 
             //Establecer grupo actual a usuario (user.group_id)
-            //$this->set_user_group($user_id);
+            $this->set_user_group($user_id);
 
         }
     
@@ -518,9 +518,18 @@ class Group_model extends CI_Model{
      * PENDIENTE AJUSTE PARA GRUPO GENERACIÓN ACTUAL
      * 2016-11-06
      */
-    function set_user_group($group_id, $user_id)
+    function set_user_group($user_id)
     {
-        $arr_row['group_id'] = $group_id;
+        $arr_row['group_id'] = 0;   //Valor inicial
+
+        //Buscar grupo con más alta generación
+        $this->db->select('id');
+        $this->db->where("id IN (SELECT group_id FROM group_user WHERE user_id = {$user_id})");
+        $this->db->order_by('generation', 'DESC');
+        $groups = $this->db->get('groups');
+
+        if ( $groups->num_rows() > 0 ) { $arr_row['group_id'] = $groups->row()->id; }
+        
         $this->Db_model->save('user', "id = {$user_id}", $arr_row);
     }
 
@@ -530,7 +539,7 @@ class Group_model extends CI_Model{
      * también el grupo_id.
      * 2019-11-13
      */
-    function remove_student($group_id, $gu_id)
+    function remove_student($group_id, $user_id, $gu_id)
     {
         $data = array('status' => 0, 'message' => 'El estudiante NO fue removido');
 
@@ -540,6 +549,11 @@ class Group_model extends CI_Model{
             $this->db->delete('group_user');
             
             $quan_deleted = $this->db->affected_rows();
+
+        //Actualizar user.group_id = 0
+            $this->db->where('id', $user_id);
+            $this->db->where('group_id', $group_id);   //Si el grupo actual es el removido
+            $this->db->update('user', array('group_id' => 0));
     
         //Verificando resultado
         if ( $quan_deleted > 0 ) { $data = array('status' => 1, 'message' => 'El estudiante fue removido'); }
