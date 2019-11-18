@@ -224,6 +224,17 @@ class Users extends CI_Controller{
         
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
+
+    /**
+     * Actualiza el campo user.activation_key, para activar o restaurar la contraseña de un usuario
+     * 2019-11-18
+     */
+    function set_activation_key($user_id)
+    {
+        $this->load->model('Account_model');
+        $activation_key = $this->Account_model->activation_key($user_id);
+        $this->output->set_content_type('application/json')->set_output(json_encode($activation_key));
+    }
     
 // IMAGEN DE PERFIL DE USUARIO
 //-----------------------------------------------------------------------------

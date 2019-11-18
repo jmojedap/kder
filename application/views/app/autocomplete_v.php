@@ -30,4 +30,3 @@
     </thead>
     <tbody id="table_body"></tbody>
 </table>
- 

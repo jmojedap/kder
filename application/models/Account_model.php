@@ -274,10 +274,12 @@ class Account_model extends CI_Model{
     function activation_key($user_id)
     {
         $this->load->helper('string');
-        $registro['activation_key'] = random_string('alpha', 32);
+        $arr_row['activation_key'] = random_string('alpha', 32);
         
         $this->db->where('id', $user_id);
-        $this->db->update('user', $registro);
+        $this->db->update('user', $arr_row);
+
+        return $arr_row['activation_key'];
     }
 
     function activate($activation_key)

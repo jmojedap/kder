@@ -1,3 +1,32 @@
+<script>
+// Variables
+//-----------------------------------------------------------------------------
+    user_id = '<?php echo $row->id ?>';
+
+// Document Ready
+//-----------------------------------------------------------------------------
+
+    $(document).ready(function(){
+        $('#btn_set_activation_key').click(function(){
+            set_activation_key();
+        });
+    });
+
+// Functions
+//-----------------------------------------------------------------------------
+
+    function set_activation_key(){
+        $.ajax({        
+            type: 'POST',
+            url: app_url + 'users/set_activation_key/' + user_id,
+            success: function(response){
+                $('#activation_key').html(app_url + 'accounts/activation/' + response);
+                toastr['success']('Se actualizó la clave de activación');
+            }
+        });
+    }
+</script>
+
 <?php 
     //Imagen
         $att_img = $this->App_model->att_img_user($row);
@@ -94,6 +123,19 @@
                     <td class="text-right"><span class="text-muted">Fecha de nacimiento</span></td>
                     <td><?php echo $this->pml->date_format($row->birth_date, 'Y-M-d') ?></td>
                 </tr>
+                <?php if ( $this->session->userdata('role') <= 2  ) { ?>
+                    <tr>
+                        <td class="text-right">
+                            <button class="btn btn-primary btn-sm" id="btn_set_activation_key">
+                                <i class="fa fa-redo-alt"></i>
+                            </button>
+                            <span class="text-muted">Activación</span>
+                        </td>
+                        <td>
+                            <span id="activation_key"></span>
+                        </td>
+                    </tr>
+                <?php } ?>
             </tbody>
         </table>
     </div>
