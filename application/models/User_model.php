@@ -102,10 +102,10 @@ class User_model extends CI_Model{
         $role_filter = $this->role_filter($this->session->userdata('user_id'));
 
         //Construir consulta
-            $this->db->select('id, username, display_name, first_name, last_name, city_id, id_number, email, role, image_id, src_image, src_thumbnail, status');
+            $this->db->select('id, username, display_name, first_name, last_name, city_id, id_number, email, role, image_id, src_image, src_thumbnail, status, code');
         
         //Crear array con términos de búsqueda
-            $words_condition = $this->Search_model->words_condition($filters['q'], array('first_name', 'last_name', 'display_name', 'email'));
+            $words_condition = $this->Search_model->words_condition($filters['q'], array('first_name', 'last_name', 'display_name', 'email', 'id_number', 'code'));
             if ( $words_condition )
             {
                 $this->db->where($words_condition);
@@ -212,12 +212,13 @@ class User_model extends CI_Model{
                 $words = $this->Search_model->words($filters['q']);
 
                 foreach ($words as $word) {
-                    $this->db->like('CONCAT(first_name, last_name, username)', $word);
+                    $this->db->like('CONCAT(first_name, last_name, username, code)', $word);
                 }
             }
         
         //Especificaciones de consulta
-            $this->db->select('id, CONCAT((display_name), " | ",(username)) AS value');
+            //$this->db->select('id, CONCAT((display_name), " (",(username), ") Cod: ", IFNULL(code, 0)) AS value');
+            $this->db->select('id, CONCAT((display_name), " (",(username), ")") AS value');
             $this->db->where($role_filter); //Filtro según el rol de usuario que se tenga
             $this->db->order_by('last_name', 'ASC');
             
@@ -261,7 +262,7 @@ class User_model extends CI_Model{
     function update($user_id, $arr_row)
     {
         $this->load->model('Account_model');
-        $data_validation = $this->Account_model->validate_form($user_id, $arr_row);  //Validar datos
+        $data_validation = $this->validate_row($user_id, $arr_row);  //Validar datos
         
         $data = $data_validation;
         

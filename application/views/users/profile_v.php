@@ -123,6 +123,10 @@
                     <td class="text-right"><span class="text-muted">Fecha de nacimiento</span></td>
                     <td><?php echo $this->pml->date_format($row->birth_date, 'Y-M-d') ?></td>
                 </tr>
+                <tr>
+                    <td class="text-right"><span class="text-muted">Código</span></td>
+                    <td><?php echo $row->code ?></td>
+                </tr>
                 <?php if ( $this->session->userdata('role') <= 2  ) { ?>
                     <tr>
                         <td class="text-right">

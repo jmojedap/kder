@@ -49,7 +49,7 @@
                 <td class="<?php echo $cl_col['id'] ?>"><?php echo $row_element->id ?></td>
                 
                 <td>
-                    <a href="#" onclick="load_cf('groups/info/<?php echo $row_element->id ?>')" class="btn btn-primary w100p">
+                    <a href="#" onclick="load_cf('groups/students/<?php echo $row_element->id ?>')" class="btn btn-primary w100p">
                         <?php echo $row_element->name ?>
                     </a>
                 </td>

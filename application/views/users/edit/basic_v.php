@@ -62,6 +62,21 @@
                     </div>
                 </div>
 
+                <div class="form-group row">
+                    <label for="code" class="col-md-4 col-form-label">Código estudiante</label>
+                    <div class="col-md-8">
+                        <input
+                            type="text"
+                            id="field-code"
+                            name="code"
+                            class="form-control"
+                            placeholder="Código estudiante"
+                            title="Código estudiante"
+                            v-model="form_values.code"
+                            >
+                    </div>
+                </div>
+
                 <div class="form-group row" id="form-group_id_number">
                     <label for="id_number" class="col-md-4 controle-label">No. Documento *</label>
                     <div class="col-md-4">
@@ -228,7 +243,8 @@
             gender: '<?php echo $row->gender ?>',
             phone_number: '<?php echo $row->phone_number ?>',
             city_id: '0<?php echo $row->city_id ?>',
-            admin_notes: '<?php echo $row->admin_notes ?>'
+            admin_notes: '<?php echo $row->admin_notes ?>',
+            code: '<?php echo $row->code ?>'
     };
     new Vue({
     el: '#app_edit',

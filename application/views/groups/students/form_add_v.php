@@ -57,6 +57,21 @@
             </div>
         </div>
     </div>
+
+    <div class="form-group row">
+        <label for="code" class="col-md-4 col-form-label">Código estudiante</label>
+        <div class="col-md-8">
+            <input
+                type="text"
+                id="field-code"
+                name="code"
+                class="form-control"
+                placeholder="Código estudiante"
+                title="Código estudiante"
+                v-model="form_values.code"
+                >
+        </div>
+    </div>
     
     <div class="form-group row" id="form-group_id_number">
         <label for="id_number" class="col-md-4 control-label">No. Documento</label>

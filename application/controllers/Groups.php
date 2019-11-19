@@ -208,7 +208,7 @@ class Groups extends CI_Controller{
     }
 
     /**
-     * Agrega estudiante existente un grupo
+     * Agrega un estudiante existente un grupo
      * 2019-11-06
      */
     function add_student($group_id, $user_id)

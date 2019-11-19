@@ -491,23 +491,24 @@ class Group_model extends CI_Model{
      */
     function add_student($group_id, $user_id)
     {
-        $data = array('status' => 0, 'message' => 'El estudiante no fue agregado');
+        $data = array('status' => 0, 'ug_id' => '0');   //Resultado inicial por defecto
 
+        //Construir registro para tabla grupo_usuerio
         $arr_row = $this->Db_model->arr_row(FALSE);
-
         $arr_row['group_id'] = $group_id;
         $arr_row['user_id'] = $user_id;
 
+        //Guardar
         $condition = "group_id = {$arr_row['group_id']} AND user_id = {$arr_row['user_id']}";
         $ug_id = $this->Db_model->save('group_user', $condition, $arr_row);
     
+        //Resultado
         if ( $ug_id > 0 )
         {
-            $data = array('status' => 1, 'message' => 'El estudiante fue agregado', 'ug_id' => $ug_id);
+            $data = array('status' => 1, 'ug_id' => $ug_id);
 
-            //Establecer grupo actual a usuario (user.group_id)
-            $this->set_user_group($user_id);
-
+            $this->remove_user_another_groups($group_id, $user_id); //Eliminar de otros grupos de la misma generación
+            $this->set_user_group($user_id);    //Establecer grupo actual a usuario (user.group_id)
         }
     
         return $data;
@@ -531,6 +532,26 @@ class Group_model extends CI_Model{
         if ( $groups->num_rows() > 0 ) { $arr_row['group_id'] = $groups->row()->id; }
         
         $this->Db_model->save('user', "id = {$user_id}", $arr_row);
+    }
+
+    /**
+     * Remueve a un usuario de otros grupos de la misma generación del grupo al que fue agregado.
+     * Un usuario no puede estar al mismo tiempo en dos grupos de la misma generación.
+     * 2019-11-18
+     */
+    function remove_user_another_groups($group_id, $user_id)
+    {
+        $row = $this->Db_model->row_id('groups', $group_id);
+        
+        //Eliminar asignaciones de grupo
+        $this->db->where("user_id", $user_id);      //Al usuario
+        $this->db->where("group_id <>", $group_id); //De diferentes al grupo agregado
+        $this->db->where("group_id IN (SELECT id FROM groups WHERE institution_id = {$row->institution_id} AND generation = {$row->generation})");   //De grupos que sean de la misma generación
+        $this->db->delete('group_user');
+        
+        $quan_deleted = $this->db->affected_rows();
+
+        return $quan_deleted;
     }
 
     /**

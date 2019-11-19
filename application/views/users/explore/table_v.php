@@ -68,7 +68,9 @@
                     &middot;
                     <span class="text-muted"><?php echo $row_element->username ?></span>
                     <br/>
-                    <?php echo $arr_roles[$row_element->role] ?>
+                    <span class="text-muted">doc </span><?php echo $row_element->id_number ?>
+                    &middot;
+                    <span class="text-muted">cod </span><?php echo $row_element->code ?>
                 </td>
 
                 <td class="<?php echo $cl_col['status'] ?>">
