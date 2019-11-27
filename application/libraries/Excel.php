@@ -77,8 +77,7 @@ class Excel {
             }
 
         // Establecer nombre a worksheet
-        $spreadsheet->getActiveSheet()
-            ->setTitle($data['sheet_name']);
+        $spreadsheet->getActiveSheet()->setTitle($data['sheet_name']);
 
         // Objeto para crear archivo y guardar
         $writer = new Xlsx($spreadsheet);

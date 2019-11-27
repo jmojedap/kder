@@ -2,25 +2,14 @@
     var random = '16073' + Math.floor(Math.random() * 100000);
     var form_values = {};
     var form_values = {
-        first_name: 'Diana María',
-        last_name: 'González Rondón',
-        display_name: 'Diana María González Rondón',
+        first_name: 'Nancy',
+        last_name: 'Suárez',
+        display_name: 'Nancy Suárez',
         id_number: random,
-        id_number_type: '06',
-        username: 'anna' + random,
+        id_number_type: '01',
+        username: 'nancy' + random,
         //username: '',
-        birth_date: '2015-06-10',
-        gender: '01'
-    };
-
-    const empty_form = {
-        first_name: '',
-        last_name: '',
-        display_name: '',
-        id_number: '',
-        id_number_type: '06',
-        username: '',
-        birth_date: '2015-06-10',
+        birth_date: '1990-06-13',
         gender: '01'
     };
     
@@ -29,28 +18,43 @@
         last_name: '',
         display_name: '',
         id_number: '',
-        id_number_type: '06',
+        id_number_type: '01',
         email: '',
         username: '',
         password: '',
         city_id: '',
-        birth_date: '2016-01-01',
-        role: '015',
+        birth_date: '1990-01-01',
         gender: '01'
     };*/
-            
     new Vue({
-        el: '#add_user',
+        el: '#app_relatives',
+        created: function(){
+            this.get_list();
+        },
         data: {
+            user_id: '<?php echo $row->id ?>',
+            key: 0,
+            gu_id: 0,
+            list: [],
+            show_form: false,
             form_values: form_values,
+            relation_type: 1,
             validation: {
                 id_number_is_unique: true,
                 username_is_unique: true,
                 email_is_unique: true
             },
-            row_id: 0
         },
         methods: {
+            get_list: function(){
+                axios.get(app_url + 'users/get_relatives/' + this.user_id)
+                .then(response => {
+                    this.list = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });   
+            },
             validate_send: function () {
                 axios.post(app_url + 'users/validate_row/', $('#add_form').serialize())
                 .then(response => {
@@ -65,14 +69,15 @@
                 });
             },
             send_form: function() {
-                axios.post(app_url + 'users/insert/', $('#add_form').serialize())
+                axios.post(app_url + 'users/insert_relative/' + this.user_id + '/' + this.relation_type, $('#add_form').serialize())
                 .then(response => {
                     console.log('status: ' + response.data.message);
                     if ( response.data.status == 1 )
                     {
-                        this.row_id = response.data.saved_id;
+                        this.get_list();
                         this.clean_form();
-                        $('#modal_created').modal();
+                        this.toggle_show_form();
+                        toastr['success']('El usuario fue creado correctamente');
                     }
                 })
                 .catch(function (error) {
@@ -105,18 +110,34 @@
             clean_form: function() {
                 for ( key in form_values ) {
                     this.form_values[key] = '';
-                    console.log('Limpiando: ' + this.form_values[key]);
                 }
-            },
-            go_created: function() {
-                window.location = app_url + 'users/profile/' + this.row_id;
+                $('#field-first_name').focus();
             },
             generate_display_name: function(){
                 form_values.display_name = form_values.first_name + ' ' + form_values.last_name;
             },
             empty_generate_display_name: function(){
                 if ( form_values.display_name.length < 2 ) { this.generate_display_name(); }
-            }
+            },
+            toggle_show_form: function(){
+                this.show_form = ! this.show_form;
+            },
+            set_current: function(key){
+                this.key = key;
+            },
+            remove_relative: function(){
+                this.gu_id = this.list[this.key].gu_id;
+                axios.get(app_url + 'users/remove_relative/' + this.user_id + '/' + this.list[this.key].id + '/' + this.gu_id)
+                .then(response => {
+                    var type = 'info';
+                    if ( response.data.status == 1 ) { type = 'success' }
+                    toastr[type](response.data.message);
+                    this.get_list();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
         }
     });
 </script>

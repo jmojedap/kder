@@ -9,7 +9,9 @@ class User_model extends CI_Model{
         $data['view_a'] = 'users/user_v';
         $data['nav_2'] = 'users/menus/user_v';
 
-        if ( $data['row']->role == 13 ) { $data['nav_2'] = 'users/menus/model_v'; }
+        if ( $data['row']->role >= 10  ) { $data['nav_2'] = 'users/menus/institutional_v'; }
+        if ( $data['row']->role == 21  ) { $data['nav_2'] = 'users/menus/relative_v'; }
+        if ( $data['row']->role == 23  ) { $data['nav_2'] = 'users/menus/student_v'; }
 
         return $data;
     }
@@ -297,17 +299,8 @@ class User_model extends CI_Model{
 
         if ( $this->deletable($user_id) ) 
         {
-            //Tablas relacionadas
-
-                //meta
-                /*$this->db->where('table_id', 1000); //Tabla usuario
-                $this->db->where('user_id', $user_id);
-                $this->db->delete('meta');*/
-            
-            //Tabla principal
-                $this->db->where('id', $user_id);
-                $this->db->delete('user');
-
+            $this->db->where('id', $user_id);
+            $this->db->delete('user');
             $quan_deleted = $this->db->affected_rows();
         }
 
@@ -457,38 +450,98 @@ class User_model extends CI_Model{
     }
 
 // IMPORTAR
-//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------}
+
+    /**
+     * Array con configuración de la vista de importación según el tipo de usuario
+     * que se va a importar.
+     * 2019-11-20
+     */
+    function import_config($type)
+    {
+        $data = array();
+
+        if ( $type == 'students' )
+        {
+            $data['help_note'] = 'Se importarán estudiantes a la plataforma asignándolos a grupos existentes.';
+            $data['help_tips'] = array();
+            $data['template_file_name'] = 'f02_estudiantes.xlsx';
+            $data['sheet_name'] = 'estudiantes';
+            $data['head_subtitle'] = 'Importar estudiantes';
+            $data['destination_form'] = "users/import_e/{$type}";
+        }
+
+        return $data;
+    }
 
     /**
      * Importa usuarios a la base de datos
+     * 2019-11-21
      * 
      * @param type $array_sheet    Array con los datos de usuarios
      * @return type
      */
     function import($arr_sheet)
     {
-        $data = array('quan_imported' => 0, 'not_imported' => array());
+        $data = array('quan_imported' => 0, 'results' => array());
+        $this->load->model('Group_model');
         
         foreach ( $arr_sheet as $key => $row_data )
-        {    
-            //Validar
-                $conditions = 0;
-                if ( strlen($row_data[0]) > 0 ) { $conditions++; }       //Debe tener nombre escrito
-                if ( strlen($row_data[1]) > 0 ) { $conditions++; }       //Debe tener apellido
-                
-            //Si cumple las conditions
-            if ( $conditions == 2 )
+        {
+            $data_import = $this->import_student($row_data);
+            $data['quan_imported'] += $data_import['status'];
+            $data['results'][$key + 2] = $data_import;
+        }
+        
+        return $data;
+    }
+
+    /**
+     * Realiza la importación de una fila del archivo excel. Valida los campos, crea registro
+     * en la tabla user, y agrega al grupo asignado.
+     * 2019-11-21
+     */
+    function import_student($row_data)
+    {
+        //Validar
+            $error_text = '';
+                            
+            if ( strlen($row_data[0]) == 0 ) { $error_text = 'La casilla Nombre está vacía. '; }
+            if ( strlen($row_data[1]) == 0 ) { $error_text .= 'La casilla Apellido está vacía. '; }
+            if ( strlen($row_data[2]) == 0 ) { $error_text .= 'La casilla No Documento está vacía. '; }
+            if ( ! $this->Db_model->is_unique('user', 'id_number', $row_data[2]) ) { $error_text .= 'El No Documento (' . $row_data[2] . ') ya está registrado. '; }
+
+        //Identificar grupo
+            $row_group = $this->Db_model->row('groups', "id = '{$row_data[7]}'");
+            if ( is_null($row_group) ) { $error_text .= 'El ID de grupo (' . $row_data[7] . ') es incorrecto o no existe. '; }
+
+        //Si no hay error
+            if ( $error_text == '' )
             {
                 $arr_row['first_name'] = $row_data[0];
                 $arr_row['last_name'] = $row_data[1];
+                $arr_row['display_name'] = $row_data[0] . ' ' . $row_data[1];
+                $arr_row['id_number'] = $row_data[2];
+                $arr_row['username'] = $this->generate_username($arr_row['first_name'], $arr_row['last_name']);
+                $arr_row['institution_id'] = $row_group->institution_id;
+                $arr_row['id_number_type'] = $row_data[3];
+                $arr_row['gender'] = $row_data[4];
+                $arr_row['birth_date'] = date('Y-m-d H:i:s', $this->pml->dexcel_unix($row_data[5]));
+                $arr_row['code'] = $row_data[6];
+                $arr_row['creator_id'] = $this->session->userdata('user_id');
+                $arr_row['editor_id'] = $this->session->userdata('user_id');
 
-                $this->insert($arr_row);
-                $data['quan_imported']++;
+                //Guardar en tabla user
+                $data_insert = $this->insert($arr_row);
+
+                //Agregar al grupo
+                $this->Group_model->add_student($row_data[7], $data_insert['saved_id']);
+
+                $data = array('status' => 1, 'text' => '', 'imported_id' => $data_insert['saved_id']);
             } else {
-                $data['not_imported'][] = $key + 2;    //Se agrega número de fila al array (inicia en la fila 2)
+                $data = array('status' => 0, 'text' => $error_text, 'imported_id' => 0);
             }
-        }
-        
+
         return $data;
     }
 
@@ -547,6 +600,63 @@ class User_model extends CI_Model{
         }
         
         return $suffix;
+    }
+
+// Metadatos
+//-----------------------------------------------------------------------------
+
+    /**
+     * Guarda un registro en la tabla meta
+     * 2019-11-26
+     */
+    function save_meta($arr_row, $fields = NULL)
+    {
+        $condition = "user_id = {$arr_row['user_id']} AND type_id = {$arr_row['type_id']} AND related_1 = {$arr_row['related_1']}";
+        $meta_id = $this->Db_model->save('user_meta', $condition, $arr_row);
+        
+        return $meta_id;
+    }
+
+// Gestión de Familiares y acudientes
+//-----------------------------------------------------------------------------
+
+    /**
+     * Query listado de familiares de un estudiante.
+     * 2019-11-26
+     */
+    function relatives($user_id)
+    {
+        $this->db->select('user.id, display_name, username, email, phone_number, src_thumbnail, item_name AS relation_type');
+        $this->db->join('user_meta', "user.id = user_meta.related_1 AND user_meta.user_id = {$user_id}");
+        $this->db->join('item', 'item.cod = user_meta.cat_1 AND item.category_id = 171');
+        $this->db->where('user_meta.type_id', 1051);
+        $relatives = $this->db->get('user');
+
+        return $relatives;
+    }
+
+    /**
+     * Le asigna un familiar o acudiente a un estudiante
+     * 2019-11-26
+     */
+    function add_relative($user_id, $relative_id, $relation_type)
+    {
+        $data = array('status' => 0, 'meta_id' => '0');    //Resultado inicial por defecto
+
+        //Construir registro y guardar
+            $arr_row['user_id'] = $user_id;
+            $arr_row['type_id'] = 1051;             //Familiar
+            $arr_row['related_1'] = $relative_id;   //ID del usuario familiar
+            $arr_row['cat_1'] = $relation_type;     //Tipo de familiar
+            $arr_row['creator_id'] = $this->session->userdata('user_id');
+            $arr_row['editor_id'] = $this->session->userdata('user_id');
+
+            $meta_id = $this->save_meta($arr_row);
+
+        //Actualizar resultado
+        if ( $meta_id ) { $data = array('status' => 1, 'meta_id' => $meta_id); }
+
+        return $data;
     }
     
 }

@@ -127,6 +127,18 @@
                     <td class="text-right"><span class="text-muted">Código</span></td>
                     <td><?php echo $row->code ?></td>
                 </tr>
+                <tr>
+                    <td class="text-right"><span class="text-muted">Editado</span></td>
+                    <td>
+                        <?php echo $this->pml->date_format($row->edited_at, 'Y-m-d h:i') ?> por <?php echo $this->App_model->name_user($row->editor_id, 'du') ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right"><span class="text-muted">Creado</span></td>
+                    <td>
+                        <?php echo $this->pml->date_format($row->created_at, 'Y-m-d H:i') ?> por <?php echo $this->App_model->name_user($row->creator_id, 'du') ?>
+                    </td>
+                </tr>
                 <?php if ( $this->session->userdata('role') <= 2  ) { ?>
                     <tr>
                         <td class="text-right">

@@ -83,43 +83,46 @@
     }
 </script>
 
-<div class="row">
-    <div class="col-md-4">
-        <img id="user_image" src="<?php echo $att_img['src'] ?>" alt="" width="100%">
-    </div>
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-body">
-                <form accept-charset="utf-8" method="POST" id="file_form">
-                    <div class="form-group row">
-                        <label for="file_field" class="col-sm-2 control-label">Archivo *</label>
-                        <div class="col-sm-10">
-                            <input type="file" name="file_field" required="1" accept="image/*">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button class="btn btn-success" type="submit">Cargar</button>
-                        </div>
-                    </div>
-                </form>
-                <hr/>
-                <?php if ( $row->image_id > 0 ) { ?>
-                    <a class="btn btn-default" id="btn_crop" href="<?php echo base_url("users/edit/{$row->id}/crop") ?>">
-                        <i class="fa fa-crop"></i>
-                        Recortar
-                    </a>
-                    <button class="btn btn-warning" id="btn_remove_image">
-                        <i class="fa fa-times"></i>
-                        Quitar imagen
-                    </button>
-                <?php } ?>
-                
-                <?php $this->load->view('common/process_result_v'); ?>
-                
-            </div>
+<div class="">
+    <div class="row">
+        <div class="col-md-4">
+            <img id="user_image" src="<?php echo $att_img['src'] ?>" alt="Imagen usuario" width="100%" class="rounded">
         </div>
-    
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form accept-charset="utf-8" method="POST" id="file_form">
+                        <div class="form-group row">
+                            <label for="file_field" class="col-sm-2 control-label">Archivo *</label>
+                            <div class="col-sm-10">
+                                <input type="file" name="file_field" required="1" accept="image/*">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button class="btn btn-success w120p" type="submit">Cargar</button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr/>
+                    <?php if ( $row->image_id > 0 ) { ?>
+                        <a class="btn btn-default" id="btn_crop" href="<?php echo base_url("users/edit/{$row->id}/cropping") ?>">
+                            <i class="fa fa-crop"></i>
+                            Recortar
+                        </a>
+                        <button class="btn btn-warning" id="btn_remove_image">
+                            <i class="fa fa-times"></i>
+                            Quitar imagen
+                        </button>
+                    <?php } ?>
+                    
+                    <?php $this->load->view('common/process_result_v'); ?>
+                    
+                </div>
+            </div>
+        
+        </div>
     </div>
 </div>
+

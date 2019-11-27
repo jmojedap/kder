@@ -1,71 +1,85 @@
 <?php
-    $status_class = 'table-danger';
-    if ( $status == 1 ) { $status_class = 'table-success'; }
-    
-    $str_not_imported = implode(', ', $not_imported);
-    
-    $class_not_imported = '';
-    if ( count($not_imported) > 0 ) { $class_not_imported = 'table-warning'; }
-    
-    $quan_imported = count($arr_sheet) - count($not_imported);
-?>
+    $quan_not_imported = count($results) - $quan_imported;
 
-<table class="table table-default bg-white">
-    <tbody>
-        <tr class="<?php echo $status_class ?>">
-            <td width="25%">Resultado</td>
-            <td width="20px">
-                <?php if ( $status == 1 ) { ?>
-                    <i class="fa fa-check"></i>
-                <?php } else { ?>
-                    <i class="fa fa-times"></i>
-                <?php } ?>
-                
-            </td>
-            <td><?php echo $message ?></td>
-        </tr>
-        <tr>
-            <td>Nombre hoja cálculo</td>
-            <td></td>
-            <td><?php echo $sheet_name ?></td>
-        </tr>
-        <tr>
-            <td>Filas encontradas</td>
-            <td></td>
-            <td><?php echo count($arr_sheet) ?></td>
-        </tr>
-        <tr>
-            <td>Filas importadas</td>
-            <td></td>
-            <td><?php echo $quan_imported ?></td>
-        </tr>
-        <tr class="<?php echo $class_not_imported ?>">
-            <td>Filas no importadas</td>
-            <td></td>
-            <td>
-                <?php echo count($not_imported) ?> 
-                <?php if ( count($not_imported) > 0 ){ ?>
-                    <button style="margin-left: 10px;" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#str_not_imported" aria-expanded="false" aria-controls="str_not_imported">
-                        Ver detalle
-                        <i class="fa fa-ellipsis"></i>
-                    </button>
-                <?php } ?>
-            </td>
-        </tr>
-        <tr class="collapse table-warning" id="str_not_imported">
-            <td>Números de las filas no importadas</td>
-            <td></td>
-            <td>
-                <?php echo $str_not_imported ?>
-            </td>
-        </tr>
-    </tbody>
-</table>
+    $status_icons = array(
+        0 => 'fa fa-exclamation-triangle',
+        1 => 'fa fa-check-circle'
+    );
+
+    $status_cl = array(
+        0 => 'warning',
+        1 => 'success'
+    );
+
+    $status_text = array(
+        0 => 'No',
+        1 => 'Sí'
+    );
+?>
 
 <a href="<?php echo base_url($back_destination) ?>" class="btn btn-secondary">
     <i class="fa fa-arrow-circle-left"></i>
     Volver
 </a>
+
+<h4>Resultado importación</h4>
+
+<table class="table bg-white">
+    <tbody>
+        <tr>
+            <td>Nombre hoja cálculo</td>
+            <td width="50px"></td>
+            <td><?php echo $sheet_name ?></td>
+        </tr>
+        <tr>
+            <td>Filas encontradas</td>
+            <td><i class="fa fa-info-circle text-info"></i></td>
+            <td><?php echo count($results) ?></td>
+        </tr>
+        <tr>
+            <td>Filas importadas</td>
+            <td><i class="fa fa-check-circle text-success"></i></td>
+            <td><?php echo $quan_imported ?></td>
+        </tr>
+        <tr class="<?php echo $class_not_imported ?>">
+            <td>Filas no importadas</td>
+            <td>
+                <?php if ( $quan_not_imported > 0 ) { ?>
+                    <i class="fa fa-exclamation-triangle text-warning"></i>
+                <?php } ?>
+            </td>
+            <td>
+                <?php echo $quan_not_imported ?>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h5>Detalle por fila</h5>
+
+<table class="table bg-white mt-2" id="table_results">
+    <thead>
+        <th width="50px">Fila</th>
+        <th width="50px"></th>
+        <th width="50px">Importada</th>
+        <th>Descripción</th>
+    </thead>
+    <tbody>
+        <?php foreach ( $results as $row_number => $result ) { ?>
+            <tr>
+                <td><?php echo $row_number ?></td>
+                <td class="table-">
+                    <i class="text-<?php echo $status_cl[$result['status']] ?> <?php echo $status_icons[$result['status']] ?>"></i>
+                </td>
+                <td>
+                    <?php echo $status_text[$result['status']] ?>
+                </td>
+                <td><?php echo $result['text'] ?></td>
+            </tr>
+        <?php } ?>
+    </tbody>
+</table>
+
 
 
 

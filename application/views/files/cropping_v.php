@@ -84,7 +84,8 @@
             </button>
 
             <a class="btn btn-secondary btn-block" href="<?php echo base_url($back_destination) ?>">
-                Cancelar
+                <i class="fa fa-arrow-left"></i>
+                No recortar
             </a>
         
             <br/>

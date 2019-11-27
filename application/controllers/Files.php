@@ -77,9 +77,7 @@ class Files extends CI_Controller{
         $editable = $this->File_model->editable($file_id);
         if ( $editable ) { $data = $this->File_model->crop($file_id);}
         
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($data));
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
 }

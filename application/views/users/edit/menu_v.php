@@ -7,7 +7,7 @@
     if ( strlen($app_cf_index) == 0 ) { $app_cf_index = 'basic'; }
     
     $cl_nav_3[$app_cf_index] = 'active';
-    if ( $app_cf_index == 'crop' ) { $cl_nav_3['image'] = 'active'; }
+    if ( $app_cf_index == 'cropping' ) { $cl_nav_3['image'] = 'active'; }
 ?>
 
 <script>
@@ -33,7 +33,7 @@
     //Secciones para cada rol
     sections_role.dvlp = ['basic', 'image'];
     sections_role.admn = ['basic'];
-    sections_role.mdlo = ['basic', 'image'];
+    sections_role.prpt = ['basic', 'image'];
     sections_role.clnt = ['basic', 'image'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú

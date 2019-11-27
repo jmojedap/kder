@@ -2,7 +2,6 @@
     $app_cf_index = $this->uri->segment(1) . '_' . $this->uri->segment(2);
     
     $cl_nav_2['users_profile'] = '';
-    $cl_nav_2['users_relatives'] = '';
     $cl_nav_2['users_edit'] = '';
     //$cl_nav_2['users_import'] = '';
     
@@ -23,13 +22,6 @@
         'cf': 'users/profile/' + element_id
     };
 
-    sections.relatives = {
-        'icon': 'fa fa-heart',
-        'text': 'Familia',
-        'class': '<?php echo $cl_nav_2['users_relatives'] ?>',
-        'cf': 'users/relatives/' + element_id
-    };
-
     sections.edit = {
         'icon': 'fa fa-pencil-alt',
         'text': 'Editar',
@@ -38,7 +30,7 @@
     };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['profile', 'relatives', 'edit'];
+    sections_rol.dvlp = ['profile', 'edit'];
     sections_rol.admn = ['profile'];
     sections_rol.prpt = ['profile', 'edit'];
     

@@ -30,10 +30,10 @@
     };
     
     //Secciones para cada rol
-    sections_role.dvlp = ['institutional', 'student'];
-    sections_role.admn = ['institutional', 'student'];
-    sections_role.edtr = ['institutional', 'student'];
-    sections_role.prpt = ['institutional', 'student'];
+    sections_role.dvlp = ['institutional'];
+    sections_role.admn = ['institutional'];
+    sections_role.edtr = ['institutional'];
+    sections_role.prpt = ['institutional'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_role[app_r]) 

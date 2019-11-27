@@ -160,9 +160,13 @@ class Users extends CI_Controller{
     {        
         //Datos básicos
         $data = $this->User_model->basic($user_id);
+
+        $data['view_a'] = 'users/profile/profile_v';
+        if ( $data['row']->role >= 10  ) { $data['view_a'] = 'users/profile/institutional_v'; }
+        if ( $data['row']->role == 21  ) { $data['view_a'] = 'users/profile/relative_v'; }
+        if ( $data['row']->role == 23  ) { $data['view_a'] = 'users/profile/student_v'; }
         
         //Variables específicas
-        $data['view_a'] = 'users/profile_v';
         
         $this->App_model->view(TPL_ADMIN, $data);
     }
@@ -218,8 +222,8 @@ class Users extends CI_Controller{
     function update($user_id)
     {
         $arr_row = $this->input->post();
+        if ( strlen($arr_row['email']) == 0 ) { unset($arr_row['email']); }  //Si viene vacío evitar que sea nulo
 
-        //$this->load->model('Account_model');
         $data = $this->User_model->update($user_id, $arr_row);
         
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
@@ -239,7 +243,6 @@ class Users extends CI_Controller{
 // IMAGEN DE PERFIL DE USUARIO
 //-----------------------------------------------------------------------------
     /**
-     * POST REDIRECT
      * Carga file de image y se la asigna a un user.
      * @param type $user_id
      */
@@ -257,9 +260,7 @@ class Users extends CI_Controller{
             $data = $this->User_model->set_image($user_id, $data_upload['row']->id);   //Asignar imagen nueva
         }
 
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($data_upload));
+        $this->output->set_content_type('application/json')->set_output(json_encode($data_upload));
     }
     
     /**
@@ -288,10 +289,7 @@ class Users extends CI_Controller{
     function remove_image($user_id)
     {
         $data = $this->User_model->remove_image($user_id);
-        
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($data));
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
 // IMPORTACIÓN DE USUARIOS
@@ -302,23 +300,16 @@ class Users extends CI_Controller{
      * con archivo Excel. El resultado del formulario se envía a 
      * 'users/import_e'
      */
-    function import()
+    function import($type = 'students')
     {
-        //Iniciales
-            $data['help_note'] = 'Se importarán usuarios a la herramienta.';
-            $data['help_tips'] = array();
+        $data = $this->User_model->import_config($type);
+
+        $data['url_file'] = URL_RESOURCES . 'import_templates/' . $data['template_file_name'];
         
-        //Variables específicas
-            $data['destination_form'] = "users/import_e";
-            $data['template_file_name'] = 'f1_users.xlsx';
-            $data['sheet_name'] = 'users';
-            $data['url_file'] = URL_RESOURCES . 'import_templates/' . $data['template_file_name'];
-            
-        //Variables generales
-            $data['head_title'] = 'Usuarios';
-            $data['head_subtitle'] = 'Importar';
-            $data['view_a'] = 'common/import_v';
-            $data['nav_2'] = 'users/explore/menu_v';
+
+        $data['head_title'] = 'Usuarios';
+        $data['nav_2'] = 'users/explore/menu_v';
+        $data['view_a'] = 'common/import_v';
         
         $this->App_model->view(TPL_ADMIN, $data);
     }
@@ -349,7 +340,6 @@ class Users extends CI_Controller{
             $data['nav_2'] = 'users/explore/menu_v';
 
         $this->App_model->view(TPL_ADMIN, $data);
-
     }
     
 //---------------------------------------------------------------------------------------------------
@@ -367,22 +357,47 @@ class Users extends CI_Controller{
         $this->output->set_content_type('application/json')->set_output($username);
     }
     
-// ALBUMES DE USERS
+// FAMILIARES DEL ESTUDIANTE
 //-----------------------------------------------------------------------------
 
     /**
-     * Albums de fotos
+     * Familiares del estudiantes
+     * 2019-11-26
      */
-    function albums($user_id)
+    function relatives($user_id)
     {
         $data = $this->User_model->basic($user_id);
         
-        $this->load->model('Girl_model');
-        $data['albums'] = $this->Girl_model->albums($user_id);
+        $data['relatives'] = $this->User_model->relatives($user_id);
 
-        $data['subtitle_head'] = 'Álbums';
-        $data['view_a'] = 'users/albums_v';
+        $data['subtitle_head'] = 'Familiares';
+        $data['view_a'] = 'users/relatives/relatives_v';
         $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+    function get_relatives($user_id)
+    {
+        $relatives = $this->User_model->relatives($user_id);
+        $this->output->set_content_type('application/json')->set_output(json_encode($relatives->result()));
+    }
+
+    /**
+     * Agrega un registro a la tabla user, y lo asigna al grupo_id
+     * 2019-11-26
+     */
+    function insert_relative($user_id, $relation_type)
+    {
+        $data = array('status' => 0);
+
+        $this->load->model('User_model');
+        $data_insert = $this->User_model->insert();
+        if ( $data_insert['saved_id'] > 0 )
+        {
+            $data = $this->User_model->add_relative($user_id, $data_insert['saved_id'], $relation_type);
+            $data['relative_id'] = $data_insert['saved_id'];
+        }
+
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
 }

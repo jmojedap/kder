@@ -40,6 +40,10 @@
             <div class="card-body">
                 <h5>¿En qué consiste este proceso?</h5>
                 <p>
+                    Usted podrá importar masivamente registros a la plataforma con un archivo de Excel con un formato predefinido.
+                </p>
+                <p>
+                    <i class="fa fa-info-circle text-info"></i>
                     <?php echo $help_note ?>
                 </p>
 

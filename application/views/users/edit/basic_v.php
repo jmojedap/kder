@@ -8,7 +8,7 @@
 ?>
 
 <div id="app_edit">
-    <div class="card" style="max-width: 800px; margin: 0 auto;">
+    <div class="card center_box_750">
         <div class="card-body">
             <form id="edit_form" accept-charset="utf-8" @submit.prevent="validate_send">
                 <div class="form-group row">
@@ -42,11 +42,6 @@
                     <label for="display_name" class="col-md-4 col-form-label">Mostrar como *</label>
                     <div class="col-md-8">
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <button type="button" class="btn btn-primary" title="Generar Mostrar Como" v-on:click="generate_display_name">
-                                    <i class="fa fa-magic"></i>
-                                </button>
-                            </div>
                             <input
                                 type="text"
                                 id="field-display_name"
@@ -58,6 +53,11 @@
                                 v-model="form_values.display_name"
                                 v-on:focus="empty_generate_display_name"
                                 >
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary" title="Generar Mostrar Como" v-on:click="generate_display_name">
+                                    <i class="fa fa-magic"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -100,7 +100,6 @@
                         <?php echo form_dropdown('id_number_type', $options_id_number_type, '', 'class="form-control" required v-model="form_values.id_number_type"') ?>
                     </div>
                 </div>
-
                 
                 <div class="form-group row" id="form-group_email">
                     <label for="email" class="col-md-4 control-label">Correo electrónico *</label>
@@ -119,43 +118,6 @@
                         <span class="invalid-feedback">
                             El correo electrónico ya fue registrado, por favor escriba otro
                         </span>
-                    </div>
-                </div>
-                
-                <div class="form-group row" id="form-group_username">
-                    <label for="username" class="col-md-4 control-label">Username *</label>
-                    <div class="col-md-8">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <button type="button" class="btn btn-primary" title="Generar username" v-on:click="generate_username">
-                                    <i class="fa fa-magic"></i>
-                                </button>
-                            </div>
-                            <!-- /btn-group -->
-                            <input
-                                id="field-username"
-                                name="username"
-                                class="form-control"
-                                v-bind:class="{ 'is-invalid': ! validation.username_is_unique }"
-                                placeholder="username"
-                                title="Puede contener letras y números, entre 6 y 25 caractéres, no debe contener espacios ni caracteres especiales"
-                                required
-                                pattern="^[A-Za-z0-9_]{6,25}$"
-                                v-model="form_values.username"
-                                v-on:change="validate_form"
-                                >
-                            
-                            <span class="invalid-feedback">
-                                El username escrito no está disponible, por favor elija otro
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="role" class="col-md-4 col-form-label">Rol *</label>
-                    <div class="col-md-8">
-                        <?php echo form_dropdown('role', $options_role, '', 'class="form-control" v-model="form_values.role"') ?>
                     </div>
                 </div>
 
@@ -202,7 +164,42 @@
                     </div>
                 </div>
 
-                <?php if ( $this->session->userdata('rol') <= 2 ) { ?>
+                <?php if ( $this->session->userdata('role') <= 2 ) { ?>
+                    <div class="form-group row" id="form-group_username">
+                        <label for="username" class="col-md-4 control-label">Username *</label>
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <!-- /btn-group -->
+                                <input
+                                    id="field-username"
+                                    name="username"
+                                    class="form-control"
+                                    v-bind:class="{ 'is-invalid': ! validation.username_is_unique }"
+                                    placeholder="username"
+                                    title="Puede contener letras y números, entre 6 y 25 caractéres, no debe contener espacios ni caracteres especiales"
+                                    required
+                                    pattern="^[A-Za-z0-9_]{6,25}$"
+                                    v-model="form_values.username"
+                                    v-on:change="validate_form"
+                                    >
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" title="Generar username" v-on:click="generate_username">
+                                        <i class="fa fa-magic"></i>
+                                    </button>
+                                </div>
+                                
+                                <span class="invalid-feedback">
+                                    El username escrito no está disponible, por favor elija otro
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="role" class="col-md-4 col-form-label">Rol *</label>
+                        <div class="col-md-8">
+                            <?php echo form_dropdown('role', $options_role, '', 'class="form-control" v-model="form_values.role"') ?>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label for="admin_notes" class="col-md-4 col-form-label">Notas administrador (Privada)</label>
                         <div class="col-md-8">

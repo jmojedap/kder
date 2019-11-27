@@ -3,9 +3,10 @@
     
     $cl_nav_2['users_explore'] = '';
     $cl_nav_2['users_add'] = '';
+    $cl_nav_2['users_import'] = '';
     
     $cl_nav_2[$app_cf_index] = 'active';
-    //if ( $app_cf_index == 'users_import_e' ) { $cl_nav_2['users_import'] = 'active'; }
+    if ( $app_cf_index == 'users_import_e' ) { $cl_nav_2['users_import'] = 'active'; }
 ?>
 
 <script>
@@ -26,12 +27,20 @@
         'class': '<?php echo $cl_nav_2['users_add'] ?>',
         'cf': 'users/add'
     };
+
+    sections.import = {
+        'icon': 'fa fa-upload',
+        'text': 'Importar',
+        'class': '<?php echo $cl_nav_2['users_import'] ?>',
+        'cf': 'users/import'
+    };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['explore', 'add'];
-    sections_rol.admn = ['explore'];
-    sections_rol.edtr = ['explore'];
-    sections_rol.prpt = ['explore', 'add'];
+    sections_rol.dvlp = ['explore', 'add', 'import'];
+    sections_rol.admn = ['explore', 'add', 'import'];
+    sections_rol.edtr = ['explore', 'add', 'import'];
+    sections_rol.prpt = ['explore', 'add', 'import'];
+    sections_rol.adtv = ['explore', 'add', 'import'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_rol[app_r]) 
