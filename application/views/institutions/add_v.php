@@ -1,4 +1,4 @@
-<?php $this->load->view('assets/select2') ?>
+<?php $this->load->view('assets/bs4_chosen') ?>
 
 <?php
     $options_city = $this->App_model->options_place('type_id = 4', 'cr', 'Ciudad');
@@ -10,13 +10,12 @@
         <div class="card-body">
             <form id="add_form" accept-charset="utf-8" @submit.prevent="validate_send">
                 <div class="form-group row">
-                    <label for="name" class="col-md-4 controle-label">Nombre Comercial</label>
+                    <label for="name" class="col-md-4 controle-label">Nombre Comercial / Marca</label>
                     <div class="col-md-8">
                         <input
                             id="field-name"
                             name="name"
                             class="form-control"
-                            placeholder="Nombre"
                             title="Nombres comercial o marca"
                             required
                             autofocus
@@ -32,26 +31,25 @@
                             id="field-full_name"
                             name="full_name"
                             class="form-control"
-                            placeholder="Nombre mostrar"
-                            title="Nombre mostrar"
+                            placeholder=""
+                            title="Nombre completo"
                             v-model="form_values.full_name"
                             >
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="email" class="col-md-4 controle-label">E-mail</label>
+                    <label for="email" class="col-md-4 controle-label">Correo electrónico</label>
                     <div class="col-md-4">
                         <input
                             id="field-email"
                             name="email"
                             class="form-control"
                             v-bind:class="{ 'is-invalid': ! validation.email_is_unique }"
-                            placeholder="Correo electrónico"
                             required
                             title="Correo electrónico"
                             v-model="form_values.email"
-                            v-on:change="validate_form"
+                            v-on:change="validate"
                             >
                         <span class="invalid-feedback">
                             El correo electrónico escrito ya fue registrado para otra institución
@@ -60,7 +58,7 @@
                 </div>
 
                 <div class="form-group row" id="form-group_id_number">
-                    <label for="id_number" class="col-md-4 controle-label">NIT o Documento</label>
+                    <label for="id_number" class="col-md-4 controle-label">NIT o Documento | Tipo</label>
                     <div class="col-md-4">
                         <input
                             id="field-id_number"
@@ -72,7 +70,7 @@
                             required
                             pattern=".{5,}[0-9]"
                             v-model="form_values.id_number"
-                            v-on:change="validate_form"
+                            v-on:change="validate"
                             >
                         <span class="invalid-feedback">
                             El número de documento escrito ya fue registrado para otra institución
@@ -84,21 +82,37 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="city_id" class="col-md-4 controle-label">Ciudad ubicación</label>
+                    <label for="address" class="col-md-4 col-form-label">Dirección</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('city_id', $options_city, '0909', 'id="field-city_id" class="form-control select2" required') ?>
+                        <input
+                            type="text"
+                            id="field-address"
+                            name="address"
+                            required
+                            class="form-control"
+                            placeholder=""
+                            title="Dirección"
+                            v-model="form_values.address"
+                            >
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="celular" class="col-md-4 controle-label">Teléfono / Celular</label>
+                    <label for="city_id" class="col-md-4 controle-label">Ciudad ubicación</label>
+                    <div class="col-md-8">
+                        <?php echo form_dropdown('city_id', $options_city, '0909', 'id="field-city_id" class="form-control form-control-chosen" required') ?>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="celular" class="col-md-4 controle-label">Número celular</label>
                     <div class="col-md-8">
                         <input
                             id="field-phone_number"
                             name="phone_number"
                             class="form-control"
-                            placeholder="Número celular"
                             title="Número celular"
+                            minlength="10"
                             required
                             v-model="form_values.phone_number"
                             >
@@ -119,15 +133,29 @@
 </div>
 
 <script>
+    /*var random = '900' + Math.floor(Math.random() * 1000000);
+    var random_name = 'jdi' + Math.floor(Math.random() * 100);
     var form_values = {
-            name: 'Jardín Ipiales Feliz',
-            full_name: 'Jardín Ipiales Feliz SAS',
-            email: 'jardinipiales@gmail.com',
-            id_number: '',
+            name: 'Jardín Ipiales Feliz ' + random_name,
+            full_name: 'Jardín ' + random_name + ' SAS',
+            email: 'jardinipiales' + random_name + '@gmail.com',
+            id_number: random,
             id_number_type: '011',
-            city_id: '0<?php echo $row->city_id ?>',
-            phone_number: '<?php echo $row->phone_number ?>'            
-        };
+            address: 'Caller 13 # 14-15',
+            city_id: '0909',
+            phone_number: '3' + random
+        };*/
+
+    var form_values = {
+        name: '',
+        full_name: '',
+        email: '',
+        id_number: '',
+        id_number_type: '011',
+        address: '',
+        city_id: '0909',
+        phone_number: ''
+    }
     new Vue({
     el: '#app_insert',
         data: {
@@ -139,8 +167,8 @@
             }
         },
         methods: {
-            validate_form: function() {
-                axios.post(app_url + 'institutions/validate_form/', $('#add_form').serialize())
+            validate: function() {
+                axios.post(app_url + 'institutions/validate/', $('#add_form').serialize())
                 .then(response => {
                     //this.formulario_valido = response.data.status;
                     this.validation = response.data.validation;
@@ -150,7 +178,7 @@
                 });
             },
             validate_send: function () {
-                axios.post(app_url + 'institutions/validate_form/', $('#add_form').serialize())
+                axios.post(app_url + 'institutions/validate/', $('#add_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                         this.send_form();
@@ -171,7 +199,7 @@
                             toastr['success']('La institución fue creada con éxito');
                             setTimeout(() => {
                                 window.location = app_url + 'institutions/info/' + response.data.institution_id;
-                            }, 2000);
+                            }, 3000);
                         }
                     })
                     .catch(function (error) {

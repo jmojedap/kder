@@ -22,13 +22,6 @@
         'cf': 'accounts/profile/'
     };
 
-    sections.my_suscriptions = {
-        'icon': 'fa fa-money-check-alt',
-        'text': 'Mis compras',
-        'class': '<?php echo $cl_nav_2['orders_my_suscriptions'] ?>',
-        'cf': 'orders/my_suscriptions/'
-    };
-
     sections.edit = {
         'icon': 'fa fa-pencil-alt',
         'text': 'Editar',
@@ -41,7 +34,7 @@
     sections_rol.admn = ['profile', 'edit'];
     sections_rol.edtr = ['profile', 'edit'];
     sections_rol.prpt = ['profile', 'edit'];
-    sections_rol.clnt = ['profile', 'my_suscriptions', 'edit'];
+    sections_rol.regi = ['profile', 'edit'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_rol[app_r]) 

@@ -15,14 +15,6 @@
 <div style="max-width: 600px; margin: 0 auto;">
     <div id="section_image" class="<?php echo $cl_elements['image'] ?>">
         <div class="card">
-            <img
-                id="element_image"
-                class="card-img-top"
-                width="100%"
-                src="<?php echo $att_img['src'] ?>"
-                alt="<?php echo $att_img['alt'] ?>"
-                onerror="<?php echo $att_img['onerror'] ?>"
-            >
             <div class="card-body">
                 <a class="btn btn-light" id="btn_crop" href="<?php echo base_url($link_cropping) ?>">
                     <i class="fa fa-crop"></i>
@@ -30,6 +22,14 @@
                 <button class="btn btn-warning" id="btn_remove_image" title="Eliminar imagen">
                     <i class="fa fa-trash"></i>
                 </button>
+                <img
+                    id="element_image"
+                    class="img-rounded"
+                    width="100%"
+                    src="<?php echo $att_img['src'] ?>"
+                    alt="<?php echo $att_img['alt'] ?>"
+                    onerror="<?php echo $att_img['onerror'] ?>"
+                >
             </div>
         </div>
     </div>

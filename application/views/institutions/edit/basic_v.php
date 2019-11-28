@@ -1,5 +1,5 @@
 <?php $this->load->view('assets/summernote') ?>
-<?php $this->load->view('assets/select2') ?>
+<?php $this->load->view('assets/bs4_chosen') ?>
 
 <script>
 $(document).ready(function(){
@@ -19,14 +19,6 @@ $(document).ready(function(){
     <div class="card" style="max-width: 800px; margin: 0 auto;">
         <div class="card-body">
             <form id="edit_form" accept-charset="utf-8" @submit.prevent="validate_send">
-                <div class="form-group row">
-                    <div class="offset-md-4 col-md-8">
-                        <button class="btn btn-info btn-block" type="submit">
-                            Guardar
-                        </button>
-                    </div>
-                </div>
-
                 <div class="form-group row">
                     <label for="name" class="col-md-4 controle-label">Nombre comercial *</label>
                     <div class="col-md-8">
@@ -120,9 +112,25 @@ $(document).ready(function(){
                 </div>
 
                 <div class="form-group row">
+                    <label for="address" class="col-md-4 col-form-label">Dirección *</label>
+                    <div class="col-md-8">
+                        <input
+                            type="text"
+                            id="field-address"
+                            name="address"
+                            required
+                            class="form-control"
+                            placeholder=""
+                            title="Dirección"
+                            v-model="form_values.address"
+                            >
+                    </div>
+                </div>
+
+                <div class="form-group row">
                     <label for="city_id" class="col-md-4 controle-label">Ciudad ubicación *</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('city_id', $options_city, $row->city_id, 'id="field-city_id" class="form-control select2" required') ?>
+                        <?php echo form_dropdown('city_id', $options_city, $row->city_id, 'id="field-city_id" class="form-control form-control-chosen" required') ?>
                     </div>
                 </div>
 
@@ -141,6 +149,14 @@ $(document).ready(function(){
                     </div>
                 </div>
 
+                <div class="form-group row">
+                    <div class="offset-md-4 col-md-8">
+                        <button class="btn btn-info w120p" type="submit">
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+
             </form>
         </div>
     </div>
@@ -153,6 +169,7 @@ $(document).ready(function(){
             email: '<?php echo $row->email ?>',
             id_number: '<?php echo $row->id_number ?>',
             id_number_type: '0<?php echo $row->id_number_type ?>',
+            address: '<?php echo $row->address ?>',
             city_id: '0<?php echo $row->city_id ?>',
             phone_number: '<?php echo $row->phone_number ?>',    
             generation: '<?php echo $row->generation ?>'            

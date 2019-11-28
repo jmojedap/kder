@@ -78,6 +78,21 @@ class App_model extends CI_Model{
         return $data;
     }
 
+    /**
+     * Validación de Google Recaptcha V3, la validación se realiza considerando el valor de
+     * $recaptcha->score, que va de 0 a 1.
+     * 2019-10-31
+     */
+    function recaptcha()
+    {
+        $secret = K_RCSC;   //Ver config/constants.php
+        $response = $this->input->post('g-recaptcha-response');
+        $json_recaptcha = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secret}&response={$response}");
+        $recaptcha = json_decode($json_recaptcha);
+        
+        return $recaptcha;
+    }
+
 // NOMBRES
 //-----------------------------------------------------------------------------
 

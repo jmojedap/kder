@@ -64,9 +64,7 @@ class Accounts extends CI_Controller {
             }
             
         //Salida
-            $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($data));      
+            $this->output->set_content_type('application/json')->set_output(json_encode($data));      
     }
     
     /**
@@ -110,15 +108,15 @@ class Accounts extends CI_Controller {
      * Recibe los datos POST del form en accounts/signup. Si se validan los 
      * datos, se registra el user. Se devuelve $data, con resultados de registro
      * o de validación (si falló).
-     * 2019-08-05
+     * 2019-11-27
      */
     function register()
     {
         $data = array('status' => 0, 'message' => 'La cuenta no fue creada');  //Initial result values
-        $res_validation = $this->Account_model->validate_form();
-        $recaptcha = $this->Account_model->recaptcha();
+        $res_validation = $this->Account_model->validate();
+        $recaptcha = $this->App_model->recaptcha();
             
-        if ( $res_validation['status'] && $recaptcha['success'] )
+        if ( $res_validation['status'] && $recaptcha->score > 0.5 )
         {
             //Construir registro del nuevo user
                 $arr_row['first_name'] = $this->input->post('first_name');
@@ -126,25 +124,20 @@ class Accounts extends CI_Controller {
                 $arr_row['display_name'] = $this->input->post('first_name') . ' ' . $this->input->post('last_name');
                 $arr_row['email'] = str_replace('@gmail.com', '', $this->input->post('email')) . '@gmail.com';
                 $arr_row['username'] = explode('@', $arr_row['email'])[0];
-                $arr_row['role'] = 11;  //21: Propietario, default role
+                $arr_row['role'] = 31;  //31: Usuario registrado
 
             //Insert user
                 $this->load->model('User_model');
                 $data = $this->User_model->insert($arr_row);
                 
             //Enviar email con código de activación
-                $this->Account_model->activation_key($data['user_id']);
+                $this->Account_model->activation_key($data['saved_id']);
                 //$this->Account_model->email_activation($data['user_id']);
         } else {
             $data['validation'] = $res_validation['validation'];
         }
 
-        //reCAPTCHA validation
-        if ( ! $recaptcha['success'] ) { $data['recaptcha_valid'] = FALSE; }
-
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($data));
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
     /**
@@ -153,11 +146,8 @@ class Accounts extends CI_Controller {
      */
     function validate_signup()
     {
-        $data = $this->Account_model->validate_form();
-
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($data));
+        $data = $this->Account_model->validate();
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
     /**
@@ -229,17 +219,15 @@ class Accounts extends CI_Controller {
      * 
      * @param type $user_id
      */
-    function validate_form()
+    function validate($type = 'general')
     {
         $user_id = $this->session->userdata('user_id');
 
         $this->load->model('Account_model');
-        $result = $this->Account_model->validate_form($user_id);
+        $result = $this->Account_model->validate($user_id, $type);
         
         //Enviar result
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($result));
+        $this->output->set_content_type('application/json')->set_output(json_encode($result));
     }
 
     /**
@@ -250,7 +238,6 @@ class Accounts extends CI_Controller {
     function update()
     {
         $arr_row = $this->input->post();
-        $arr_row['display_name'] = $this->input->post('first_name') . ' ' . $this->input->post('last_name');
         $user_id = $this->session->userdata('user_id');
 
         $this->load->model('User_model');
@@ -407,9 +394,7 @@ class Accounts extends CI_Controller {
         $this->load->model('User_model');
         $data = $this->User_model->remove_image($user_id);
         
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($data));
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
 // USER LOGIN AND REGISTRATION WITH GOOGLE ACCOUNT
@@ -427,7 +412,7 @@ class Accounts extends CI_Controller {
         
         if ( ! is_null($this->session->userdata('access_token')) )
         {
-            //access_token exists, set in g_client
+            //access_token existe, set in g_client
             $g_client->setAccessToken($this->session->userdata('access_token'));
         } else if ( $this->input->get('code') ) {
             //Google redirect to URL app/g_callback with GET variable (in URL) called 'code'

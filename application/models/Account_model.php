@@ -165,62 +165,26 @@ class Account_model extends CI_Model{
      * Valida datos de un user nuevo o existente, verificando validez respecto
      * a users ya existentes en la base de datos.
      */
-    function validate_form($user_id = NULL)
+    function validate($user_id = NULL, $type = 'edition')
     {
-        $data = array('status' => 1, 'message' => 'Los datos de usuario son válidos');
+        $data = array('status' => 1);   //Valor inicial
+
+        $this->load->model('Validation_model');
+        $val_username = $this->Validation_model->username($user_id);
+        $val_email = $this->Validation_model->email($user_id, $type);
+        $val_id_number = $this->Validation_model->id_number($user_id);
         
-        $username_validation = $this->username_validation($this->input->post('username'), $user_id);
-        $email_validation = $this->email_validation($this->input->post('email'), $user_id);
-        $id_number_validation = $this->id_number_validation($this->input->post('id_number'), $user_id);
+        $validation = array_merge($val_username, $val_email, $val_id_number);
 
-        $validation = array_merge($username_validation, $email_validation, $id_number_validation);
-        $data['validation'] = $validation;
-
+        //Comprobar cada elemento
         foreach ( $validation as $value )
         {
-            if ( $value == FALSE ) 
-            {
-                $data['status'] = 0;
-                $data['message'] = 'Los datos de usuario NO son válidos';
-            }
+            if ( $value == FALSE ) { $data = array('status' => 0); }
         }
 
+        $data['validation'] = $validation;
+
         return $data;
-    }
-
-    /**
-     * Valida que username sea único, si se incluye un ID User existente
-     * lo excluye de la comparación cuando se realiza edición
-     */
-    function username_validation($username, $user_id = null)
-    {
-        $validation['username_is_unique'] = $this->Db_model->is_unique('user', 'username', $username, $user_id);
-        return $validation;
-    }
-
-    /**
-     * Valida que username sea único, si se incluye un ID User existente
-     * lo excluye de la comparación cuando se realiza edición
-     * 2019-10-29
-     */
-    function email_validation($email, $user_id = null)
-    {
-        $validation['email_is_unique'] = $this->Db_model->is_unique('user', 'email', $email, $user_id);
-        $validation['email_is_gmail'] = ( substr($email, -10) == '@gmail.com' );    //Debe ser correo de gmail
-
-        $validation['email_is_valid'] = ( $validation['email_is_unique'] && $validation['email_is_gmail']);    //Se validan las dos condiciones
-
-        return $validation;
-    }
-
-    /**
-     * Valida que número de identificacion (id_number) sea único, si se incluye un ID User existente
-     * lo excluye de la comparación cuando se realiza edición
-     */
-    function id_number_validation($id_number, $user_id = null)
-    {
-        $validation['id_number_is_unique'] = $this->Db_model->is_unique('user', 'id_number', $id_number, $user_id);
-        return $validation;
     }
 
     /* Esta función genera un string con el username para un registro en la tabla user
@@ -274,7 +238,7 @@ class Account_model extends CI_Model{
     function activation_key($user_id)
     {
         $this->load->helper('string');
-        $arr_row['activation_key'] = random_string('alpha', 32);
+        $arr_row['activation_key'] = strtolower(random_string('alpha', 12));
         
         $this->db->where('id', $user_id);
         $this->db->update('user', $arr_row);
@@ -519,7 +483,7 @@ class Account_model extends CI_Model{
             $arr_row['display_name'] = $g_userinfo['given_name'] . ' ' . $g_userinfo['family_name'];
             $arr_row['username'] = str_replace('@gmail.com', '', $g_userinfo['email']);
             $arr_row['email'] = $g_userinfo['email'];
-            $arr_row['role'] = 11;         //11: Propietario
+            $arr_row['role'] = 31;         //31 Registrado
             $arr_row['status'] = 1;        //Activo
 
         //Insert in table "user"

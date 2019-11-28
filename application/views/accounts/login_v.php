@@ -25,7 +25,7 @@
         </div>
         
         <div class="form-group clearfix">
-            <a href="<?php echo base_url('accounts/recovery') ?>">¿Olvidaste tu contraseña?</a>
+            <a href="<?php echo base_url('accounts/recovery') ?>">¿Olvidaste los datos de tu cuenta?</a>
         </div>
         
         <div class="form-group">

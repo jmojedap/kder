@@ -101,7 +101,8 @@ class Institution_model extends CI_Model{
         $role_filter = $this->role_filter($this->session->userdata('user_id'));
 
         //Construir consulta
-            $this->db->select('id, name, email, city_id');
+            $this->db->select('institution.id, name, email, institution.city_id, place_name, address');
+            $this->db->join('place', 'institution.city_id = place.id');
         
         //Crear array con términos de búsqueda
             $words_condition = $this->Search_model->words_condition($filters['q'], array('name', 'full_name', 'email'));
@@ -159,15 +160,13 @@ class Institution_model extends CI_Model{
     {
         
         $role = $this->session->userdata('role');
-        $condition = 'id = 0';  //Valor por defecto, ningún user, se obtendrían cero user.
+        $condition = 'institution.id > 0';  //Valor por defecto, ningún user, se obtendrían cero instituciones.
         
         if ( $role <= 2 ) 
         {   //Desarrollador, todos los user
-            $condition = 'id > 0';
+            $condition = 'institution.id > 0';
         } elseif ( $role == 11 )  {   //Propietario
             $condition = 'creator_id = ' . $this->session->userdata('user_id');
-        } else {
-            $condition = 'id = 0';
         }
         
         return $condition;
@@ -200,6 +199,39 @@ class Institution_model extends CI_Model{
         if ( $this->session->userdata('institution_id') == $institution_id ) { $editable = TRUE; }
 
         return $editable;
+    }
+
+    /**
+     * Opciones de instituciones en campos de autollenado
+     * 2019-11-27
+     */
+    function autocomplete($filters, $limit = 15)
+    {
+        $role_filter = $this->role_filter();
+
+        //Construir búsqueda
+        //Crear array con términos de búsqueda
+            if ( strlen($filters['q']) > 2 )
+            {
+                $words = $this->Search_model->words($filters['q']);
+
+                foreach ($words as $word) {
+                    $this->db->like('CONCAT(name, full_name, id_number)', $word);
+                }
+            }
+        
+        //Especificaciones de consulta
+            //$this->db->select('id, CONCAT((display_name), " (",(username), ") Cod: ", IFNULL(code, 0)) AS value');
+            $this->db->select('id, CONCAT((name), " (",(full_name), ")") AS value');
+            $this->db->where($role_filter); //Filtro según el rol de usuario que se tenga
+            $this->db->order_by('name', 'ASC');
+            
+        //Otros filtros
+            if ( $filters['condition'] != '' ) { $this->db->where($filters['condition']); }    //Condición adicional
+            
+        $query = $this->db->get('institution', $limit); //Resultados por página
+        
+        return $query;
     }
 
 // CRUD
@@ -237,7 +269,7 @@ class Institution_model extends CI_Model{
     {
         if ( is_null($arr_row) ) { $arr_row = $this->arr_row('update'); }
 
-        $data_validation = $this->validate_form($institution_id, $arr_row);  //Validar datos
+        $data_validation = $this->validate($institution_id, $arr_row);  //Validar datos
         $data = $data_validation;
         
         if ( $data['status']  )
@@ -319,7 +351,7 @@ class Institution_model extends CI_Model{
      * Valida datos de una institución nueva o existente, verificando validez respecto
      * a users ya existentes en la base de datos.
      */
-    function validate_form($institution_id = NULL)
+    function validate($institution_id = NULL)
     {
         $data = array('status' => 1, 'message' => 'Los datos de la institución son válidos');
         
@@ -427,11 +459,60 @@ class Institution_model extends CI_Model{
         //Actualizar tabla usuario
         if ( $this->session->userdata('role') > 10 )
         {
+            $arr_row['institution_id'] = $institution_id;
+
             $this->db->where('id', $this->session->userdata('user_id'));
-            $this->db->update('user', array('' => $institution_id));
+            $this->db->update('user', $arr_row);
         }
 
-        //Establecer como variable de sesión
+        //Establecer variable de sesión
             $this->session->set_userdata('institution_id', $institution_id);
+    }
+
+    /**
+     * Cambia el rol de un usuario como propietario de una institución. Inicia nueva sesión con ese rol.
+     * 2019-11-28
+     */
+    function set_owner($institution_id)
+    {
+        //Actualizar el rol
+            $arr_row['role'] = 11;  //Propietario
+            $this->db->where('id', $this->session->userdata('user_id'));
+            $this->db->update('user', $arr_row);
+
+        //Destruir sesión y crear una nueva, como propietario
+            $username = $this->session->userdata('username');
+            //$this->session->sess_destroy();
+            $this->load->model('Account_model');
+            $data_session = $this->Account_model->create_session($username, FALSE);
+
+            return $data_session;
+    }
+
+    /**
+     * Crea una solicitud de vinculcación de un usuario a una institución, con un rol específico
+     * Se guarda en la tabla user_meta con el tipo 1053.
+     * 2019-11-27
+     */
+    function require_join($institution_id, $user_id, $role)
+    {
+        $data = array('status' => 0, 'meta_id' => '0'); //Resultado por defecto
+
+        //Construir registro
+        $arr_row['user_id'] = $user_id;
+        $arr_row['type_id'] = 1053;
+        $arr_row['related_1'] = $institution_id;
+        $arr_row['cat_1'] = $role;
+        $arr_row['editor_id'] = $this->session->userdata('user_id');
+        $arr_row['creator_id'] = $this->session->userdata('user_id');
+
+        //Guardar solicitud
+        $this->load->model('User_model');
+        $meta_id = $this->User_model->save_meta($arr_row);
+
+        //Actualizar resultado
+        if ( $meta_id > 0 ) { $data = array('status' => 1, 'meta_id' => $meta_id);}
+
+        return $data;
     }
 }

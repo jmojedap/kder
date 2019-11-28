@@ -15,7 +15,7 @@
                 text: 'Instituciones',
                 active: false,
                 style: '',
-                icon: 'fa fa-fw fa-university',
+                icon: 'fa fa-fw fa-school',
                 cf: 'institutions/explore',
                 submenu: false,
                 subelements: []

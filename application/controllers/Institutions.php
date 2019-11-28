@@ -55,9 +55,7 @@ class Institutions extends CI_Controller{
             $data['html'] = $this->load->view('institutions/explore/table_v', $data, TRUE);
         
         //Salida
-            $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($data));
+            $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
     /**
@@ -78,9 +76,7 @@ class Institutions extends CI_Controller{
         $result['message'] = 'Cantidad eliminados : ' . $qty_deleted;
         $result['qty_deleted'] = $qty_deleted;
         
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($result));
+        $this->output->set_content_type('application/json')->set_output(json_encode($result));
     }
     
     /**
@@ -107,6 +103,30 @@ class Institutions extends CI_Controller{
         $data['nombre_file'] = date('Ymd_His'). '_users'; //save our workbook as this file name
         
         $this->load->view('common/download_excel_v', $data);
+    }
+
+    /**
+     * Listado de instituciones filtradas por unos criterios de búsqueda
+     * 2019-11-27
+     */
+    function get($num_page = 1)
+    {
+        //Paginación
+            $data['num_page'] = $num_page;                      //Número de la página de datos que se está consultado
+            $data['per_page'] = 15;                             //Cantidad de registros por página
+            $offset = ($num_page - 1) * $data['per_page'];      //Número de la página de datos que se está consultado
+        
+        //Búsqueda y Resultados
+            $this->load->model('Search_model');
+            $data['filters'] = $this->Search_model->filters();
+            $elements = $this->Institution_model->search($data['filters'], $data['per_page'], $offset);    //Resultados para página
+            $data['list'] = $elements->result();
+            
+        //Otros
+            $data['search_num_rows'] = $this->Institution_model->search_num_rows($data['filters']);
+            $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $data['per_page']);   //Cantidad de páginas
+        
+            $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
     
@@ -137,12 +157,15 @@ class Institutions extends CI_Controller{
     function insert()
     {
         $this->load->model('Institution_model');
-        $res_validation = $this->Institution_model->validate_form();
+        $res_validation = $this->Institution_model->validate();
         
         if ( $res_validation['status'] )
         {
             $data = $this->Institution_model->insert();
             $this->Institution_model->set_main($data['institution_id']);    //Establecer institución al usuario creador
+
+            //Si acaba de crear una institución se convierte en propietario.
+            if ( $this->session->userdata('role') == 31 ) { $this->Institution_model->set_owner($data['institution_id']); }
         } else {
             $data = $res_validation;
         }
@@ -189,7 +212,7 @@ class Institutions extends CI_Controller{
             {
                 $view_a = 'files/cropping_v';
                 $data['image_id'] = $data['row']->image_id;
-                $data['src_image'] = URL_UPLOADS . $data['row']->image_folder . $data['row']->image_file;
+                $data['src_image'] = $data['att_img']['src'];
                 $data['back_destination'] = "institutions/edit/{$institution_id}/image";
             }
         
@@ -210,9 +233,9 @@ class Institutions extends CI_Controller{
      * los datos deben cumplir varios criterios
      * 2019-10-30
      */
-    function validate_form($institution_id = NULL)
+    function validate($institution_id = NULL)
     {
-        $data = $this->Institution_model->validate_form($institution_id);
+        $data = $this->Institution_model->validate($institution_id);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
@@ -306,4 +329,42 @@ class Institutions extends CI_Controller{
         $this->App_model->view(TPL_ADMIN, $data);
     }
 
+// SOLICITAR VINCULACIÓN
+//-----------------------------------------------------------------------------
+    /**
+     * Vista para realizar una solicitud de vinculació a una institución por parte de 
+     * un usuario nuevo registrado.
+     */
+    function joining()
+    {
+        //Buscando solicitudes previas
+        $this->db->where('user_id', $this->session->userdata('user_id'));
+        $this->db->where('type_id', 1053);
+        $data['requests'] = $this->db->get('user_meta');
+
+        $data['view_a'] = 'institutions/joining_v';
+        if ( $data['requests']->num_rows() > 0 ) { $data['view_a'] = 'institutions/join_requests_v'; }
+
+        $data['head_title'] = 'DeKinder';
+        $data['head_subtitle'] = 'Cuál es tu institución';
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+    /**
+     * Un usuario nueveo registrado solicita la vinculación a una institución con un rol
+     * determinado.
+     * 2019-11-27
+     */
+    function require_join($institution_id, $user_id, $role)
+    {
+        $data = $this->Institution_model->require_join($institution_id, $user_id, $role);
+        //$data = array('status' => 0, 'message' => 'Iniciando solicitud');
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    function join($institution_id, $user_id, $role)
+    {
+        $data = $this->Institution_model->join($institution_id, $user_id, $role);
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
 }

@@ -26,51 +26,41 @@
         <table class="table bg-white">
             <tbody>
                 <tr>
-                    <td class="der" width="25%"><span class="text-muted">No. Documento</span></td>
-                    <td width="25%">
+                    <td class="text-right" width="25%"><span class="text-muted">No. Documento</span></td>
+                    <td>
                         <?php echo $row->id_number ?>
-                    </td>
-                    <td width="50%">
                         <?php echo $this->Item_model->name(53, $row->id_number_type); ?>
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="der"><span class="text-muted">Nombre</span></td>
+                    <td class="text-right"><span class="text-muted">Nombre</span></td>
                     <td><?php echo $row->display_name ?></td>
-                    <td></td>
                 </tr>
 
                 <tr>
-                    <td class="der"><span class="text-muted">Nombre de usuario</span></td>
+                    <td class="text-right"><span class="text-muted">Username</span></td>
                     <td><?php echo $row->username ?></td>
-                    <td></td>
                 </tr>
 
                 <tr>
-                    <td class="der"><span class="text-muted">Correo electrónico</span></td>
+                    <td class="text-right"><span class="text-muted">Correo electrónico</span></td>
                     <td><?php echo $row->email ?></td>
-                    <td></td>
                 </tr>
 
                 <tr>
-                    <td class="der"><span class="text-muted">Sexo</span></td>
+                    <td class="text-right"><span class="text-muted">Sexo</span></td>
                     <td><?php echo $this->Item_model->name(59, $row->gender) ?></td>
-                    <td width="50%"><span class="text-muted"></span></td>
                 </tr>
 
                 <tr>
-                    <td class="der"><span class="text-muted">Rol de usuario</span></td>
+                    <td class="text-right"><span class="text-muted">Rol de usuario</span></td>
                     <td><?php echo $this->Item_model->name(58, $row->role) ?></td>
-                    <td width="50%"><span class="text-muted">Tipo de cuenta de usuario</span></td>
                 </tr>
 
                 <tr>
-                    <td class="der"><span class="text-muted">Fecha de nacimiento</span></td>
+                    <td class="text-right"><span class="text-muted">Fecha de nacimiento</span></td>
                     <td><?php echo $this->pml->date_format($row->birth_date, 'Y-M-d') ?></td>
-                    <td>
-                        
-                    </td>
                 </tr>
             </tbody>
         </table>

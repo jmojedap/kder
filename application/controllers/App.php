@@ -38,7 +38,8 @@ class App extends CI_Controller {
                 1 => 'users/explore/',  //Administrador
                 11 => 'accounts/profile/', //Propietario
                 21 => 'accounts/profile/',  //Familiar
-                23 => 'accounts/profile/'  //Estudiante
+                23 => 'accounts/profile/',  //Estudiante
+                31 => 'institutions/joining/'  //Usuario registrado inicial
             );
                 
             $destination = $arr_destination[$this->session->userdata('role')];

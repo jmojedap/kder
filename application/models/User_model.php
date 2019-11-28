@@ -376,7 +376,7 @@ class User_model extends CI_Model{
     }
 
     /**
-     * Valida que username sea único, si se incluye un ID User existente
+     * Valida que email sea único, si se incluye un ID User existente
      * lo excluye de la comparación cuando se realiza edición
      * 2019-10-29
      */

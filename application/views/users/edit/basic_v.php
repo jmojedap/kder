@@ -84,7 +84,7 @@
                             id="field-id_number"
                             name="id_number"
                             class="form-control"
-                            v-bind:class="{ 'is-invalid': ! validation.id_number_is_unique }"
+                            v-bind:class="{ 'is-invalid': ! validation.id_number_unique }"
                             placeholder="Número de documento"
                             title="Solo números, sin puntos, debe tener al menos 5 dígitos"
                             required
@@ -109,7 +109,7 @@
                             name="email"
                             type="email"
                             class="form-control"
-                            v-bind:class="{ 'is-invalid': ! validation.email_is_unique }"
+                            v-bind:class="{ 'is-invalid': ! validation.email_unique }"
                             placeholder="Dirección de correo electrónico"
                             title="Dirección de correo electrónico"
                             v-model="form_values.email"
@@ -174,7 +174,7 @@
                                     id="field-username"
                                     name="username"
                                     class="form-control"
-                                    v-bind:class="{ 'is-invalid': ! validation.username_is_unique }"
+                                    v-bind:class="{ 'is-invalid': ! validation.username_unique }"
                                     placeholder="username"
                                     title="Puede contener letras y números, entre 6 y 25 caractéres, no debe contener espacios ni caracteres especiales"
                                     required
@@ -249,9 +249,9 @@
             form_values: form_values,
             row_id: '<?php echo $row->id ?>',
             validation: {
-                id_number_is_unique: true,
-                username_is_unique: true,
-                email_is_unique: true
+                id_number_unique: true,
+                username_unique: true,
+                email_unique: true
             }
         },
         methods: {

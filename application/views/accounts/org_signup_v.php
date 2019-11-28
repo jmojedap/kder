@@ -1,10 +1,9 @@
+
+
 <?php $this->load->view('assets/recaptcha') ?>
 
 <div id="signup_app">
-    <p class="text-center">
-        Regístrate y podrás <b class="text-success">crear</b> un jardín o <b class="text-success">vincularte</b>
-        a uno existente.
-    </p>
+    
     <form id="signup_form" @submit.prevent="register">
         <!-- Campo para validación Google ReCaptcha V3 -->
         <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
@@ -99,7 +98,7 @@
                     .then(response => {
                         console.log(response.data.message);
                         if ( response.data.status == 1 ) {
-                            window.location = app_url + 'accounts/registered/' + response.data.saved_id;
+                            window.location = app_url + 'accounts/registered/' + response.data.user_id;
                         } else {
                             this.recaptcha_message = response.data.recaptcha_message;
                         }
