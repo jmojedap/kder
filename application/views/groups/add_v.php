@@ -34,6 +34,24 @@
                 <?php } ?>
 
                 <div class="form-group row">
+                    <label for="generation" class="col-md-4 col-form-label">Año generación</label>
+                    <div class="col-md-8">
+                        <input
+                            type="number"
+                            id="field-generation"
+                            name="generation"
+                            required
+                            class="form-control"
+                            placeholder="Ej. 2020"
+                            title="Año en el que el grupo termina el periodo escolar"
+                            v-model="form_values.generation"
+                            min="2017"
+                            max="2022"
+                            >
+                    </div>
+                </div>
+
+                <div class="form-group row">
                     <label for="level" class="col-md-4 controle-label">Nivel escolar</label>
                     <div class="col-md-8">
                         <?php echo form_dropdown('level', $options_level, '', 'id="field-level" class="form-control" required v-model="form_values.level"') ?>
@@ -91,24 +109,6 @@
                     <label for="schedule" class="col-md-4 controle-label">Jornada horario</label>
                     <div class="col-md-8">
                         <?php echo form_dropdown('schedule', $options_schedule, '', 'id="field-schedule" class="form-control" required v-model="form_values.schedule"') ?>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="generation" class="col-md-4 col-form-label">Año generación</label>
-                    <div class="col-md-8">
-                        <input
-                            type="number"
-                            id="field-generation"
-                            name="generation"
-                            required
-                            class="form-control"
-                            placeholder="Ej. 2020"
-                            title="Año en el que el grupo termina el periodo escolar"
-                            v-model="form_values.generation"
-                            min="2017"
-                            max="2022"
-                            >
                     </div>
                 </div>
 

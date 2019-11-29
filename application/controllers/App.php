@@ -76,7 +76,7 @@ class App extends CI_Controller {
 
     function test()
     {
-        $this->load->view('app/revslider_v');
+        $this->load->view('app/test_v');
     }
 
     function maps()

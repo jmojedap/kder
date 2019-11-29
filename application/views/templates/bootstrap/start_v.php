@@ -11,6 +11,12 @@
                 <img src="<?php echo URL_IMG . 'app/start_logo.png' ?>" alt="logo app" class="animated zoomIn">
             </a>
             <?php $this->load->view($view_a); ?>
+
+            <div class="fixed-bottom text-center pb-2">
+                <span style="color: #AAA; font-size: 0.8em;">
+                    © 2019 &middot; Pacarina Media Lab &middot; Colombia
+                </span>
+            </div>
         </div>
     </body>
 </html>

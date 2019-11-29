@@ -515,4 +515,21 @@ class Institution_model extends CI_Model{
 
         return $data;
     }
+
+// Calendarios
+//-----------------------------------------------------------------------------
+
+    /**
+     * Calendarios escolares de una institución, tabla post, tipo 4021
+     * 2019-11-29
+     */
+    function calendars($institution_id)
+    {
+        $this->db->select('id, post_name, LEFT(date_1, 10) AS date_1, date_2, integer_1');
+        $this->db->where('related_1', $institution_id);
+        $this->db->where('type_id', 4021);  //Tipo calendario
+        $calendars = $this->db->get('post');
+
+        return $calendars;
+    }
 }

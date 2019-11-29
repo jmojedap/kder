@@ -144,30 +144,6 @@ class Posts extends CI_Controller{
 
         $this->App_model->view(TPL_ADMIN, $data);
     }
-
-    /**
-     * POST JSON
-     * 
-     * Toma datos de POST e inserta un registro en la tabla user. Devuelve
-     * result del proceso en JSON
-     * 
-     */ 
-    function insert()
-    {
-        $this->load->model('Account_model');
-        $res_validation = $this->Account_model->validate_form();
-        
-        if ( $res_validation['status'] )
-        {
-            $data = $this->Post_model->insert();
-        } else {
-            $data = $res_validation;
-        }
-        
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($data));
-    }
     
     /**
      * Información general del usuario
@@ -205,20 +181,28 @@ class Posts extends CI_Controller{
     }
 
     /**
-     * POST JSON
-     * 
-     * @param type $post_id
+     * Guardar un registro en la tabla post, si post_id = 0, se crea nuevo registro
+     * 2019-11-29
      */
-    function update($post_id)
+    function save($post_id)
     {
-        $arr_row = $this->input->post();
+        $data = $this->Post_model->save($post_id);
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
 
-        //$this->load->model('Account_model');
-        $data = $this->Post_model->update($post_id, $arr_row);
-        
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($data));
+    /**
+     * Eliminar un registro de la tabla post
+     * 2019-11-29
+     */
+    function delete($post_id)
+    {
+        $data = array('status' => 0, 'quan_deleted' => '0');    //Resultado Inicial
+
+        $quan_deleted = $this->Post_model->delete($post_id);
+        if ( $quan_deleted > 0 ) { $data = array('status' => 1, 'quan_deleted' => $quan_deleted); }
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
 // IMAGEN PRINCIPAL DEL POST

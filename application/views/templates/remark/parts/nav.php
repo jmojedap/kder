@@ -11,8 +11,8 @@
             <i class="icon wb-more-horizontal" aria-hidden="true"></i>
         </button>
         <div class="navbar-brand navbar-brand-center site-gridmenu-toggle" data-toggle="gridmenu">
-            <a href="<?php echo base_url("girls/home") ?>" class="" style="text-decoration: none;">
-                <img class="navbar-brand-logo" src="<?= URL_IMG ?>app/logo_square.png">
+            <a href="<?php echo base_url() ?>" class="" style="text-decoration: none;">
+                <img class="navbar-brand-logo" src="<?php echo URL_IMG ?>app/logo_square.png">
             </a>
             <span class="navbar-brand-text hidden-xs-down">
                 <?php echo APP_NAME ?>
@@ -32,7 +32,9 @@
                 <span id="head_title" style="color: #777">
                     <?php echo $head_title ?>
                 </span>
-                <small style="color: #007bff" id="head_subtitle"></small>
+                <small style="color: #007bff" id="head_subtitle">
+                    <?php echo $head_subtitle ?>
+                </small>
             </div>
             <!-- Navbar Toolbar Right -->
             <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">

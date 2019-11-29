@@ -107,7 +107,7 @@
                 </div>
 
                 <div class="form-group row" id="form-group_email">
-                    <label for="email" class="col-md-4 control-label">Correo electrónico *</label>
+                    <label for="email" class="col-md-4 control-label">Correo electrónico</label>
                     <div class="col-md-8">
                         <input
                             id="field-email"

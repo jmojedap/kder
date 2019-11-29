@@ -58,6 +58,26 @@ class Post_model extends CI_Model{
         
         return $data;
     }
+
+    /**
+     * Actualiza un registro en la tabla post
+     * 2019-11-29
+     */
+    function save($post_id)
+    {
+        $data = array('status' => 0, 'message' => 'Ocurrió un error al guardar');
+
+        //Guardar
+            $arr_row = $this->Db_model->arr_row($post_id);
+            $saved_id = $this->Db_model->save('post', "id = {$post_id}", $arr_row);
+
+        //Actualizar resultado
+            if ( $saved_id > 0 ){
+                $data = array('status' => 1, 'message' => 'Los cambios fueron guardados', 'saved_id' => $saved_id);
+            }
+        
+        return $data;
+    }
     
     function deletable()
     {

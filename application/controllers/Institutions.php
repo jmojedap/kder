@@ -303,6 +303,36 @@ class Institutions extends CI_Controller{
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
+// CALENDARIOS
+//-----------------------------------------------------------------------------
+
+    /**
+     * Vista Calendarios escolares de una institución
+     * 2019-11-29
+     */
+    function calendars($institution_id)
+    {
+        $data = $this->Institution_model->basic($institution_id);
+        $data['view_a'] = 'institutions/calendars_v';
+        $data['nav_2'] = 'institutions/menu_v';
+        $data['subtitle_head'] = 'Caliendarios';
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+    /**
+     * Listado de calendarios de una institución
+     * 2016-11-29
+     */
+    function get_calendars($institution_id)
+    {
+        $calendars = $this->Institution_model->calendars($institution_id);
+        $data['list'] = $calendars->result();
+        
+        $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($data));
+    }
+
 // GESTIÓN DE PROPIETARIOS
 //-----------------------------------------------------------------------------
 
@@ -341,6 +371,8 @@ class Institutions extends CI_Controller{
         $this->db->where('user_id', $this->session->userdata('user_id'));
         $this->db->where('type_id', 1053);
         $data['requests'] = $this->db->get('user_meta');
+
+        $data['row_user'] = $this->Db_model->row_id('user', $this->session->userdata('user_id'));
 
         $data['view_a'] = 'institutions/joining_v';
         if ( $data['requests']->num_rows() > 0 ) { $data['view_a'] = 'institutions/join_requests_v'; }

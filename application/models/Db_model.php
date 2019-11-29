@@ -173,36 +173,16 @@ class Db_model extends CI_Model{
 
     /**
      * Array from Post, adding edition data
-     * 2019-05-15
+     * 2019-11-29
      */
-    function arr_row($data_from_post = TRUE)
+    function arr_row($row_id)
     {
-        $arr_row = array();
-
-        if ( $data_from_post ) { $arr_row = $this->input->post(); }
+        $arr_row = $this->input->post();
         
         $arr_row['editor_id'] = $this->session->userdata('user_id');
         $arr_row['creator_id'] = $this->session->userdata('user_id');
         
-        if ( isset($arr_row['id']) )
-        {
-            unset($arr_row['creator_id']);
-        }
-
-        return $arr_row;
-    }
-
-    /**
-     * Array predeterminado para edición de un registro
-     * 2019-06-17
-     */
-    function arr_row_edit($data_from_post = TRUE)
-    {
-        $arr_row = array();
-        if ( $data_from_post ) { $arr_row = $this->input->post(); } //Se toman los datos del POST
-        
-        $arr_row['editor_id'] = $this->session->userdata('user_id');
-        $arr_row['edited_at'] = date('Y-m-d H:i:s');
+        if ( $row_id == 0 ) { unset($arr_row['creator_id']); }
 
         return $arr_row;
     }

@@ -2,6 +2,7 @@
     $app_cf_index = $this->uri->segment(1) . '_' . $this->uri->segment(2);
     
     $cl_nav_2['institutions_info'] = '';
+    $cl_nav_2['institutions_calendars'] = '';
     $cl_nav_2['institutions_edit'] = '';
     //$cl_nav_2['institutions_import'] = '';
     
@@ -22,6 +23,13 @@
         'cf': 'institutions/info/' + element_id
     };
 
+    sections.calendars = {
+        'icon': 'far fa-calendar',
+        'text': 'Calendarios',
+        'class': '<?php echo $cl_nav_2['institutions_calendars'] ?>',
+        'cf': 'institutions/calendars/' + element_id
+    };
+
     sections.edit = {
         'icon': 'fa fa-pencil-alt',
         'text': 'Editar',
@@ -30,7 +38,7 @@
     };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['info', 'edit'];
+    sections_rol.dvlp = ['info', 'calendars', 'edit'];
     sections_rol.admn = ['info'];
     sections_rol.prpt = ['info', 'edit'];
     

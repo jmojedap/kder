@@ -1,46 +1,46 @@
-<script>
-	$(document).ready(function(){
-		$('#btn_test').click(function(){
-			console.log('hola mundo desde botón');
-			$('#contenido').html('<h1>Modificando contenido</h1>');
-			toastr['success']('Bien hecho!');
-		});		
-	});
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-<button class="btn btn-success" id="btn_test">
-	Actualizar
-</button>
-
-<div id="contenido">
-	contenido inicial
-</div>
-
-<div id="test">
-	<h3>{{ text }}</h3>
-	<table class="table bg-white">
-		<tbody>
-			<tr v-for="(picture, key) in pictures">
-				<td>
-					{{ picture.id }}
-				</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
-
-<script>
-	new Vue({
-		el: '#test',
-		created: function(){
-			//this.get_list();
-		},
-		data: {
-			text: 'el nuevo texto con vue',
-			pictures: <?php echo json_encode($pictures->result()); ?>
-		},
-		methods: {
-			
+	<style>
+		body{
+			background-color: #ff4845;
 		}
-	});
-</script>
+
+		div.center_box{
+			max-width: 360px;
+			height: 480px;
+			margin: 0px auto;
+			margin-top: 30px;
+			background-color: white;
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+			text-align: center;
+		}
+	</style>
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="center_box card">
+			<div class="card-body">
+				<a href="<?php echo base_url() ?>" class="">
+					<img src="<?php echo URL_IMG . 'app/start_logo.png' ?>" alt="logo app" class="animated zoomIn">
+				</a>
+				<?php $this->load->view('accounts/login_v') ?>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

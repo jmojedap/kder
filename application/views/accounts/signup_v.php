@@ -43,14 +43,14 @@
                 required
                 value=""
                 title="Correo electrónico de Gmail"
-                v-bind:class="{'is-invalid': !validation.email_is_valid}"
+                v-bind:class="{'is-invalid': !validation.email_valid}"
                 v-on:change="validate_form"
                 aria-describedby="basic-addon2"
                 >
-            <div class="invalid-feedback" v-show="!validation.email_is_gmail">
+            <div class="invalid-feedback" v-show="!validation.email_gmail">
                 El correo electrónico debe ser de @gmail.com
             </div>
-            <div class="invalid-feedback" v-show="!validation.email_is_unique">
+            <div class="invalid-feedback" v-show="!validation.email_unique">
                 Este correo electrónico ya fue registrado
             </div>
         </div>
@@ -84,10 +84,10 @@
         el: '#signup_app',
         data: {
             validation: {
-                email_is_valid: true,
-                email_is_unique: true,
-                email_is_gmail: true,
-                username_is_unique: true
+                email_valid: true,
+                email_unique: true,
+                email_gmail: true,
+                username_unique: true
             },
             validated: 0
         },
