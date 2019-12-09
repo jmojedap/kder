@@ -69,7 +69,7 @@
 
         </div>
     </div>
-    <?php $this->load->view('common/modal_simple_delete_v'); ?>
+    <?php $this->load->view('common/modal_single_delete_v'); ?>
 </div>
 
 <?php $this->load->view('system/items/manage_vue_v'); ?>

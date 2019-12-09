@@ -11,7 +11,7 @@
                 subelements: []
             },
             {
-                id: 'nav_1_institucines',
+                id: 'nav_1_institutions',
                 text: 'Instituciones',
                 active: false,
                 style: '',
@@ -29,6 +29,29 @@
                 cf: 'groups/explore',
                 submenu: false,
                 subelements: []
+            },
+            {
+                id: 'nav_1_payments',
+                text: 'Pagos',
+                active: false,
+                style: '',
+                icon: 'fas fa-fw fa-dollar-sign',
+                cf: '',
+                submenu: true,
+                subelements: [
+                    {
+                        text: 'Cobros',
+                        active: false,
+                        icon: 'fas fa-fw fa-hand-holding-usd',
+                        cf: 'charges/explore'
+                    },
+                    {
+                        text: 'Pagos',
+                        active: false,
+                        icon: 'fas fa-fw fa-dollar-sign',
+                        cf: 'payments/explore'
+                    }
+                ]
             },
             {
                 id: 'nav_1_ajustes',

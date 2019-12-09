@@ -80,7 +80,7 @@
             </tbody>
         </table>
     </form>
-    <?php $this->load->view('common/modal_simple_delete_v') ?>
+    <?php $this->load->view('common/modal_single_delete_v') ?>
 </div>
 
 <script>
