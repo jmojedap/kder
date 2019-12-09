@@ -22,4 +22,5 @@ application/logs/*
 /content/
 /htaccess/
 /system/
+/resources/assets/
 /resources/templates/remark/
