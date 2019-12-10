@@ -85,9 +85,21 @@ class Charges extends CI_Controller{
 //-----------------------------------------------------------------------------
 
     /**
+     * Información general del cobro
+     */
+    function info($charge_id)
+    {        
+        //Datos básicos
+        $data = $this->Charge_model->basic($charge_id);
+        
+        //Variables específicas
+        $data['view_a'] = 'charges/info_v';
+        
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+    /**
      * Formulario para la creación de un nuevo cobro
-     * 
-     * @param type $tipo_rol
      */
     function add()
     {
@@ -101,30 +113,13 @@ class Charges extends CI_Controller{
     }
 
     /**
-     * AJAX JSON
-     * Toma datos de POST e inserta un registro en la tabla charge. 
-     * 2019-10-29
-     */ 
-    function insert()
-    {
-        $data = $this->Charge_model->insert();
-        $this->output->set_content_type('application/json')->set_output(json_encode($data));
-    }
-    
-    /**
-     * Información general del cobro
+     * Guardar un cobro, nuevo o existente
+     * 2019-12-10
      */
-    function info($charge_id)
-    {        
-        //Datos básicos
-        $data = $this->Charge_model->basic($charge_id);
-
-        $data['row_teacher'] = $this->Db_model->row_id('user', $data['row']->teacher_id);
-        
-        //Variables específicas
-        $data['view_a'] = 'charges/info_v';
-        
-        $this->App_model->view(TPL_ADMIN, $data);
+    function save($charge_id = 0)
+    {
+        $data = $this->Charge_model->save($charge_id);
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
 // EDICIÓN Y ACTUALIZACIÓN
@@ -144,19 +139,55 @@ class Charges extends CI_Controller{
             $data['view_a'] = 'charges/edit_v';
         
         $this->App_model->view(TPL_ADMIN, $data);
-    }    
+    }
+
+// GRUPOS
+//-----------------------------------------------------------------------------
+
+    function groups($charge_id)
+    {
+        $data = $this->Charge_model->basic($charge_id);
+        $data['view_a'] = 'charges/groups_v';
+        $data['nav_2'] = 'charges/menu_v';
+        $data['subtitle_head'] = 'Grupos';
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
 
     /**
-     * POST JSON
-     * 
-     * @param type $charge_id
+     * Todos los grupos de una institución y generación, correspondiente a un cobro
+     * Si el grupo está asociado al cobro, charte_id será > 0.
+     * 2019-12-10
      */
-    function update($charge_id)
+    function get_groups($charge_id)
     {
-        $data = $this->Charge_model->update($charge_id);
+        $groups = $this->Charge_model->groups($charge_id);
+        $data['list'] = $groups->result();
+
+        //Salida JSON
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
+    /**
+     * Agrega a un grupo de estudiantes a un cobro
+     * 2019-12-10
+     */
+    function set_group($charge_id, $group_id)
+    {
+        $data = $this->Charge_model->set_group($charge_id, $group_id);
 
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
 
+    /**
+     * Le quita un cobro a un grupo de estudiantes
+     * 2019-12-12
+     */
+    function unset_group($charge_id, $meta_id)
+    {
+        $data = $this->Charge_model->unset_group($charge_id, $meta_id);
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
 }

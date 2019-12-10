@@ -125,7 +125,7 @@ class Pml {
 
         $money = $amount;
         if ( $format == 'S0' ){
-            $money = '$' . number_format($number, 0, ',', '.');
+            $money = '$ ' . number_format($number, 0, ',', '.');
         }
 
         return $money;

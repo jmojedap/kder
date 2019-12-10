@@ -2,6 +2,7 @@
     //Clases columnas
         $cl_col['id'] = 'd-none d-md-table-cell d-lg-table-cell';
         $cl_col['charge_value'] = 'd-none d-md-table-cell d-lg-table-cell';
+        $cl_col['excerpt'] = 'd-none d-md-table-cell d-lg-table-cell';
 ?>
 
 <table class="table bg-white" cellspacing="0">
@@ -17,9 +18,11 @@
         </th>
         <th width="50px;"  class="<?php echo $cl_col['id'] ?>">ID</th>
         
-        <th class="w100p"></th>
+        <th></th>
+
         
         <th class="<?php echo $cl_col['charge_value'] ?>">Valor</th>
+        <th class="<?php echo $cl_col['excerpt'] ?>">Descripción</th>
 
         <th width="35px"></th>
     </thead>
@@ -39,16 +42,18 @@
                 <td class="<?php echo $cl_col['id'] ?>"><?php echo $row_element->id ?></td>
                 
                 <td>
-                    <a href="#" onclick="load_cf('payments/info/<?php echo $row_element->id ?>')" class="btn btn-primary w100p">
-                        <?php echo $row_element->id ?>
+                    <a href="#" onclick="load_cf('charges/info/<?php echo $row_element->id ?>')">
+                        <?php echo $row_element->title ?>
                     </a>
                 </td>
 
                 <td class="<?php echo $cl_col['charge_value'] ?>">
-                    <?php echo $row_element->charge_value ?>
+                    <?php echo $this->pml->money($row_element->charge_value) ?>
                 </td>
 
-                
+                <td class="<?php echo $cl_col['excerpt'] ?>">
+                    <?php echo $row_element->excerpt ?>
+                </td>
 
                 <td>
                     <button class="btn btn-light btn-sm btn_more" data-row_id="<?php echo $row_element->id ?>">

@@ -1,63 +1,25 @@
-<?php 
-    //Imagen
-        $att_img = $this->App_model->att_img_user($row_teacher);
-        $att_img['class'] = 'card-img-top';
-?>
-
 <div class="row">
     <div class="col col-lg-4 col-md-12 col-sm-12">
-        <!-- Page Widget -->
-        <div class="card text-center">
-            <img
-                src="<?php echo $att_img['src'] ?>"
-                class="card-img-top"
-                alt="Imagen de la institución"
-                width="100%"
-                onerror="this.src='<?php echo URL_IMG . 'app/institution.png' ?>'"
-                >
-            <div class="card-body">
-                <h4 class="profile-user"><?php echo $row_teacher->display_name ?></h4>
-                <p>Asignada del grupo</p>
-            </div>
-            <div class="card-footer">
-                <div class="row no-space">
-                    <div class="col-4">
-                        
-                    </div>
-                    <div class="col-4">
-                        <strong class="profile-stat-count">14</strong>
-                        <span>Estudiantes</span>
-                    </div>
-                    <div class="col-4">
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Page Widget -->
+        
     </div>
     <div class="col col-lg-8 col-md-12 col-sm-12">
         <table class="table bg-white">
             <tbody>
                 <tr>
-                    <td width="35%"><span class="text-muted">ID Grupo</span></td>
+                    <td width="35%"><span class="text-muted">ID Cobro</span></td>
                     <td width="65%">
                         <?php echo $row->id ?>
                     </td>
                 </tr>
 
                 <tr>
-                    <td class=""><span class="text-muted">Nombre</span></td>
-                    <td><?php echo $row->name ?></td>
-                </tr>
-                <tr>
-                    <td class=""><span class="text-muted">Título</span></td>
-                    <td><?php echo $row->title ?></td>
+                    <td class=""><span class="text-muted">Tipo</span></td>
+                    <td><?php echo $this->Item_model->name(172, $row->charge_type_id) ?></td>
                 </tr>
 
                 <tr>
-                    <td><span class="text-muted">Nivel</span></td>
-                    <td><?php echo $this->Item_model->name(3, $row->level) ?></td>
+                    <td class=""><span class="text-muted">Título</span></td>
+                    <td><?php echo $row->title ?></td>
                 </tr>
 
                 <tr>
@@ -66,8 +28,21 @@
                 </tr>
 
                 <tr>
+                    <td><span class="text-muted">Valor</span></td>
+                    <td><?php echo $this->pml->money($row->charge_value); ?></td>
+                </tr>
+
+                <tr>
+                    <td><span class="text-muted">Fecha máxima de pago</span></td>
+                    <td>
+                        <?php echo $this->pml->date_format($row->date_2, 'Y-M-d') ?> &middot;
+                        <?php echo $this->pml->ago($row->date_2); ?>
+                    </td>
+                </tr>
+
+                <tr>
                     <td class=""><span class="text-muted">Descripción</span></td>
-                    <td><?php echo $row->description ?></td>
+                    <td><?php echo $row->excerpt ?></td>
                 </tr>
 
                 <tr>

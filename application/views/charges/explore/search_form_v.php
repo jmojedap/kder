@@ -34,18 +34,6 @@
         </div>
     </div>
 
-    <div class="form-group row <?php echo $adv_filters_cl['level'] ?>">
-        <div class="col-md-9">
-            <?php echo form_dropdown('level', $options_level, $filters['level'], 'class="form-control" title="Filtrar por nivel"'); ?>
-        </div>
-        <label for="a" class="col-md-3 control-label">Nivel</label>
-    </div>
-    <div class="form-group row <?php echo $adv_filters_cl['u'] ?>">
-        <div class="col-md-9">
-            <?php echo form_dropdown('u', $options_teacher, $filters['u'], 'class="form-control" title="Filtrar por asignado"'); ?>
-        </div>
-        <label for="u" class="col-md-3 control-label">Asignado a</label>
-    </div>
     <div class="form-group row <?php echo $adv_filters_cl['y'] ?>">
         <div class="col-md-9">
             <?php echo form_dropdown('y', $options_generation, $filters['y'], 'class="form-control" title="Filtrar por año generación"'); ?>

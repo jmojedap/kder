@@ -203,6 +203,19 @@ class Charge_model extends CI_Model{
 
 // CRUD
 //-----------------------------------------------------------------------------
+
+    function save($charge_id)
+    {
+        $data = array('status' => 0, 'save_id' => '0'); //Resultado por defecto
+
+        $arr_row = $this->arr_row($charge_id);
+        $saved_id = $this->Db_model->save('charges', "id = {$charge_id}", $arr_row);
+    
+        //Preparar resultado
+        if ( $saved_id > 0 ) { $data = array('status' => 1, 'saved_id' => $saved_id); }
+        
+        return $data;
+    }
     
     /**
      * Insertar un registro en la tabla charge.
@@ -245,8 +258,8 @@ class Charge_model extends CI_Model{
             $this->db->where('id', $charge_id);
             $this->db->update('charges', $arr_row);
 
-        //Actualizar campos dependientes
-            $this->update_dependent($charge_id);
+        //Actualizar datos dependientes
+            //$this->update_dependent($charge_id);
     
         //Preparar resultado
             $data = array('status' => 1, 'message' => 'Los datos del cobro fueron actualizados');
@@ -258,13 +271,13 @@ class Charge_model extends CI_Model{
      * Array con datos para editar o crear un registro de un cobro
      * 2019-10-29
      */
-    function arr_row($process = 'update')
+    function arr_row($charge_id)
     {
         $arr_row = $this->input->post();
         $arr_row['type_id'] = 4031; //Post tipo cobro (charge)
         $arr_row['editor_id'] = $this->session->userdata('user_id');
         
-        if ( $process == 'insert' )
+        if ( ! ($charge_id > 0) )
         {
             $arr_row['creator_id'] = $this->session->userdata('user_id');
         }
@@ -305,5 +318,135 @@ class Charge_model extends CI_Model{
         }
 
         return $quan_deleted;
+    }
+
+// GRUPOS
+//-----------------------------------------------------------------------------
+
+    /**
+     * Todos los grupos de una institución y generación, correspondiente a un cobro
+     * Si el grupo está asociado al cobro, charte_id será > 0.
+     * 2019-12-10
+     */
+    function groups($charge_id)
+    {
+        $row = $this->Db_model->row_id('charges', $charge_id);
+
+        $this->db->select('groups.id, name, title, IF(group_meta.id IS NULL, 0, group_meta.id) AS meta_id');
+        $this->db->where('groups.institution_id', $row->institution_id);
+        $this->db->where('groups.generation', $row->generation);
+        $this->db->where("(related_1 = {$charge_id} OR related_1 IS NULL)");
+        $this->db->join('group_meta', 'groups.id = group_meta.group_id', 'left');
+        $groups = $this->db->get('groups');
+
+        return $groups;
+    }
+
+    /**
+     * Le establece un cobro a un grupo, tabla group_meta
+     * Agrega a los estudiantes del grupo al cobro, tabla payements
+     * 2019-12-10
+     */
+    function set_group($charge_id, $group_id)
+    {
+        $data = array('status' => 0, 'meta_id' => 0, 'qty_students' => 0);  //Resultado inicial
+
+        //Construir registro
+        $arr_row = $this->Db_model->arr_row(0);
+        $arr_row['group_id'] = $group_id;
+        $arr_row['type_id'] = 4111;     //Cobro a grupo
+        $arr_row['related_1'] = $charge_id;
+
+        //Guardar
+        $condition = "group_id = {$group_id} AND type_id = 4111 AND related_1 = {$charge_id}";
+        $meta_id = $this->Db_model->save('group_meta', $condition, $arr_row);
+
+        if ( $meta_id > 0 )
+        {
+            $data['status'] = 1;
+            $data['meta_id'] = $meta_id;
+
+            //Agregar a estudiantes del grupo
+            $this->load->model('Group_model');
+            $students = $this->Group_model->students($group_id);
+            foreach ($students->result() as $row_student) 
+            {
+                $payment_id = $this->set_user($charge_id, $row_student->id);
+                if ( $payment_id > 0) { $data['qty_students']++; }
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Le quita un cobro a un grupo de estudiantes. Elimina registro de la tabla group_meta
+     * y los pagos de los usuarios en la tabla payment.
+     * 2019-12-12
+     */
+    function unset_group($charge_id, $meta_id)
+    {
+        $data = array('status' => 0, 'qty_deleted' => 0);  //Resultado inicial
+
+        $row = $this->Db_model->row_id('charges', $charge_id);
+        $row_meta = $this->Db_model->row('group_meta', "id = {$meta_id} AND related_1 = {$charge_id}");
+
+        //Eliminar estudiantes del cobro
+            $this->load->model('Group_model');
+            $students = $this->Group_model->students($row_meta->group_id);
+            foreach ($students->result() as $row_student)
+            {
+                $data['qty_deleted'] += $this->unset_user($charge_id, $row_student->id);
+                //$data['qty_deleted']++;
+            }
+
+        //Eliminar registro de tabla group_meta
+            $this->db->where('id', $meta_id);
+            $this->db->where('related_1', $charge_id);
+            $this->db->delete('group_meta');
+            
+            $meta_deleted = $this->db->affected_rows();
+            if ( $meta_deleted > 0 ) { $data['status'] = 1; }
+
+        return $data;
+        
+    }
+
+// ESTABLECER COBROS A USUARIOS
+//-----------------------------------------------------------------------------
+
+    /**
+     * Le establece un cobro a un estudiante, crea registro en la tabla payment
+     * para hacer seguimiento del pago.
+     * 2019-12-10
+     */
+    function set_user($charge_id, $user_id)
+    {
+        $row_charge = $this->Db_model->row_id('charges', $charge_id);
+
+        //Preparar registro
+        $arr_row = $this->Db_model->arr_row(0);
+        $arr_row['charge_id'] = $charge_id;
+        $arr_row['student_id'] = $user_id;
+        $arr_row['total_value'] = $row_charge->charge_value;
+
+        $payment_id = $this->Db_model->save('payment', "charge_id = {$charge_id} AND student_id = {$user_id}", $arr_row);
+
+        return $payment_id;
+    }
+
+    /**
+     * Le retira un cobro a un usuario. Eliminando registro de la tabla payment.
+     * 2019-12-10
+     */
+    function unset_user($charge_id, $user_id)
+    {
+        $this->db->where('charge_id', $charge_id);
+        $this->db->where('student_id', $user_id);
+        $this->db->delete('payment');
+        
+        $qty_deleted = $this->db->affected_rows();
+
+        return $qty_deleted;
     }
 }

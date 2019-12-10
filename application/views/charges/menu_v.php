@@ -2,6 +2,7 @@
     $app_cf_index = $this->uri->segment(1) . '_' . $this->uri->segment(2);
     
     $cl_nav_2['charges_info'] = '';
+    $cl_nav_2['charges_groups'] = '';
     $cl_nav_2['charges_students'] = '';
     $cl_nav_2['charges_edit'] = '';
     //$cl_nav_2['charges_import'] = '';
@@ -24,10 +25,17 @@
     };
 
     sections.students = {
-        'icon': 'fa fa-users',
+        'icon': 'fa fa-user',
         'text': 'Estudiantes',
         'class': '<?php echo $cl_nav_2['charges_students'] ?>',
         'cf': 'charges/students/' + element_id
+    };
+
+    sections.groups = {
+        'icon': 'fa fa-users',
+        'text': 'Grupos',
+        'class': '<?php echo $cl_nav_2['charges_groups'] ?>',
+        'cf': 'charges/groups/' + element_id
     };
 
     sections.edit = {
@@ -38,7 +46,7 @@
     };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['info', 'students', 'edit'];
+    sections_rol.dvlp = ['info', 'groups', 'students', 'edit'];
     sections_rol.admn = ['info'];
     sections_rol.prpt = ['info', 'students', 'edit'];
     

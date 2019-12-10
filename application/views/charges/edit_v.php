@@ -1,127 +1,88 @@
 <?php $this->load->view('assets/bs4_chosen') ?>
 
 <?php
-    $options_level = $this->Item_model->options('category_id = 3 AND item_group = 1', 'Nivel escolar');
     $options_institution = $this->App_model->options_institution('id > 0');
-    $options_schedule = $this->Item_model->options('category_id = 17', 'Jornada');
-    
-    //Es usuario de una institución o interno
-    if ( $this->session->userdata('institution_id') > 0 )
-    {
-        $condition_teacher = "role < 20 AND role > 10 AND institution_id = {$this->session->userdata('institution_id')}";
-    } else {
-        $condition_teacher = "role < 20 AND role > 10";
-        $options_institution = $this->App_model->options_institution('id > 0');
-    }
-
-    $options_teacher = $this->App_model->options_user($condition_teacher, 'Asignado a', 'du');
+    $options_charge_type = $this->Item_model->options('category_id = 172');
+    $options_generation = $this->App_model->options_generation();
 ?>
 
 <div id="app_edit">
-    <div class="card" style="max-width: 800px; margin: 0 auto;">
+    <div class="card center_box_750">
         <div class="card-body">
             <form id="edit_form" accept-charset="utf-8" @submit.prevent="send_form">
 
-                <?php if ( $this->session->userdata('institution_id') == 0 ) { ?>
-                    <div class="form-group row">
-                        <label for="institution_id" class="col-md-4 controle-label">Institución</label>
-                        <div class="col-md-8">
-                            <?php echo form_dropdown('institution_id', $options_institution, '', 'id="field-institution_id" class="form-control form-control-chosen" required v-model="form_values.institution_id"') ?>
-                        </div>
-                    </div>
-                <?php } ?>
-
-
                 <div class="form-group row">
-                    <label for="level" class="col-md-4 controle-label">Nivel escolar</label>
-                    <div class="col-md-8">
-                        <?php echo form_dropdown('level', $options_level, '', 'id="field-level" class="form-control" required v-model="form_values.level"') ?>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="letter" class="col-md-4 controle-label">Letra o número</label>
+                    <label for="title" class="col-md-4 col-form-label text-right">Nombre</label>
                     <div class="col-md-8">
                         <input
-                            id="field-letter"
-                            name="letter"
-                            class="form-control"
-                            placeholder="Ej. B"
-                            title="Letra o número con el que se identifica al grupo"
+                            type="text"
+                            id="field-title"
+                            name="title"
                             required
-                            v-model="form_values.letter"
+                            class="form-control"
+                            placeholder="Nombre"
+                            title="Nombre"
+                            v-model="form_values.title"
                             >
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="title" class="col-md-4 control-label">Título*</label>
+                    <label for="charge_type_id" class="col-md-4 col-form-label text-right">Tipo</label>
                     <div class="col-md-8">
-                        <div class="input-group input-group-icon">
-                            <div class="input-group-prepend">
-                                <button v-on:click="generate_title" class="btn input-group-text" type="button">
-                                    Generar
-                                </button>
-                            </div>
-                            <input
-                                id="field-title"
-                                type="text"
-                                name="title"
-                                value=""
-                                class="form-control"
-                                required
-                                maxlength="30"
-                                placeholder="Ej. Transición - A"
-                                v-model="form_values.title"
-                                v-on:focus="empty_generate_title"
-                                >
-                        </div>
+                        <?php echo form_dropdown('charge_type_id', $options_charge_type, '', 'class="form-control" v-model="form_values.charge_type_id"') ?>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="teacher_id" class="col-md-4 controle-label">Asignado a:</label>
+                    <label for="generation" class="col-md-4 col-form-label text-right">Año generación</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('teacher_id', $options_teacher, '', 'id="field-level" class="form-control form-control-chosen" required v-model="form_values.teacher_id"') ?>
+                        <?php echo form_dropdown('generation', $options_generation, '0', 'class="form-control" v-model="form_values.generation"') ?>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="schedule" class="col-md-4 controle-label">Jornada horario</label>
-                    <div class="col-md-8">
-                        <?php echo form_dropdown('schedule', $options_schedule, '', 'id="field-schedule" class="form-control" required v-model="form_values.schedule"') ?>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="generation" class="col-md-4 col-form-label">Año generación</label>
+                    <label for="charge_value" class="col-md-4 col-form-label text-right">Valor</label>
                     <div class="col-md-8">
                         <input
-                            type="number"
-                            id="field-generation"
-                            name="generation"
+                            type="text"
+                            id="field-charge_value"
+                            name="charge_value"
                             required
                             class="form-control"
-                            placeholder="Ej. 2020"
-                            title="Año en el que el grupo termina el periodo escolar"
-                            v-model="form_values.generation"
-                            min="2017"
-                            max="2022"
+                            placeholder="Valor del cobro"
+                            title="Valor del cobro"
+                            v-model="form_values.charge_value"
                             >
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="description" class="col-md-4 col-form-label">Descripción</label>
+                    <label for="date_2" class="col-md-4 col-form-label text-right">Fecha máxima de pago</label>
+                    <div class="col-md-8">
+                        <input
+                            type="date"
+                            id="field-date_2"
+                            name="date_2"
+                            required
+                            class="form-control"
+                            v-model="form_values.date_2"
+                            >
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="excerpt" class="col-md-4 col-form-label text-right">Descripción</label>
                     <div class="col-md-8">
                         <textarea
                             type="text"
-                            id="field-description"
-                            name="description"
+                            id="field-excerpt"
+                            name="excerpt"
                             class="form-control"
-                            placeholder="Notas adicionales sobre el grupo"
-                            title="Notas adicionales sobre el grupo"
-                            v-model="form_values.description"
+                            placeholder="Descripción"
+                            title="Descripción"
+                            rows="3"
+                            v-model="form_values.excerpt"
                             ></textarea>
                     </div>
                 </div>
@@ -142,35 +103,29 @@
 <script>
     //Cargar valor en formulario
     var form_values = <?php echo json_encode($row) ?>;
-    form_values.institution_id = '0<?php echo $row->institution_id ?>';
-    form_values.level = '0<?php echo $row->level ?>';
-    form_values.teacher_id = '0<?php echo $row->teacher_id ?>';
-    form_values.schedule = '0<?php echo $row->schedule ?>';
+    form_values.charge_type_id = '0<?php echo $row->charge_type_id ?>';
+    form_values.generation = '0<?php echo $row->generation ?>';
+    form_values.date_2 = '<?php echo substr($row->date_2, 0, 10) ?>';
     
     new Vue({
     el: '#app_edit',
         data: {
-            form_values: form_values,
-            row_id: '<?php echo $row->id ?>'
+            row_id: form_values.id,
+            form_values: form_values
         },
         methods: {
             send_form: function() {
-                axios.post(app_url + 'groups/update/' + this.row_id, $('#edit_form').serialize())
+                axios.post(app_url + 'charges/save/' + this.row_id, $('#edit_form').serialize())
                     .then(response => {
+                        console.log('status: ' + response.data.message);
                         if (response.data.status == 1)
                         {
-                            toastr['success'](response.data.message);
+                            toastr['success']('Guardado');
                         }
                     })
                     .catch(function (error) {
                         console.log(error);
                 });
-            },
-            generate_title: function(){
-                form_values.title = $("#field-level option:selected").text() + ' - ' + form_values.letter;
-            },
-            empty_generate_title: function(){
-                if ( form_values.title.length == 0 ) { this.generate_title(); }
             }
         }
     });

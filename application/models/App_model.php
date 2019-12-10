@@ -215,11 +215,11 @@ class App_model extends CI_Model{
         if ( is_null($start) ) { $start = date('Y') - 2; }
         if ( is_null($end) ) { $end = date('Y') + 2; }
 
-        $years = range(2017,2025);
+        $years = range($start, $end);
         $options_generation = array('' => '[ Año generación ]');
         foreach ($years as $year) 
         {
-            $options_generation['0' . $year] = 'Año ' . $year;
+            $options_generation['0' . $year] = $year;
         }
 
         return $options_generation;

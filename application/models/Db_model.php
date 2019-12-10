@@ -118,13 +118,9 @@ class Db_model extends CI_Model{
     }
     
     /**
-     * Si un row con una $condition sql exists en una $table, se edita
-     * Si no exists se inserta nuevo row. Devuelve el id del row editado o insertado
-     * 
-     * @param type $table
-     * @param type $condition
-     * @param type $arr_row
-     * @return type
+     * Si un row con una $condition sql existe en una $table, se edita
+     * Si no existe se inserta nuevo registro. Devuelve el id del row editado o insertado
+     * 2019-12-10
      */
     function save($table, $condition, $arr_row)
     {
@@ -136,6 +132,7 @@ class Db_model extends CI_Model{
             $this->db->insert($table, $arr_row);
             $row_id = $this->db->insert_id();
         } else {
+            unset($arr_row['creator_id']);
             //Already exists, update
             $this->db->where('id', $row_id);
             $this->db->update($table, $arr_row);
