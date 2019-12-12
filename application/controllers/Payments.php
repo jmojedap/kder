@@ -159,6 +159,16 @@ class Payments extends CI_Controller{
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
+// Actualización
+//-----------------------------------------------------------------------------
 
-
+    /**
+     * Establecer un pago como pagado, proceso simple
+     * 2019-12-12
+     */
+    function set_payed($payment_id, $charge_id, $payment_status = 1)
+    {
+        $data = $this->Payment_model->set_payed($payment_id, $charge_id, $payment_status);
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
 }

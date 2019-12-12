@@ -325,7 +325,6 @@ class Group_model extends CI_Model{
         
         //Construir registro
             $arr_row['name'] = $this->generate_name($row->id);
-            //$arr_row['cod'] = $this->generate_name($row->id, 'cod');      //Pendiente
             $arr_row['letter'] = strtoupper($row->letter);
             
         //Si está vacío el título

@@ -371,7 +371,7 @@ class Charge_model extends CI_Model{
             $students = $this->Group_model->students($group_id);
             foreach ($students->result() as $row_student) 
             {
-                $payment_id = $this->set_user($charge_id, $row_student->id);
+                $payment_id = $this->set_user($charge_id, $group_id, $row_student->id);
                 if ( $payment_id > 0) { $data['qty_students']++; }
             }
         }
@@ -391,14 +391,11 @@ class Charge_model extends CI_Model{
         $row = $this->Db_model->row_id('charges', $charge_id);
         $row_meta = $this->Db_model->row('group_meta', "id = {$meta_id} AND related_1 = {$charge_id}");
 
-        //Eliminar estudiantes del cobro
-            $this->load->model('Group_model');
-            $students = $this->Group_model->students($row_meta->group_id);
-            foreach ($students->result() as $row_student)
-            {
-                $data['qty_deleted'] += $this->unset_user($charge_id, $row_student->id);
-                //$data['qty_deleted']++;
-            }
+        //Eliminar estudiantes del cobro, tabla payment
+            $this->db->where('charge_id', $charge_id);
+            $this->db->where('group_id', $row_meta->group_id);
+            $this->db->delete('payment');
+            $data['qyt_deleted'] = $this->db->affected_rows();
 
         //Eliminar registro de tabla group_meta
             $this->db->where('id', $meta_id);
@@ -412,7 +409,7 @@ class Charge_model extends CI_Model{
         
     }
 
-// ESTABLECER COBROS A USUARIOS
+// COBROS A USUARIOS
 //-----------------------------------------------------------------------------
 
     /**
@@ -420,7 +417,7 @@ class Charge_model extends CI_Model{
      * para hacer seguimiento del pago.
      * 2019-12-10
      */
-    function set_user($charge_id, $user_id)
+    function set_user($charge_id, $group_id, $user_id)
     {
         $row_charge = $this->Db_model->row_id('charges', $charge_id);
 
@@ -428,6 +425,7 @@ class Charge_model extends CI_Model{
         $arr_row = $this->Db_model->arr_row(0);
         $arr_row['charge_id'] = $charge_id;
         $arr_row['student_id'] = $user_id;
+        $arr_row['group_id'] = $group_id;
         $arr_row['total_value'] = $row_charge->charge_value;
 
         $payment_id = $this->Db_model->save('payment', "charge_id = {$charge_id} AND student_id = {$user_id}", $arr_row);
@@ -448,5 +446,16 @@ class Charge_model extends CI_Model{
         $qty_deleted = $this->db->affected_rows();
 
         return $qty_deleted;
+    }
+
+    function students_group($charge_id, $group_id)
+    {
+        $this->db->select('payment.id AS payment_id, user.id, user.display_name, user.src_thumbnail, user.username, payment.status AS payment_status, payed_value, payment.edited_at');
+        $this->db->join('payment', 'user.id = payment.student_id');
+        $this->db->where('payment.group_id', $group_id);
+        $this->db->order_by('last_name', 'ASC');    
+        $students = $this->db->get('user');
+
+        return $students;
     }
 }

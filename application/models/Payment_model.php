@@ -305,4 +305,34 @@ class Payment_model extends CI_Model{
 
         return $quan_deleted;
     }
+
+// ACTUALIZACIÓN
+//-----------------------------------------------------------------------------
+
+    /**
+     * Establecer un pago como pagado simple
+     * 2019-12-12
+     */
+    function set_payed($payment_id, $charge_id, $payment_status = 1)
+    {
+        $row_charge = $this->Db_model->row_id('charges', $charge_id);
+
+        //Construir registro
+            $arr_row = $this->Db_model->arr_row($payment_id);
+            $arr_row['status'] = $payment_status; //Pagado
+            $arr_row['payed_value'] = ( $payment_status == 1 ) ? $row_charge->charge_value : 0 ;
+            $arr_row['payed_at'] = date('Y-m-d H:i:s');
+
+        //Guardar
+            $saved_id = $this->Db_model->save('payment', "id = {$payment_id}", $arr_row);
+
+        //Establecere resultado
+            $data = array('status' => 1, 'saved_id' => 0);
+            if ( $saved_id > 0 ) {
+                $data = array('status' => 1, $saved_id => $saved_id);
+            }
+
+        return $data;
+    }
+
 }

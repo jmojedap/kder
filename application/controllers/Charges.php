@@ -147,7 +147,7 @@ class Charges extends CI_Controller{
     function groups($charge_id)
     {
         $data = $this->Charge_model->basic($charge_id);
-        $data['view_a'] = 'charges/groups_v';
+        $data['view_a'] = 'charges/groups/groups_v';
         $data['nav_2'] = 'charges/menu_v';
         $data['subtitle_head'] = 'Grupos';
         $this->App_model->view(TPL_ADMIN, $data);
@@ -189,5 +189,18 @@ class Charges extends CI_Controller{
 
         //Salida JSON
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    function get_students_group($charge_id, $group_id)
+    {
+        /*$data = $this->Charge_model->basic($charge_id);
+        $data['students'] = $this->Charge_model->students_group($charge_id, $group_id);
+        $data_json['html'] = $this->load->view('charges/groups_students_v', $data, TRUE);*/
+
+        $students = $this->Charge_model->students_group($charge_id, $group_id);
+        $data_json['students'] = $students->result();
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data_json));
     }
 }
