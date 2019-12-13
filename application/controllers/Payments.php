@@ -27,12 +27,11 @@ class Payments extends CI_Controller{
             $data = $this->Payment_model->explore_data(1);
         
         //Opciones de filtros de búsqueda
-            $data['options_level'] = $this->Item_model->options('category_id = 3', 'Nivel escolar');
-            $data['options_teacher'] = $this->App_model->options_user("role > 10 AND role < 20 AND institution_id = {$this->session->userdata('institution_id')}");
             $data['options_generation'] = $this->App_model->options_generation();
+            $data['options_institution'] = $this->App_model->options_institution('id > 0');
             
         //Arrays con valores para contenido en lista
-            $data['arr_levels'] = $this->Item_model->arr_cod('category_id = 3');
+            $data['arr_status'] = $this->Item_model->arr_cod('category_id = 174');
             
         //Cargar vista
             $this->App_model->view(TPL_ADMIN, $data);
@@ -51,7 +50,7 @@ class Payments extends CI_Controller{
             $data = $this->Payment_model->explore_table_data($num_page);
         
         //Arrays con valores para contenido en lista
-            $data['arr_levels'] = $this->Item_model->arr_cod('category_id = 3');
+            $data['arr_status'] = $this->Item_model->arr_cod('category_id = 174');
         
         //Preparar respuesta
             $data['html'] = $this->load->view('payments/explore/table_v', $data, TRUE);

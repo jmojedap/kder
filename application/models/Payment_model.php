@@ -56,7 +56,7 @@ class Payment_model extends CI_Model{
         
         //Paginación
             $data['num_page'] = $num_page;                  //Número de la página de datos que se está consultado
-            $data['per_page'] = 15;                           //Cantidad de registros por página
+            $data['per_page'] = 50;                           //Cantidad de registros por página
             $offset = ($num_page - 1) * $data['per_page'];    //Número de la página de datos que se está consultado
         
         //Búsqueda y Resultados
@@ -103,7 +103,7 @@ class Payment_model extends CI_Model{
             //$this->db->select('id, name, title, level, teacher_id, institution_id, status');
         
         //Crear array con términos de búsqueda
-            $words_condition = $this->Search_model->words_condition($filters['q'], array('notes'));
+            $words_condition = $this->Search_model->words_condition($filters['q'], array('notes, title'));
             if ( $words_condition )
             {
                 $this->db->where($words_condition);
@@ -126,9 +126,9 @@ class Payment_model extends CI_Model{
         //Obtener resultados
         if ( is_null($per_page) )
         {
-            $query = $this->db->get('payment'); //Resultados totales
+            $query = $this->db->get('payments'); //Resultados totales
         } else {
-            $query = $this->db->get('payment', $per_page, $offset); //Resultados por página
+            $query = $this->db->get('payments', $per_page, $offset); //Resultados por página
         }
         
         return $query;

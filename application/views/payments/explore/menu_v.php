@@ -1,11 +1,10 @@
 <?php
     $app_cf_index = $this->uri->segment(1) . '_' . $this->uri->segment(2);
     
-    $cl_nav_2['groups_explore'] = '';
-    $cl_nav_2['groups_add'] = '';
+    $cl_nav_2['payments_explore'] = '';
     
     $cl_nav_2[$app_cf_index] = 'active';
-    //if ( $app_cf_index == 'groups_import_e' ) { $cl_nav_2['groups_import'] = 'active'; }
+    //if ( $app_cf_index == 'payments_import_e' ) { $cl_nav_2['payments_import'] = 'active'; }
 ?>
 
 <script>
@@ -16,22 +15,15 @@
     sections.explore = {
         'icon': 'fa fa-list-alt',
         'text': 'Explorar',
-        'class': '<?php echo $cl_nav_2['groups_explore'] ?>',
-        'cf': 'groups/explore'
-    };
-
-    sections.add = {
-        'icon': 'fa fa-plus',
-        'text': 'Nuevo',
-        'class': '<?php echo $cl_nav_2['groups_add'] ?>',
-        'cf': 'groups/add'
+        'class': '<?php echo $cl_nav_2['payments_explore'] ?>',
+        'cf': 'payments/explore'
     };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['explore', 'add'];
-    sections_rol.admn = ['explore', 'add'];
-    sections_rol.edtr = ['explore', 'add'];
-    sections_rol.prpt = ['explore', 'add'];
+    sections_rol.dvlp = ['explore'];
+    sections_rol.admn = ['explore'];
+    sections_rol.edtr = ['explore'];
+    sections_rol.prpt = ['explore'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_rol[app_r]) 
