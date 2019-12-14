@@ -103,28 +103,23 @@ class Payments extends CI_Controller{
 
     /**
      * AJAX JSON
-     * Toma datos de POST e inserta un registro en la tabla payment. 
-     * 2019-10-29
+     * Toma datos de POST y lo guarda en la tabla payment
+     * 2019-12-14
      */ 
-    function insert()
+    function save($payment_id = 0)
     {
-        $data = $this->Payment_model->insert();
+        $data = $this->Payment_model->save($payment_id);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
     /**
-     * Información general del grupo
+     * Información general del pago
+     * 2019-12-14
      */
     function info($payment_id)
     {        
-        //Datos básicos
         $data = $this->Payment_model->basic($payment_id);
-
-        $data['row_teacher'] = $this->Db_model->row_id('user', $data['row']->teacher_id);
-        
-        //Variables específicas
         $data['view_a'] = 'payments/info_v';
-        
         $this->App_model->view(TPL_ADMIN, $data);
     }
     
@@ -146,20 +141,6 @@ class Payments extends CI_Controller{
         
         $this->App_model->view(TPL_ADMIN, $data);
     }    
-
-    /**
-     * POST JSON
-     * 
-     * @param type $payment_id
-     */
-    function update($payment_id)
-    {
-        $data = $this->Payment_model->update($payment_id);
-        $this->output->set_content_type('application/json')->set_output(json_encode($data));
-    }
-
-// Actualización
-//-----------------------------------------------------------------------------
 
     /**
      * Establecer un pago como pagado, proceso simple

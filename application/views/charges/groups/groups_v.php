@@ -10,7 +10,7 @@
                     <th width="30px"></th>
                 </thead>
                 <tbody>
-                    <tr v-for="(group, key) in list" v-bind:class="{'table-primary': group_id == group.id}">
+                    <tr v-for="(group, key) in list">
                         <td>
                             <a href="#" v-bind:onclick="`load_cf('groups/students/` + group.id + `')`">
                                 {{ group.title }}
@@ -41,8 +41,8 @@
                             </div>
                         </td>
                         <td>
-                            <button class="btn btn-primary" v-show="group.meta_id > 0" v-on:click="show_students(key)">
-                                <i class="fas fa-users"></i>
+                            <button class="btn btn-light" v-show="group.meta_id > 0" v-on:click="show_students(key)" v-bind:class="{'btn-primary': group_id == group.id}">
+                                <i class="fas fa-arrow-right"></i>
                             </button>
                         </td>
                     </tr>

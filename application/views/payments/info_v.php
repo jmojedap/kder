@@ -1,88 +1,98 @@
-<?php 
-    //Imagen
-        $att_img = $this->App_model->att_img_user($row_teacher);
-        $att_img['class'] = 'card-img-top';
+<?php
+    $status['icon'] = 'fa fa-clock';
+    $status['class'] = 'text-warning';
+    if ( $row->status == 1 )
+    {
+        $status['icon'] = 'fa fa-check';
+        $status['class'] = 'text-success';
+    }
 ?>
 
-<div class="row">
-    <div class="col col-lg-4 col-md-12 col-sm-12">
-        <!-- Page Widget -->
-        <div class="card text-center">
-            <img
-                src="<?php echo $att_img['src'] ?>"
-                class="card-img-top"
-                alt="Imagen de la institución"
-                width="100%"
-                onerror="this.src='<?php echo URL_IMG . 'app/institution.png' ?>'"
-                >
-            <div class="card-body">
-                <h4 class="profile-user"><?php echo $row_teacher->display_name ?></h4>
-                <p>Asignada del grupo</p>
-            </div>
-            <div class="card-footer">
-                <div class="row no-space">
-                    <div class="col-4">
-                        
-                    </div>
-                    <div class="col-4">
-                        <strong class="profile-stat-count">14</strong>
-                        <span>Estudiantes</span>
-                    </div>
-                    <div class="col-4">
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Page Widget -->
-    </div>
-    <div class="col col-lg-8 col-md-12 col-sm-12">
-        <table class="table bg-white">
-            <tbody>
-                <tr>
-                    <td width="35%"><span class="text-muted">ID Grupo</span></td>
-                    <td width="65%">
-                        <?php echo $row->id ?>
-                    </td>
-                </tr>
+<table class="table bg-white">
+    <tbody>
+        <tr>
+            <td width="35%"><span class="text-muted">ID Pago</span></td>
+            <td width="65%">
+                <?php echo $row->id ?>
+            </td>
+        </tr>
 
-                <tr>
-                    <td class=""><span class="text-muted">Nombre</span></td>
-                    <td><?php echo $row->name ?></td>
-                </tr>
-                <tr>
-                    <td class=""><span class="text-muted">Título</span></td>
-                    <td><?php echo $row->title ?></td>
-                </tr>
+        <tr>
+            <td>Estado</td>
+            <td class="<?php echo $status['class'] ?>">
+                <i class="<?php echo $status['icon'] ?>"></i>
+                <?php echo $this->Item_model->name(174, $row->status); ?>
+            </td>
+        </tr>
 
-                <tr>
-                    <td><span class="text-muted">Nivel</span></td>
-                    <td><?php echo $this->Item_model->name(3, $row->level) ?></td>
-                </tr>
+        <tr>
+            <td>Valor pagado</td>
+            <td class="<?php echo $status['class'] ?>">
+                <?php echo $this->pml->money($row->payed_value); ?>
+            </td>
+        </tr>
 
-                <tr>
-                    <td><span class="text-muted">Año generación</span></td>
-                    <td><?php echo $row->generation ?></td>
-                </tr>
+        <tr>
+            <td class=""><span class="text-muted">Estudiante</span></td>
+            <td>
+                <a href="<?php echo base_url("users/profile/{$row->student_id}") ?>">
+                    <?php echo $this->App_model->name_user($row->student_id); ?>
+                </a>
+            </td>
+        </tr>
 
-                <tr>
-                    <td class=""><span class="text-muted">Descripción</span></td>
-                    <td><?php echo $row->description ?></td>
-                </tr>
+        <tr>
+            <td class=""><span class="text-muted">Pagado por</span></td>
+            <td><?php echo $this->App_model->name_user($row->payer_id); ?></td>
+        </tr>
 
-                <tr>
-                    <td class=""><span class="text-muted">Editado</span></td>
-                    <td>
-                        <?php echo $this->pml->date_format($row->edited_at, 'Y-m-d h:i') ?> por <?php echo $this->App_model->name_user($row->editor_id, 'du') ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td class=""><span class="text-muted">Creado</span></td>
-                    <td>
-                        <?php echo $this->pml->date_format($row->created_at, 'Y-m-d H:i') ?> por <?php echo $this->App_model->name_user($row->creator_id, 'du') ?>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+        
+
+        <tr>
+            <td class=""><span class="text-muted">Pagado en</span></td>
+            <td>
+                <?php echo $this->pml->date_format($row->payed_at, 'Y-m-d h:i') ?>
+            </td>
+        </tr>
+        <tr>
+            <td class=""><span class="text-muted">Editado</span></td>
+            <td>
+                <?php echo $this->pml->date_format($row->edited_at, 'Y-m-d h:i') ?> por 
+                <?php echo $this->App_model->name_user($row->editor_id, 'du') ?>
+            </td>
+        </tr>
+        <tr>
+            <td class=""><span class="text-muted">Creado</span></td>
+            <td>
+                <?php echo $this->pml->date_format($row->created_at, 'Y-m-d H:i') ?> por <?php echo $this->App_model->name_user($row->creator_id, 'du') ?>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table bg-white">
+    <tbody>
+        <tr>
+            <td width="35%"><span class="text-muted">ID Cobro</span></td>
+            <td width="65%">
+                <?php echo $row->charge_id ?>
+            </td>
+        </tr>
+        <tr>
+            <td>Cobro</td>
+            <td>
+                <a href="<?php echo base_url("charges/info/{$row->charge_id}") ?>">
+                    <?php echo $row_charge->title ?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Valor</td>
+            <td><?php echo $this->pml->money($row_charge->charge_value); ?></td>
+        </tr>
+        <tr>
+            <td>Descripción</td>
+            <td><?php echo $row_charge->excerpt ?></td>
+        </tr>
+    </tbody>
+</table>

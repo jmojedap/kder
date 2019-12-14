@@ -1,8 +1,9 @@
 <?php
     //Clases columnas
-        $cl_col['id'] = 'd-none d-md-table-cell d-lg-table-cell';
-        $cl_col['charge'] = 'd-none d-md-table-cell d-lg-table-cell';
-        $cl_col['student'] = 'd-none d-md-table-cell d-lg-table-cell';
+        $cl_col['id'] = '';
+        $cl_col['info'] = '';
+        $cl_col['charge'] = '';
+        $cl_col['student'] = '';
         $cl_col['total_value'] = 'd-none d-md-table-cell d-lg-table-cell text-right';
         $cl_col['payed_value'] = 'd-none d-md-table-cell d-lg-table-cell text-right';
         $cl_col['status'] = 'd-none d-md-table-cell d-lg-table-cell';
@@ -20,14 +21,15 @@
             </div>
         </th>
         <th width="50px;"  class="<?php echo $cl_col['id'] ?>">ID</th>
-        
-        <th>Cobro</th>
+
+        <th width="35px"></th>
         <th class="<?php echo $cl_col['student'] ?>">Esudiante</th>
+        <th>Cobro</th>
         
         <th class="<?php echo $cl_col['total_value'] ?>">Valor</th>
         <th class="<?php echo $cl_col['payed_value'] ?>">Pagado</th>
-        <th class="<?php echo $cl_col['status'] ?>">Estado</th>
 
+        
         <th width="35px"></th>
     </thead>
 
@@ -36,6 +38,7 @@
             <?php
                 $student_name = $this->App_model->name_user($row_element->student_id);
                 $cl_status = ( $row_element->payment_status == 1 ) ? 'table-success' : 'table-warning';
+                $cl_payed_value = ( $row_element->payed_value >= $row_element->total_value ) ? 'table-success' : 'table-warning';
             ?>
             <tr id="row_<?php echo $row_element->id ?>">
                 <td>
@@ -48,27 +51,31 @@
                 </td>
                 
                 <td class="<?php echo $cl_col['id'] ?>"><?php echo $row_element->id ?></td>
-                
-                <td>
-                    <a href="#" onclick="load_cf('payments/info/<?php echo $row_element->id ?>')">
-                        <?php echo $row_element->title ?>
+
+                <td class="<?php echo $cl_col['info'] ?>">
+                    <a href="<?php echo base_url("payments/info/{$row_element->id}") ?>" class="btn btn-light">
+                        <i class="fa fa-arrow-right"></i>
                     </a>
                 </td>
-
+                
                 <td class="<?php echo $cl_col['student'] ?>">
                     <a href="<?php echo base_url("users/profile/{$row_element->student_id}") ?>" class="clase">
                         <?php echo $student_name ?>
                     </a>
                 </td>
 
+                <td class="<?php echo $cl_col['charge'] ?>">
+                    <a href="#" onclick="load_cf('charges/info/<?php echo $row_element->charge_id ?>')">
+                        <?php echo $row_element->title ?>
+                    </a>
+                </td>
+
+
                 <td class="<?php echo $cl_col['total_value'] ?>">
                     <?php echo $this->pml->money($row_element->total_value); ?>
                 </td>
-                <td class="<?php echo $cl_col['payed_value'] ?>">
+                <td class="<?php echo $cl_col['payed_value'] ?> <?php echo $cl_payed_value ?>">
                     <?php echo $this->pml->money($row_element->payed_value); ?>
-                </td>
-                <td class="<?php echo $cl_col['status'] ?> <?php echo $cl_status ?>">
-                    <?php echo $arr_status[$row_element->payment_status]; ?>
                 </td>
 
                 <td>
@@ -78,8 +85,15 @@
                 </td>
             </tr>
             <tr class="collapse more" id="more_<?php echo $row_element->id ?>">
-                <td colspan="7">
-                    aquí más información del pago
+                <td colspan="8">
+                    <span class="text-info">Pagado</span>
+                    <span class="text-muted"><?php echo $this->pml->date_format($row_element->payed_at) ?></span>
+                    &middot;
+                    <span class="text-info">Notas</span>
+                    <span class="text-muted"><?php echo $row_element->notes ?></span>
+                    &middot;
+                    <span class="text-info">Estadoo</span>
+                    <span class="text-muted"><?php echo $arr_status[$row_element->payment_status] ?></span>
                 </td>
             </tr>
         <?php } //foreach ?>

@@ -4,8 +4,9 @@ class Payment_model extends CI_Model{
     function basic($payment_id)
     {
         $data['payment_id'] = $payment_id;
-        $data['row'] = $this->Db_model->row_id('payments', $payment_id);
-        $data['head_title'] = 'Pago ' . $data['row']->title;
+        $data['row'] = $this->Db_model->row_id('payment', $payment_id);
+        $data['row_charge'] = $this->Db_model->row_id('charges', $data['row']->charge_id);
+        $data['head_title'] = 'Pago ' . $data['row_charge']->title;
         $data['view_a'] = 'payments/payment_v';
         $data['nav_2'] = 'payments/menu_v';
 
@@ -203,6 +204,19 @@ class Payment_model extends CI_Model{
 
 // CRUD
 //-----------------------------------------------------------------------------
+
+    function save($payment_id)
+    {
+        $data = array('status' => 0, 'saved_id' => 0);  //Resultado inicial
+
+        $arr_row = $this->arr_row($payment_id);
+        $saved_id = $this->Db_model->save('payment', "id = {$payment_id}", $arr_row);
+
+        //Verificación del resultado
+        if ( $saved_id > 0 ) { $data = array('status' => 1, 'saved_id' => $saved_id); }
+
+        return $data;
+    }
     
     /**
      * Insertar un registro en la tabla payment.
