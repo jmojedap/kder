@@ -6,7 +6,7 @@
     }
 ?>
 
-<form accept-charset="utf-8" method="POST" id="search_form" @submit.prevent="get_list">
+<form accept-charset="utf-8" id="search_form" method="POST">
     <div class="form-group row">
         <div class="col-md-9">
             <div class="input-group mb-2">
@@ -17,8 +17,7 @@
                     placeholder="Buscar"
                     autofocus
                     title="Buscar"
-                    v-model="filters.q"
-                    v-on:change="get_list"
+                    value="<?php echo $filters['q'] ?>"
                     >
                 <div class="input-group-append" title="Buscar">
                     <button type="button" class="btn btn-secondary btn-block" id="alternar_avanzada" title="Búsqueda avanzada">

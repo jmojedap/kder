@@ -54,6 +54,12 @@
                 <?php echo $this->pml->date_format($row->payed_at, 'Y-m-d h:i') ?>
             </td>
         </tr>
+
+        <tr>
+            <td>Notas</td>
+            <td><?php echo $row->notes; ?></td>
+        </tr>
+
         <tr>
             <td class=""><span class="text-muted">Editado</span></td>
             <td>

@@ -59,6 +59,14 @@ class Payments extends CI_Controller{
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
+    function get($num_page = 1)
+    {
+        $data = $this->Payment_model->get($num_page);
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
     /**
      * AJAX JSON
      * Eliminar un conjunto de posts seleccionados
@@ -70,11 +78,12 @@ class Payments extends CI_Controller{
         
         foreach ( $selected as $row_id ) 
         {
-            $qty_deleted += $this->Payment_model->delete($row_id);
+            //$qty_deleted += $this->Payment_model->delete($row_id);
+            //$qty_deleted .= '---' . $row_id;
+            $qty_deleted++;
         }
         
         $result['status'] = 1;
-        $result['message'] = 'Cantidad eliminados : ' . $qty_deleted;
         $result['qty_deleted'] = $qty_deleted;
         
         //Salida

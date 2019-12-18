@@ -73,6 +73,25 @@ class Payment_model extends CI_Model{
             
         return $data;
     }
+
+    function get($num_page)
+    {
+        //Referencia
+            $per_page = 50;                             //Cantidad de registros por página
+            $offset = ($num_page - 1) * $per_page;      //Número de la página de datos que se está consultado
+
+        //Búsqueda y Resultados
+            $this->load->model('Search_model');
+            $filters = $this->Search_model->filters();
+            $elements = $this->search($filters, $per_page, $offset);    //Resultados para página
+        
+        //Cargar datos
+            $data['list'] = $elements->result();
+            $data['search_num_rows'] = $this->search_num_rows($filters);
+            $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $per_page);   //Cantidad de páginas
+
+        return $data;
+    }
     
     /**
      * String con condición WHERE SQL para filtrar el elemento
@@ -101,10 +120,12 @@ class Payment_model extends CI_Model{
         $role_filter = $this->role_filter($this->session->userdata('user_id'));
 
         //Construir consulta
-            //$this->db->select('id, name, title, level, teacher_id, institution_id, status');
+            /*$this->db->select('payment.id, charge_id, payment.status, student_id, charges.title, user.display_name AS student_name');
+            /*$this->db->join('charges', 'charges.id = payment.charge_id');
+            $this->db->join('user', 'user.id = payment.student_id');*/
         
         //Crear array con términos de búsqueda
-            $words_condition = $this->Search_model->words_condition($filters['q'], array('notes, title'));
+            $words_condition = $this->Search_model->words_condition($filters['q'], array('notes', 'title', 'student_name'));
             if ( $words_condition )
             {
                 $this->db->where($words_condition);
@@ -116,7 +137,7 @@ class Payment_model extends CI_Model{
                 $order_type = $this->pml->if_strlen($filters['ot'], 'ASC');
                 $this->db->order_by($filters['o'], $order_type);
             } else {
-                $this->db->order_by('edited_at', 'DESC');
+                $this->db->order_by('payments.created_at', 'DESC');
             }
             
         //Filtros
@@ -159,15 +180,15 @@ class Payment_model extends CI_Model{
     {
         
         $role = $this->session->userdata('role');
-        $condition = 'id = 0';  //Valor por defecto, ningún user, se obtendrían cero user.
+        $condition = 'payments.id = 0';  //Valor por defecto, ningún user, se obtendrían cero user.
         
         if ( $role <= 2 ) 
         {   //Desarrollador, todos los user
-            $condition = 'id > 0';
+            $condition = 'payments.id > 0';
         } elseif ( $role == 11 )  {
-            $condition = 'institution_id = ' . $this->session->userdata('institution_id');
+            $condition = 'charges.institution_id = ' . $this->session->userdata('institution_id');
         } else {
-            $condition = 'id = 0';
+            $condition = 'payments.id = 0';
         }
         
         return $condition;
@@ -205,6 +226,10 @@ class Payment_model extends CI_Model{
 // CRUD
 //-----------------------------------------------------------------------------
 
+    /**
+     * Guardar pago en la tabla payment
+     * 2019-12-14
+     */
     function save($payment_id)
     {
         $data = array('status' => 0, 'saved_id' => 0);  //Resultado inicial
@@ -216,73 +241,6 @@ class Payment_model extends CI_Model{
         if ( $saved_id > 0 ) { $data = array('status' => 1, 'saved_id' => $saved_id); }
 
         return $data;
-    }
-    
-    /**
-     * Insertar un registro en la tabla payment.
-     * 2019-10-31
-     * 
-     * @param type $arr_row
-     * @return type
-     */
-    function insert($arr_row = NULL)
-    {
-        if ( is_null($arr_row) ) { $arr_row = $this->arr_row('insert'); }
-        
-        //Insert in table
-            $this->db->insert('payment', $arr_row);
-            $payment_id = $this->db->insert_id();
-
-            if ( $payment_id > 0 )
-            {
-                $this->update_dependent($payment_id);
-
-                //Set result
-                    $data = array('status' => 1, 'message' => 'Pago creado', 'saved_id' => $payment_id);
-            }
-        
-        return $data;
-    }
-
-    /**
-     * Actualiza un registro en la tabla payment
-     * 2019-10-30
-     * 
-     * @param type $arr_row
-     * @return type
-     */
-    function update($payment_id, $arr_row = NULL)
-    {
-        if ( is_null($arr_row) ) { $arr_row = $this->arr_row('update'); }
-
-        //Actualizar
-            $this->db->where('id', $payment_id);
-            $this->db->update('payment', $arr_row);
-
-        //Actualizar campos dependientes
-            $this->update_dependent($payment_id);
-    
-        //Preparar resultado
-            $data = array('status' => 1, 'message' => 'Los datos del grupo fueron actualizados');
-        
-        return $data;
-    }
-
-    /**
-     * Array con datos para editar o crear un registro de un grupo
-     * 2019-10-29
-     */
-    function arr_row($process = 'update')
-    {
-        $arr_row = $this->input->post();
-        $arr_row['editor_id'] = $this->session->userdata('user_id');
-        
-        if ( $process == 'insert' )
-        {
-            $arr_row['creator_id'] = $this->session->userdata('user_id');
-        }
-        
-        return $arr_row;
     }
     
     function deletable()
@@ -342,9 +300,7 @@ class Payment_model extends CI_Model{
 
         //Establecere resultado
             $data = array('status' => 1, 'saved_id' => 0);
-            if ( $saved_id > 0 ) {
-                $data = array('status' => 1, $saved_id => $saved_id);
-            }
+            if ( $saved_id > 0 ) { $data = array('status' => 1, 'saved_id' => $saved_id); }
 
         return $data;
     }

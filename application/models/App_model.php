@@ -127,6 +127,32 @@ class App_model extends CI_Model{
     }
 
     /**
+     * Devuelve el nombre de una institución ($institution_id) en un formato específico ($format)
+     * 2019-12-14
+     */
+    function name_institution($institution_id, $format = 'name')
+    {
+        $name_institution = 'ND';
+        
+        $this->db->select('name, full_name');
+        $this->db->where('id', $institution_id);
+        $query = $this->db->get('institution', 1);
+
+        if ( $query->num_rows() > 0 )
+        {
+            $name_institution = $query->row()->name;
+
+            if ( $format == 'full_name' )
+            {
+                $name_institution = $query->row()->full_name;
+            }
+        }
+
+        return $name_institution;
+    }
+
+
+    /**
      * Devuelve el nombre de una registro ($place_id) en un format específico ($format)
      */
     function place_name($place_id, $format = 1)
@@ -271,7 +297,7 @@ class App_model extends CI_Model{
         if ( $row_institution->image_id > 0 )
         {
             $row_file = $this->Db_model->row_id('file', $row_institution->image_id);
-            $src = URL_UPLOADS . $row_file->folder . $prefix . $row_file->file_name;
+            if ( ! is_null($row_file) ) { $src = URL_UPLOADS . $row_file->folder . $prefix . $row_file->file_name; }
         }
 
         $att_img = array(

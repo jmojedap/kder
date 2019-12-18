@@ -115,6 +115,15 @@
                 </tr>
 
                 <tr>
+                    <td class="text-right">Institución</td>
+                    <td>
+                        <a href="<?php echo base_url("institutions/info/{$row->institution_id}") ?>">
+                            <?php echo $this->App_model->name_institution($row->institution_id); ?>
+                        </a>
+                    </td>
+                </tr>
+
+                <tr>
                     <td class="text-right"><span class="text-muted">Rol de usuario</span></td>
                     <td><?php echo $this->Item_model->name(58, $row->role) ?></td>
                 </tr>
