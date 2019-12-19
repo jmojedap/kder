@@ -1,14 +1,21 @@
 <script>
+    Vue.filter('currency', function (value) {
+        if (!value) return '';
+        value = '$ ' + new Intl.NumberFormat().format(value);
+        return value;
+    });
+
     new Vue({
         el: '#app_explore',
         created: function(){
-            this.get_list();
+            //this.get_list();
         },
         data: {
+            cf: '<?php echo $cf; ?>',
             controller: '<?php echo $controller; ?>',
             num_page: 1,
             max_page: 1,
-            list: [],
+            list: <?php echo json_encode($list) ?>,
             element: [],
             selected: [],
             all_selected: false,
@@ -20,6 +27,10 @@
                 .then(response => {
                     this.list = response.data.list;
                     this.max_page = response.data.max_page;
+                    $('#head_subtitle').html(response.data.search_num_rows);
+                    history.pushState(null, null, app_url + this.cf + this.num_page +'/?' + response.data.str_filters);
+                    this.all_selected = false;
+                    this.selected = [];
                 })
                 .catch(function (error) {
                     console.log(error);

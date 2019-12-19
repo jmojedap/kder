@@ -27,8 +27,7 @@ class Payments extends CI_Controller{
             $data = $this->Payment_model->explore_data(1);
         
         //Opciones de filtros de búsqueda
-            $data['options_generation'] = $this->App_model->options_generation();
-            $data['options_institution'] = $this->App_model->options_institution('id > 0');
+            $data['options_type'] = $this->Item_model->options('category_id = 172', 'Todos los tipos');
             
         //Arrays con valores para contenido en lista
             $data['arr_status'] = $this->Item_model->arr_cod('category_id = 174');

@@ -24,17 +24,13 @@ class Payment_model extends CI_Model{
     function explore_data($num_page)
     {
         //Data inicial, de la tabla
-            $data = $this->explore_table_data($num_page);
+            $data = $this->get($num_page);
         
         //Elemento de exploración
             $data['controller'] = 'payments';                      //Nombre del controlador
+            $data['cf'] = 'payments/explore/';                      //Nombre del controlador
             $data['views_folder'] = 'payments/explore/';           //Carpeta donde están las vistas de exploración
             $data['head_title'] = 'Pagos';
-                
-        //Otros
-            $data['search_num_rows'] = $this->search_num_rows($data['filters']);
-            $data['head_subtitle'] = $this->search_num_rows($data['filters']);
-            $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $data['per_page']);   //Cantidad de páginas
 
         //Vistas
             $data['view_a'] = $data['views_folder'] . 'explore_v';
@@ -82,12 +78,13 @@ class Payment_model extends CI_Model{
 
         //Búsqueda y Resultados
             $this->load->model('Search_model');
-            $filters = $this->Search_model->filters();
-            $elements = $this->search($filters, $per_page, $offset);    //Resultados para página
+            $data['filters'] = $this->Search_model->filters();
+            $elements = $this->search($data['filters'], $per_page, $offset);    //Resultados para página
         
         //Cargar datos
             $data['list'] = $elements->result();
-            $data['search_num_rows'] = $this->search_num_rows($filters);
+            $data['str_filters'] = $this->Search_model->str_filters();
+            $data['search_num_rows'] = $this->search_num_rows($data['filters']);
             $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $per_page);   //Cantidad de páginas
 
         return $data;
@@ -104,7 +101,7 @@ class Payment_model extends CI_Model{
         $condition = NULL;
         
         //Filtros
-        if ( $filters['i'] != '' ) { $condition .= "institution_id = {$filters['i']} AND "; }
+        if ( $filters['type'] != '' ) { $condition .= "charge_type_id = {$filters['type']} AND "; }
         
         if ( strlen($condition) > 0 )
         {

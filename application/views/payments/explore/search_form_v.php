@@ -1,11 +1,3 @@
-<?php    
-    //Clases filters
-    foreach ( $adv_filters as $filter )
-    {
-        $adv_filters_cl[$filter] = 'not_filtered';
-    }
-?>
-
 <form accept-charset="utf-8" method="POST" id="search_form" @submit.prevent="get_list">
     <div class="form-group row">
         <div class="col-md-9">
@@ -34,17 +26,10 @@
             </button>
         </div>
     </div>
-
-    <div class="form-group row <?php echo $adv_filters_cl['i'] ?>">
+    <div class="form-group row">
         <div class="col-md-9">
-            <?php echo form_dropdown('i', $options_institution, $filters['i'], 'class="form-control" title="Filtrar por institución"'); ?>
+            <?php echo form_dropdown('type', $options_type, $filters['type'], 'class="form-control" title="Filtrar por tipo de cobro" v-model="filters.type"'); ?>
         </div>
-        <label for="i" class="col-md-3 control-label">Institución</label>
-    </div>
-    <div class="form-group row <?php echo $adv_filters_cl['y'] ?>">
-        <div class="col-md-9">
-            <?php echo form_dropdown('y', $options_generation, $filters['y'], 'class="form-control" title="Filtrar por año generación"'); ?>
-        </div>
-        <label for="y" class="col-md-3 control-label">Año generación</label>
+        <label for="type" class="col-md-3 control-label align-middle">Tipo cobro</label>
     </div>
 </form>
