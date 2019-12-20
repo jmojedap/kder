@@ -1,3 +1,17 @@
+<style>
+    .site-menu>.site-menu-item.active>a {
+        border-left: 4px solid #FF4845;
+    }
+
+    .site-menu .site-menu-sub .site-menu-item.active>a{
+        border-left: 4px solid #FF4845;
+    }
+
+    .site-menu>.site-menu-item.open>a{
+        border-left: 4px solid #B53C3A;
+    }
+</style>
+
 <?php $this->load->view('app/menus/elements_' . $this->session->userdata('role')) ?>
 
 <div class="site-menubar" id="nav_1">
@@ -13,6 +27,7 @@
                         <a
                             class="nav-link nav_1_link"
                             href="javascript:void(0)"
+                            v-on:click="load_sections(i)"
                             v-bind:id="element.id"
                             v-bind:data-cf="element.cf"
                             >
@@ -30,8 +45,9 @@
                                 v-bind:class="{ 'active': subelement.active }"
                                 >
                                 <a
-                                    class="animsition-link nav_1_link"
+                                    class="animsition-link nav_1_sub"
                                     href="javascript:void(0)"
+                                    v-on:click="load_sections_sub(i,j)"
                                     v-bind:data-parent_id="element.id"
                                     v-bind:data-cf="subelement.cf"
                                 >
@@ -50,7 +66,7 @@
 </div>
 
 <script>
-    $(document).ready(function()
+    /*$(document).ready(function()
     {
         $('.nav_1_link').click(function()
         {
@@ -69,7 +85,7 @@
                 }
             }
         });
-    });
+    });*/
 </script>
 
 <script>
@@ -77,6 +93,33 @@
         el: '#nav_1',
         data: {
             elements: nav_1_elements
+        },
+        methods: {
+            load_sections: function(i){
+                app_cf = this.elements[i].cf;
+                
+                console.log(app_cf);
+
+                if ( this.elements[i].submenu ) {
+                    console.log('ABRIENDO');
+                } else {
+                    load_sections('nav_1');
+                    $('.nav_1_link').removeClass('active');
+                    $('.site-menu-item').removeClass('active');
+                    $('.has-sub').removeClass('open');
+                }
+
+                /*if ( ! this.elements[i].submenu )
+                {
+                    
+                }*/
+            },
+            load_sections_sub: function(i,j){
+                $('.site-menu-item').removeClass('active');
+                app_cf = this.elements[i].subelements[j].cf;
+                console.log(app_cf);
+                load_sections('nav_1');
+            }   
         }
     });
 </script>

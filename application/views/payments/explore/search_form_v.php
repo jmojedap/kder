@@ -1,3 +1,7 @@
+<?php
+    $filters_style = ( strlen($str_filters) > 0 ) ? '' : 'display: none;' ;
+?>
+
 <form accept-charset="utf-8" method="POST" id="search_form" @submit.prevent="get_list">
     <div class="form-group row">
         <div class="col-md-9">
@@ -13,7 +17,7 @@
                     v-on:change="get_list"
                     >
                 <div class="input-group-append" title="Buscar">
-                    <button type="button" class="btn btn-secondary btn-block" id="alternar_avanzada" title="Búsqueda avanzada">
+                    <button type="button" class="btn btn-secondary btn-block" v-on:click="toggle_filters" title="Búsqueda avanzada">
                         <i class="fa fa-chevron-down"></i>
                     </button>
                 </div>
@@ -26,10 +30,12 @@
             </button>
         </div>
     </div>
-    <div class="form-group row">
-        <div class="col-md-9">
-            <?php echo form_dropdown('type', $options_type, $filters['type'], 'class="form-control" title="Filtrar por tipo de cobro" v-model="filters.type"'); ?>
+    <div id="adv_filters" style="<?php echo $filters_style ?>">
+        <div class="form-group row">
+            <div class="col-md-9">
+                <?php echo form_dropdown('type', $options_type, $filters['type'], 'class="form-control" title="Filtrar por tipo de cobro" v-model="filters.type"'); ?>
+            </div>
+            <label for="type" class="col-md-3 control-label align-middle">Tipo cobro</label>
         </div>
-        <label for="type" class="col-md-3 control-label align-middle">Tipo cobro</label>
     </div>
 </form>

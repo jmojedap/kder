@@ -1,9 +1,25 @@
 <script>
+// Variables
+//-----------------------------------------------------------------------------
+    var charge_types = <?php echo json_encode($arr_types); ?>;
+
+// Filters
+//-----------------------------------------------------------------------------
+
     Vue.filter('currency', function (value) {
         if (!value) return '';
         value = '$ ' + new Intl.NumberFormat().format(value);
         return value;
     });
+
+    Vue.filter('type_name', function (value) {
+        if (!value) return '';
+        value = charge_types[value];
+        return value;
+    })
+
+// App
+//-----------------------------------------------------------------------------
 
     new Vue({
         el: '#app_explore',
@@ -19,7 +35,8 @@
             element: [],
             selected: [],
             all_selected: false,
-            filters: <?php echo json_encode($filters) ?>
+            filters: <?php echo json_encode($filters) ?>,
+            showing_filters: false
         },
         methods: {
             get_list: function(){
@@ -91,6 +108,9 @@
                 .catch(function (error) {
                     console.log(error);
                 });
+            },
+            toggle_filters: function(){
+                $('#adv_filters').toggle('fast');
             },
         }
     });

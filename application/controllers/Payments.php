@@ -31,6 +31,7 @@ class Payments extends CI_Controller{
             
         //Arrays con valores para contenido en lista
             $data['arr_status'] = $this->Item_model->arr_cod('category_id = 174');
+            $data['arr_types'] = $this->Item_model->arr_cod('category_id = 172');
             
         //Cargar vista
             $this->App_model->view(TPL_ADMIN, $data);

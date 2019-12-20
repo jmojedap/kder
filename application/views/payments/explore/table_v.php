@@ -95,6 +95,10 @@
                 <td>{{ element.student_name }}</td>
             </tr>
             <tr>
+                <td>Tipo cobro</td>
+                <td>{{ element.charge_type_id | type_name }}</td>
+            </tr>
+            <tr>
                 <td>Valor</td>
                 <td>{{ element.charge_value | currency }}</td>
             </tr>
