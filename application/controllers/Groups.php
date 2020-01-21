@@ -20,7 +20,7 @@ class Groups extends CI_Controller{
     
 //EXPLORE
 //---------------------------------------------------------------------------------------------------
-        
+
     function explore()
     {        
         //Datos básicos de la exploración
@@ -38,25 +38,11 @@ class Groups extends CI_Controller{
             $this->App_model->view(TPL_ADMIN, $data);
     }
 
-    /**
-     * AJAX
-     * Devuelve JSON, que incluye string HTML de la tabla de exploración para la
-     * página $num_page, y los filtros enviados por post
-     * 
-     * @param type $num_page
-     */
-    function explore_table($num_page = 1)
+    function get($num_page = 1)
     {
-        //Datos básicos de la exploración
-            $data = $this->Group_model->explore_table_data($num_page);
-        
-        //Arrays con valores para contenido en lista
-            $data['arr_levels'] = $this->Item_model->arr_cod('category_id = 3');
-        
-        //Preparar respuesta
-            $data['html'] = $this->load->view('groups/explore/table_v', $data, TRUE);
-        
-        //Salida
+        $data = $this->Group_model->get($num_page);
+
+        //Salida JSON
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 

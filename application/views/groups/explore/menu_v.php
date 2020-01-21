@@ -14,7 +14,7 @@
     var sections_rol = [];
     
     sections.explore = {
-        'icon': 'fa fa-list-alt',
+        'icon': 'fa fa-search',
         'text': 'Explorar',
         'class': '<?php echo $cl_nav_2['groups_explore'] ?>',
         'cf': 'groups/explore'
@@ -31,7 +31,6 @@
     sections_rol.dvlp = ['explore', 'add'];
     sections_rol.admn = ['explore', 'add'];
     sections_rol.edtr = ['explore', 'add'];
-    sections_rol.prpt = ['explore', 'add'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_rol[app_r]) 

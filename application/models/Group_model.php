@@ -23,53 +23,38 @@ class Group_model extends CI_Model{
     function explore_data($num_page)
     {
         //Data inicial, de la tabla
-            $data = $this->explore_table_data($num_page);
+            $data = $this->get($num_page);
         
         //Elemento de exploración
             $data['controller'] = 'groups';                      //Nombre del controlador
+            $data['cf'] = 'groups/explore/';                      //Nombre del controlador
             $data['views_folder'] = 'groups/explore/';           //Carpeta donde están las vistas de exploración
-            $data['head_title'] = 'Grupos';
-                
-        //Otros
-            $data['search_num_rows'] = $this->search_num_rows($data['filters']);
-            $data['head_subtitle'] = $this->search_num_rows($data['filters']);
-            $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $data['per_page']);   //Cantidad de páginas
-
+            
         //Vistas
+            $data['head_title'] = 'Grupos';
+            $data['head_subtitle'] = $data['search_num_rows'];
             $data['view_a'] = $data['views_folder'] . 'explore_v';
             $data['nav_2'] = $data['views_folder'] . 'menu_v';
         
         return $data;
     }
 
-    /**
-     * Array con los datos para la tabla de la vista de exploración
-     * 
-     * @param type $num_page
-     * @return string
-     */
-    function explore_table_data($num_page)
+    function get($num_page)
     {
-        //Elemento de exploración
-            $data['cf'] = 'groups/explore/';     //CF Controlador Función
-            $data['adv_filters'] = array('level', 'u', 'y', 'i');
-        
-        //Paginación
-            $data['num_page'] = $num_page;                  //Número de la página de datos que se está consultado
-            $data['per_page'] = 15;                           //Cantidad de registros por página
-            $offset = ($num_page - 1) * $data['per_page'];    //Número de la página de datos que se está consultado
-        
+        //Referencia
+            $per_page = 10;                             //Cantidad de registros por página
+            $offset = ($num_page - 1) * $per_page;      //Número de la página de datos que se está consultado
+
         //Búsqueda y Resultados
             $this->load->model('Search_model');
             $data['filters'] = $this->Search_model->filters();
+            $data['list'] = $this->list($data['filters'], $per_page, $offset);    //Resultados para página
+        
+        //Cargar datos
             $data['str_filters'] = $this->Search_model->str_filters();
-            $data['elements'] = $this->search($data['filters'], $data['per_page'], $offset);    //Resultados para página
-            
-        //Otros
             $data['search_num_rows'] = $this->search_num_rows($data['filters']);
-            $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $data['per_page']);   //Cantidad de páginas
-            $data['all_selected'] = '-'. $this->pml->query_to_str($data['elements'], 'id');           //Para selección masiva de todos los elementos de la página
-            
+            $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $per_page);   //Cantidad de páginas
+
         return $data;
     }
     
@@ -103,7 +88,8 @@ class Group_model extends CI_Model{
         $role_filter = $this->role_filter($this->session->userdata('user_id'));
 
         //Construir consulta
-            $this->db->select('id, name, title, level, teacher_id, institution_id, status');
+            $this->db->select('groups.id, name, title, level, teacher_id, groups.institution_id, groups.status, user.display_name AS teacher_name, groups.description');
+            $this->db->join('user', 'groups.teacher_id = user.id', 'left');
         
         //Crear array con términos de búsqueda
             $words_condition = $this->Search_model->words_condition($filters['q'], array('name', 'cod', 'description'));
@@ -118,7 +104,7 @@ class Group_model extends CI_Model{
                 $order_type = $this->pml->if_strlen($filters['ot'], 'ASC');
                 $this->db->order_by($filters['o'], $order_type);
             } else {
-                $this->db->order_by('edited_at', 'DESC');
+                $this->db->order_by('groups.edited_at', 'DESC');
             }
             
         //Filtros
@@ -135,7 +121,24 @@ class Group_model extends CI_Model{
         }
         
         return $query;
-        
+    }
+
+    /**
+     * Array Listado elemento resultado de la búsqueda (filtros).
+     * 2020-01-21
+     */
+    function list($filters, $per_page = NULL, $offset = NULL)
+    {
+        $query = $this->search($filters, $per_page, $offset);
+        $list = array();
+
+        foreach ($query->result() as $row)
+        {
+            $row->qty_students = $this->Db_model->num_rows('group_user', "group_id = {$row->id}");  //Cantidad de estudiantes
+            $list[] = $row;
+        }
+
+        return $list;
     }
     
     /**
@@ -161,15 +164,15 @@ class Group_model extends CI_Model{
     {
         
         $role = $this->session->userdata('role');
-        $condition = 'id = 0';  //Valor por defecto, ningún user, se obtendrían cero user.
+        $condition = 'groups.id = 0';  //Valor por defecto, ningún user, se obtendrían cero user.
         
         if ( $role <= 2 ) 
         {   //Desarrollador, todos los user
-            $condition = 'id > 0';
+            $condition = 'groups.id > 0';
         } elseif ( $role == 11 )  {
-            $condition = 'institution_id = ' . $this->session->userdata('institution_id');
+            $condition = 'groups.institution_id = ' . $this->session->userdata('institution_id');
         } else {
-            $condition = 'id = 0';
+            $condition = 'groups.id = 0';
         }
         
         return $condition;

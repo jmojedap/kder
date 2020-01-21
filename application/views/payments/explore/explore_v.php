@@ -7,20 +7,18 @@
         </div>
 
         <div class="col">
+            <a href="<?php echo base_url("groups/export/?{$str_filters}") ?>" class="btn btn-light" title="Exportar registros encontrados a Excel">
+                <i class="fa fa-download"></i>
+            </a>
             <a class="btn btn-light"
                 id="btn_delete_selected"
-                title="Eliminar los grupos seleccionados"
+                title="Eliminar elementos seleccionados"
                 data-toggle="modal"
                 data-target="#modal_delete"
+                v-show="selected.length > 0"
                 >
                 <i class="fa fa-trash"></i>
             </a>
-            
-            <div class="btn-group" role="group">
-                <a href="<?php echo base_url("groups/export/?{$str_filters}") ?>" class="btn btn-light" title="Exportar registros encontrados a Excel">
-                    <i class="fa fa-file-excel"></i> Exportar
-                </a>
-            </div>
         </div>
         
         <div class="col mb-2">

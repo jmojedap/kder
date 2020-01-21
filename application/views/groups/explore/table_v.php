@@ -7,80 +7,62 @@
         $cl_col['teacher'] = 'd-none d-md-table-cell d-lg-table-cell';
 ?>
 
-<table class="table bg-white" cellspacing="0">
-
-    <thead>
-        <th width="10px">
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="check_all" name="check_all">
-                <label class="custom-control-label" for="check_all">
-                    <span class="text-hide">-</span>
-                </label>
-            </div>
-        </th>
-        <th width="50px;"  class="<?php echo $cl_col['id'] ?>">ID</th>
-        
-        <th class="w100p"></th>
-        
-        <th class="<?php echo $cl_col['title'] ?>">Título</th>
-        <th class="<?php echo $cl_col['level'] ?>">Nivel</th>
-        <th class="<?php echo $cl_col['qty_students'] ?>">Estudiantes</th>
-        <th class="<?php echo $cl_col['teacher'] ?>">Asignado a</th>
-
-        <th width="35px"></th>
-    </thead>
-
-    <tbody>
-        <?php foreach ($elements->result() as $row_element){ ?>
-            <?php
-                $qty_students = $this->Db_model->num_rows('group_user', "group_id = {$row_element->id}");
-                $teacher_name = $this->App_model->name_user($row_element->teacher_id);
-            ?>
-            <tr id="row_<?php echo $row_element->id ?>">
+<div class="table-responsive">
+    <table class="table table-hover bg-white">
+        <thead>
+            <th width="46px">
+                <div class="checkbox-custom checkbox-primary">
+                    <input type="checkbox" @click="select_all" v-model="all_selected">
+                    <label for="inputUnchecked"></label>
+                </div>
+            </th>
+            <th class="w100p"></th>
+            <th class="<?php echo $cl_col['level'] ?>">Nivel</th>
+            <th class="<?php echo $cl_col['teacher'] ?>">
+                Profesor
+            </th>
+            <th class="<?php echo $cl_col['qty_students'] ?>">
+                Estudiantes
+            </th>
+            
+            <th width="50px"></th>
+        </thead>
+        <tbody>
+            <tr v-for="(element, key) in list" v-bind:id="`row_` + element.id">
                 <td>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input check_row" data-id="<?php echo $row_element->id ?>" id="check_<?php echo $row_element->id ?>">
-                        <label class="custom-control-label" for="check_<?php echo $row_element->id ?>">
-                            <span class="text-hide">-</span>
-                        </label>
+                    <div class="checkbox-custom checkbox-primary">
+                        <input type="checkbox" v-model="selected" v-bind:value="element.id">
+                        <label for="inputUnchecked"></label>
                     </div>
                 </td>
                 
-                <td class="<?php echo $cl_col['id'] ?>"><?php echo $row_element->id ?></td>
-                
-                <td>
-                    <a href="#" onclick="load_cf('groups/students/<?php echo $row_element->id ?>')" class="btn btn-primary w100p">
-                        <?php echo $row_element->name ?>
+                <td class="<?php echo $cl_col['title'] ?>">
+                    <a v-bind:href="`<?php echo base_url("groups/students/") ?>` + element.id" class="btn btn-primary w100p">
+                        {{ element.name }}
                     </a>
                 </td>
 
-                <td class="<?php echo $cl_col['title'] ?>">
-                    <?php echo $row_element->title ?>
-                </td>
-
                 <td class="<?php echo $cl_col['level'] ?>">
-                    <?php echo $arr_levels[$row_element->level] ?>
-                </td>
-
-                <td class="<?php echo $cl_col['qty_students'] ?>">
-                    <?php echo $qty_students ?>
+                    {{ element.level | level_name }}
                 </td>
 
                 <td class="<?php echo $cl_col['teacher'] ?>">
-                    <?php echo $teacher_name ?>
+                    <a v-bind:href="`<?php echo base_url("users/profile/") ?>` + element.teacher_id" class="">
+                        {{ element.teacher_name }}
+                    </a>
                 </td>
 
+                <td class="<?php echo $cl_col['qty_students'] ?>">
+                    {{ element.qty_students }}
+                    <i class="fa fa-exclamation-triangle text-warning" v-show="element.qty_students <= 0"></i>
+                </td>
+                
                 <td>
-                    <button class="btn btn-light btn-sm btn_more" data-row_id="<?php echo $row_element->id ?>">
-                        <i class="fa fa-info-circle"></i>
+                    <button class="btn btn-light btn-sm w27p" data-toggle="modal" data-target="#detail_modal" @click="set_current(key)">
+                        <i class="fa fa-info"></i>
                     </button>
                 </td>
             </tr>
-            <tr class="collapse more" id="more_<?php echo $row_element->id ?>">
-                <td colspan="7">
-                    aquí más información del grupo
-                </td>
-            </tr>
-        <?php } //foreach ?>
-    </tbody>
-</table>  
+        </tbody>
+    </table>
+</div>

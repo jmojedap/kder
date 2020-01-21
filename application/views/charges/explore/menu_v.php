@@ -1,11 +1,11 @@
 <?php
     $app_cf_index = $this->uri->segment(1) . '_' . $this->uri->segment(2);
     
-    $cl_nav_2['charges_explore'] = '';
-    $cl_nav_2['charges_add'] = '';
+    $cl_nav_2['groups_explore'] = '';
+    $cl_nav_2['groups_add'] = '';
     
     $cl_nav_2[$app_cf_index] = 'active';
-    //if ( $app_cf_index == 'charges_import_e' ) { $cl_nav_2['charges_import'] = 'active'; }
+    //if ( $app_cf_index == 'groups_import_e' ) { $cl_nav_2['groups_import'] = 'active'; }
 ?>
 
 <script>
@@ -14,24 +14,23 @@
     var sections_rol = [];
     
     sections.explore = {
-        'icon': 'fa fa-list-alt',
+        'icon': 'fa fa-search',
         'text': 'Explorar',
-        'class': '<?php echo $cl_nav_2['charges_explore'] ?>',
-        'cf': 'charges/explore'
+        'class': '<?php echo $cl_nav_2['groups_explore'] ?>',
+        'cf': 'groups/explore'
     };
 
     sections.add = {
         'icon': 'fa fa-plus',
         'text': 'Nuevo',
-        'class': '<?php echo $cl_nav_2['charges_add'] ?>',
-        'cf': 'charges/add'
+        'class': '<?php echo $cl_nav_2['groups_add'] ?>',
+        'cf': 'groups/add'
     };
     
     //Secciones para cada rol
     sections_rol.dvlp = ['explore', 'add'];
     sections_rol.admn = ['explore', 'add'];
     sections_rol.edtr = ['explore', 'add'];
-    sections_rol.prpt = ['explore', 'add'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_rol[app_r]) 

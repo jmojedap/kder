@@ -34,16 +34,10 @@
         </div>
     </div>
 
-    <div class="form-group row <?php echo $adv_filters_cl['i'] ?>">
+    <div class="form-group row <?php echo $adv_filters_cl['plc'] ?>">
         <div class="col-md-9">
-            <?php echo form_dropdown('i', $options_institution, $filters['i'], 'class="form-control" title="Filtrar por institución"'); ?>
+            <?php echo form_dropdown('plc', $options_place, $filters['plc'], 'class="form-control" title="Filtrar ciudad"'); ?>
         </div>
-        <label for="i" class="col-md-3 control-label">Institución</label>
-    </div>
-    <div class="form-group row <?php echo $adv_filters_cl['y'] ?>">
-        <div class="col-md-9">
-            <?php echo form_dropdown('y', $options_generation, $filters['y'], 'class="form-control" title="Filtrar por año generación"'); ?>
-        </div>
-        <label for="y" class="col-md-3 control-label">Año generación</label>
+        <label for="a" class="col-md-3 control-label">Ciudad</label>
     </div>
 </form>

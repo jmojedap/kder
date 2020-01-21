@@ -20,7 +20,7 @@ class Users extends CI_Controller{
     
 //EXPLORE
 //---------------------------------------------------------------------------------------------------
-        
+
     function explore()
     {        
         //Datos básicos de la exploración
@@ -33,33 +33,16 @@ class Users extends CI_Controller{
             $data['arr_roles'] = $this->Item_model->arr_cod('category_id = 58');
             
         //Cargar vista
-            //$this->App_model->view(TPL_ADMIN, $data);
             $this->App_model->view(TPL_ADMIN, $data);
     }
 
-    /**
-     * AJAX
-     * Devuelve JSON, que incluye string HTML de la tabla de exploración para la
-     * página $num_page, y los filtros enviados por post
-     * 
-     * @param type $num_page
-     */
-    function explore_table($num_page = 1)
+    function get($num_page = 1)
     {
-        //Datos básicos de la exploración
-            $data = $this->User_model->explore_table_data($num_page);
-        
-        //Arrays con valores para contenido en lista
-            $data['arr_roles'] = $this->Item_model->arr_cod('category_id = 58');
-        
-        //Preparar respuesta
-            $data['html'] = $this->load->view('users/explore/table_v', $data, TRUE);
-        
-        //Salida
-            $this->output->set_content_type('application/json')->set_output(json_encode($data));
-    }
+        $data = $this->User_model->get($num_page);
 
-    
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
 
     /**
      * AJAX JSON

@@ -1,27 +1,25 @@
-<?php    
-    //Clases filters
-    foreach ( $adv_filters as $filter )
-    {
-        $adv_filters_cl[$filter] = 'not_filtered';
-    }
+<?php
+    $filters_style = ( strlen($str_filters) > 0 ) ? '' : 'display: none;' ;
 ?>
 
-<form accept-charset="utf-8" id="search_form" method="POST">
+<form accept-charset="utf-8" method="POST" id="search_form" @submit.prevent="get_list">
     <div class="form-group row">
         <div class="col-md-9">
             <div class="input-group mb-2">
                 <input
-                    role="text"
+                    place="text"
                     name="q"
                     class="form-control"
-                    placeholder="Buscar usuario"
+                    placeholder="Buscar"
                     autofocus
-                    title="Buscar usuario"
-                    value="<?php echo $filters['q'] ?>"
+                    title="Buscar"
+                    v-model="filters.q"
+                    v-on:change="get_list"
                     >
                 <div class="input-group-append" title="Buscar">
-                    <button type="button" class="btn btn-secondary btn-block" id="alternar_avanzada" title="Búsqueda avanzada">
-                        <i class="fa fa-chevron-down"></i>
+                    <button type="button" class="btn btn-secondary btn-block" v-on:click="toggle_filters" title="Búsqueda avanzada">
+                        <i class="fa fa-chevron-up" v-show="showing_filters"></i>
+                        <i class="fa fa-chevron-down" v-show="!showing_filters"></i>
                     </button>
                 </div>
             </div>
@@ -33,11 +31,12 @@
             </button>
         </div>
     </div>
-
-    <div class="form-group row <?php echo $adv_filters_cl['role'] ?>">
-        <div class="col-md-9">
-            <?php echo form_dropdown('role', $options_role, $filters['role'], 'class="form-control" title="Filtrar por rol de usuario"'); ?>
+    <div id="adv_filters" style="<?php echo $filters_style ?>">
+        <div class="form-group row">
+            <div class="col-md-9">
+                <?php echo form_dropdown('role', $options_role, $filters['role'], 'class="form-control" title="Filtrar por rol" v-model="filters.role"'); ?>
+            </div>
+            <label for="type" class="col-md-3 control-label align-middle">Rol</label>
         </div>
-        <label for="a" class="col-md-3 control-label">Rol</label>
     </div>
 </form>

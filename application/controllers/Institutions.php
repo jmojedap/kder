@@ -20,8 +20,31 @@ class Institutions extends CI_Controller{
     
 //EXPLORE
 //---------------------------------------------------------------------------------------------------
-        
+
     function explore()
+    {        
+        //Datos básicos de la exploración
+            $data = $this->Institution_model->explore_data(1);
+        
+        //Opciones de filtros de búsqueda
+            $data['options_place'] = $this->App_model->options_place('type_id = 4', 'cr', 'Todas');
+            
+        //Arrays con valores para contenido en lista
+            //$data['arr_levels'] = $this->Item_model->arr_cod('category_id = 3');
+            
+        //Cargar vista
+            $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+    function get($num_page = 1)
+    {
+        $data = $this->Institution_model->get($num_page);
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    function explore_ant()
     {        
         //Datos básicos de la exploración
             $data = $this->Institution_model->explore_data(1);
@@ -78,38 +101,12 @@ class Institutions extends CI_Controller{
         
         $this->output->set_content_type('application/json')->set_output(json_encode($result));
     }
-    
-    /**
-     * Exporta el result de la búsqueda a un file de Excel
-     */
-    function export()
-    {
-        //Cargando
-            $this->load->model('Search_model');
-            $this->load->library('excel');
-        
-        //Datos de consulta, construyendo array de búsqueda
-            $filters = $this->Search_model->busqueda_array();
-            $results_total = $this->Institution_model->search($filters); //Para calcular el total de results
-        
-        //Preparar datos
-            $datos['nombre_hoja'] = 'Institutions';
-            $datos['query'] = $results_total;
-            
-        //Preparar file
-            $objeto_file = $this->excel->file_query($datos);
-        
-        $data['objeto_file'] = $objeto_file;
-        $data['nombre_file'] = date('Ymd_His'). '_users'; //save our workbook as this file name
-        
-        $this->load->view('common/download_excel_v', $data);
-    }
 
     /**
      * Listado de instituciones filtradas por unos criterios de búsqueda
      * 2019-11-27
      */
-    function get($num_page = 1)
+    function get_ant($num_page = 1)
     {
         //Paginación
             $data['num_page'] = $num_page;                      //Número de la página de datos que se está consultado

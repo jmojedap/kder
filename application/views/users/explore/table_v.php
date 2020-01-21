@@ -1,100 +1,66 @@
 <?php
-    //Clases columnas
-        $cl_col['id'] = 'd-none d-md-table-cell d-lg-table-cell';
-        $cl_col['role'] = 'd-none d-md-table-cell d-lg-table-cell';
-        $cl_col['status'] = 'd-none d-md-table-cell d-lg-table-cell';
-        $cl_col['email'] = 'd-none d-md-table-cell d-lg-table-cell';
-
-    //Status
-        $arr_status[0] = '<i class="far fa-circle text-danger"></i>';
-        $arr_status[1] = '<i class="fa fa-check-circle text-success"></i>';
+    $cl_col['title'] = 'd-none d-md-table-cell d-lg-table-cell';
+    $cl_col['status'] = 'd-none d-md-table-cell d-lg-table-cell';
+    $cl_col['image'] = 'd-none d-md-table-cell d-lg-table-cell';
+    $cl_col['role'] = 'd-none d-md-table-cell d-lg-table-cell';
+    $cl_col['email'] = 'd-none d-md-table-cell d-lg-table-cell';
 ?>
 
-<table class="table bg-white" cellspacing="0">
-
-    <thead>
-        <th width="10px">
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="check_all" name="check_all">
-                <label class="custom-control-label" for="check_all">
-                    <span class="text-hide">-</span>
-                </label>
-            </div>
-        </th>
-        <th width="50px;"  class="<?php echo $cl_col['id'] ?>">ID</th>
-        <th width="50px;"></th>
-        <th>Nombre</th>
-        
-        <th class="<?php echo $cl_col['status'] ?>">Estado</th>
-        <th class="<?php echo $cl_col['role'] ?>">Rol</th>
-        <th class="<?php echo $cl_col['email'] ?>" style="min-width: 200px;">Correo electrónico</th>
-        <th width="35px"></th>
-    </thead>
-
-    <tbody>
-        <?php foreach ($elements->result() as $row_element){ ?>
-            <?php
-                $att_img = $this->App_model->att_img_user($row_element, 'sm_');
-            ?>
-
-            <tr id="row_<?php echo $row_element->id ?>">
+<div class="table-responsive">
+    <table class="table table-hover bg-white">
+        <thead>
+            <th width="46px">
+                <div class="checkbox-custom checkbox-primary">
+                    <input type="checkbox" @click="select_all" v-model="all_selected">
+                    <label for="inputUnchecked"></label>
+                </div>
+            </th>
+            <th class="<?php echo $cl_col['image'] ?>" width="50px"></th>
+            <th class="<?php echo $cl_col['title'] ?>">Nombre</th>
+            <th class="<?php echo $cl_col['status'] ?>">Estado</th>
+            <th class="<?php echo $cl_col['role'] ?>">Rol</th>
+            <th class="<?php echo $cl_col['role'] ?>">Correo</th>
+            <th width="50px"></th>
+        </thead>
+        <tbody>
+            <tr v-for="(element, key) in list" v-bind:id="`row_` + element.id">
                 <td>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input check_row" data-id="<?php echo $row_element->id ?>" id="check_<?php echo $row_element->id ?>">
-                        <label class="custom-control-label" for="check_<?php echo $row_element->id ?>">
-                            <span class="text-hide">-</span>
-                        </label>
+                    <div class="checkbox-custom checkbox-primary">
+                        <input type="checkbox" v-model="selected" v-bind:value="element.id">
+                        <label for="inputUnchecked"></label>
                     </div>
                 </td>
-                
-                <td class="<?php echo $cl_col['id'] ?>"><?php echo $row_element->id ?></td>
-
-                <td>
-                    <a href="<?php echo base_url("users/profile/{$row_element->id}") ?>">
+                <td class="<?php echo $cl_col['image'] ?>">
+                    <a v-bind:href="`<?php echo base_url("users/profile/") ?>` + element.id" class="">
                         <img
-                            alt="<?php echo $att_img['alt'] ?>"
-                            src="<?php echo $att_img['src'] ?>"
-                            onerror="<?php echo $att_img['onerror'] ?>"
-                            width="50px"
+                            v-bind:src="`<?php echo URL_UPLOADS ?>` + element.src_thumbnail"
                             class="rounded-circle"
-                            >
+                            v-bind:alt="element.id"
+                            width="40px"
+                            onerror="this.src='<?php echo URL_IMG ?>users/sm_user.png'"
+                        >
                     </a>
                 </td>
-                
-                <td>
-                    <a href="#" onclick="load_cf('users/profile/<?php echo $row_element->id ?>')">
-                        <?php echo $row_element->display_name ?>
+                <td class="<?php echo $cl_col['title'] ?>">
+                    <a v-bind:href="`<?php echo base_url("users/profile/") ?>` + element.id + `/` + element.username">
+                        {{ element.display_name }}
                     </a>
                     &middot;
-                    <span class="text-muted"><?php echo $row_element->username ?></span>
-                    <br/>
-                    <span class="text-muted">doc </span><?php echo $row_element->id_number ?>
-                    &middot;
-                    <span class="text-muted">cod </span><?php echo $row_element->code ?>
+                    <span class="text-muted">
+                        {{ element.username }}
+                    </span>
                 </td>
-
-                <td class="<?php echo $cl_col['status'] ?>">
-                    <?php echo $arr_status[$row_element->status] ?>
+                <td class="<?php echo $cl_col['status'] ?>" v-html="$options.filters.status_icon(element.status)">
+                    
                 </td>
-                
-                <td class="<?php echo $cl_col['role'] ?>">
-                    <?php echo $arr_roles[$row_element->role] ?>
-                </td>
-
-                <td class="<?php echo $cl_col['email'] ?>">
-                    <?php echo $row_element->email ?>
-                </td>
+                <td class="<?php echo $cl_col['role'] ?>">{{ element.role | role_name }}</td>
+                <td class="<?php echo $cl_col['email'] ?>">{{ element.email }}</td>
                 <td>
-                    <button class="btn btn-light btn-sm btn_more" data-row_id="<?php echo $row_element->id ?>">
-                        <i class="fa fa-info-circle"></i>
+                    <button class="btn btn-light btn-sm w27p" data-toggle="modal" data-target="#detail_modal" @click="set_current(key)">
+                        <i class="fa fa-info"></i>
                     </button>
                 </td>
             </tr>
-            <tr class="collapse more" id="more_<?php echo $row_element->id ?>">
-                <td colspan="7">
-                    aquí más información del usuario
-                </td>
-            </tr>
-        <?php } //foreach ?>
-    </tbody>
-</table>  
+        </tbody>
+    </table>
+</div>
