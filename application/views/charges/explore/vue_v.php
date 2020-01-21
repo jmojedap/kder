@@ -2,7 +2,7 @@
 <script>
 // Variables
 //-----------------------------------------------------------------------------
-    var level_names = '';
+    var type_names = <?php echo json_encode($arr_types) ?>;
 
 // Filters
 //-----------------------------------------------------------------------------
@@ -10,6 +10,12 @@
     Vue.filter('currency', function (value) {
         if (!value) return '';
         value = '$ ' + new Intl.NumberFormat().format(value);
+        return value;
+    });
+
+    Vue.filter('type_name', function (value) {
+        if (!value) return '';
+        value = type_names[value];
         return value;
     });
 

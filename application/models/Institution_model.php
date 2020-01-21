@@ -265,7 +265,7 @@ class Institution_model extends CI_Model{
                 $this->db->update('institution', $arr_row);
             
             //Preparar resultado
-                $data['message'] = 'Los datos de la institución fueron guardados';
+                $data['message'] = 'Datos guardados';
         }
         
         return $data;

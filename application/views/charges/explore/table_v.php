@@ -2,6 +2,7 @@
     //Clases columnas
         $cl_col['id'] = 'd-none d-md-table-cell d-lg-table-cell';
         $cl_col['title'] = '';
+        $cl_col['type'] = '';
         $cl_col['charge_value'] = 'd-none d-md-table-cell d-lg-table-cell';
         $cl_col['excerpt'] = 'd-none d-md-table-cell d-lg-table-cell';
 ?>
@@ -16,6 +17,9 @@
                 </div>
             </th>
             <th>Nombre</th>
+            <th class="<?php echo $cl_col['type'] ?>">
+                Tipo
+            </th>
             <th class="<?php echo $cl_col['charge_value'] ?>">Valor</th>
             <th class="<?php echo $cl_col['excerpt'] ?>">Descripción</th>
             
@@ -34,6 +38,10 @@
                     <a v-bind:href="`<?php echo base_url("charges/info/") ?>` + element.id">
                         {{ element.title }}
                     </a>
+                </td>
+
+                <td class="<?php echo $cl_col['type'] ?>">
+                    {{ element.charge_type_id | type_name }}
                 </td>
 
                 <td class="<?php echo $cl_col['charge_value'] ?>">

@@ -34,7 +34,7 @@
                 </p>
             </div>
             <div class="modal-footer">
-                    <a class="btn btn-primary w100p" v-bind:href="`<?php echo base_url('groups/info/') ?>` + element.id">Abrir</a>
+                    <a class="btn btn-primary w100p" v-bind:href="`<?php echo base_url('institutions/info/') ?>` + element.id">Abrir</a>
                     <button type="button" class="btn btn-secondary w100p" data-dismiss="modal">Cerrar</button>
             </div>
         </div>

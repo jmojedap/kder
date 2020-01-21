@@ -1,26 +1,17 @@
+<?php
+    $options_city = $this->App_model->options_place('type_id = 4', 'cr', 'Ciudad');
+    $options_id_number_type = $this->Item_model->options('category_id = 53 AND filters LIKE "%organization%"', 'Tipo documento');
+?>
+
 <?php $this->load->view('assets/summernote') ?>
 <?php $this->load->view('assets/bs4_chosen') ?>
 
-<script>
-$(document).ready(function(){
-        $('#field-about').summernote({
-            lang: 'es-ES',
-            height: 300
-        });
-    });
-</script>
-
-<?php
-    $options_city = $this->App_model->options_place('type_id = 4', 'cr', 'Ciudad');
-    $options_id_number_type = $this->Item_model->options('category_id = 53', 'Tipo documento');
-?>
-
 <div id="app_edit">
-    <div class="card" style="max-width: 800px; margin: 0 auto;">
+    <div class="card center_box_750">
         <div class="card-body">
             <form id="edit_form" accept-charset="utf-8" @submit.prevent="validate_send">
                 <div class="form-group row">
-                    <label for="name" class="col-md-4 controle-label">Nombre comercial *</label>
+                    <label for="name" class="col-md-4 col-form-label text-right">Nombre comercial</label>
                     <div class="col-md-8">
                         <input
                             id="field-name"
@@ -36,7 +27,7 @@ $(document).ready(function(){
                 </div>
 
                 <div class="form-group row">
-                    <label for="full_name" class="col-md-4 controle-label">Nombre Completo / Razón social *</label>
+                    <label for="full_name" class="col-md-4 col-form-label text-right">Nombre Completo / Razón social</label>
                     <div class="col-md-8">
                         <input
                             id="field-full_name"
@@ -50,7 +41,7 @@ $(document).ready(function(){
                 </div>
 
                 <div class="form-group row">
-                    <label for="email" class="col-md-4 controle-label">Correo electrónico *</label>
+                    <label for="email" class="col-md-4 col-form-label text-right">Correo electrónico</label>
                     <div class="col-md-4">
                         <input
                             id="field-email"
@@ -60,7 +51,7 @@ $(document).ready(function(){
                             placeholder="Correo electrónico"
                             title="Correo electrónico"
                             v-model="form_values.email"
-                            v-on:change="validate_form"
+                            v-on:change="validate"
                             >
                         <span class="invalid-feedback">
                             El correo electrónico escrito ya fue registrado para otra institución
@@ -69,7 +60,7 @@ $(document).ready(function(){
                 </div>
 
                 <div class="form-group row" id="form-group_id_number">
-                    <label for="id_number" class="col-md-4 controle-label">Documento / NIT *</label>
+                    <label for="id_number" class="col-md-4 col-form-label text-right">Documento / Tipo</label>
                     <div class="col-md-4">
                         <input
                             id="field-id_number"
@@ -81,7 +72,7 @@ $(document).ready(function(){
                             required
                             pattern=".{5,}[0-9]"
                             v-model="form_values.id_number"
-                            v-on:change="validate_form"
+                            v-on:change="validate"
                             >
                         <span class="invalid-feedback">
                             El número de documento escrito ya fue registrado para otra institución
@@ -93,7 +84,7 @@ $(document).ready(function(){
                 </div>
 
                 <div class="form-group row">
-                    <label for="generation" class="col-md-4 col-form-label">Año generación actual</label>
+                    <label for="generation" class="col-md-4 col-form-label text-right">Año generación actual</label>
                     <div class="col-md-8">
                         <input
                             type="number"
@@ -112,7 +103,7 @@ $(document).ready(function(){
                 </div>
 
                 <div class="form-group row">
-                    <label for="address" class="col-md-4 col-form-label">Dirección *</label>
+                    <label for="address" class="col-md-4 col-form-label text-right">Dirección</label>
                     <div class="col-md-8">
                         <input
                             type="text"
@@ -128,14 +119,14 @@ $(document).ready(function(){
                 </div>
 
                 <div class="form-group row">
-                    <label for="city_id" class="col-md-4 controle-label">Ciudad ubicación *</label>
+                    <label for="city_id" class="col-md-4 control-form-label text-right">Ciudad ubicación</label>
                     <div class="col-md-8">
                         <?php echo form_dropdown('city_id', $options_city, $row->city_id, 'id="field-city_id" class="form-control form-control-chosen" required') ?>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="celular" class="col-md-4 controle-label">Celular</label>
+                    <label for="celular" class="col-md-4 col-form-label text-right">Celular</label>
                     <div class="col-md-8">
                         <input
                             id="field-phone_number"
@@ -185,8 +176,8 @@ $(document).ready(function(){
             }
         },
         methods: {
-            validate_form: function() {
-                axios.post(app_url + 'institutions/validate_form/' + this.row_id, $('#edit_form').serialize())
+            validate: function() {
+                axios.post(app_url + 'institutions/validate/' + this.row_id, $('#edit_form').serialize())
                 .then(response => {
                     //this.formulario_valido = response.data.status;
                     this.validation = response.data.validation;
@@ -196,7 +187,7 @@ $(document).ready(function(){
                 });
             },
             validate_send: function () {
-                axios.post(app_url + 'institutions/validate_form/' + this.row_id, $('#edit_form').serialize())
+                axios.post(app_url + 'institutions/validate/' + this.row_id, $('#edit_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                     this.send_form();

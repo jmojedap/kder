@@ -30,7 +30,7 @@ class Charges extends CI_Controller{
             $data['options_generation'] = $this->App_model->options_generation();
             
         //Arrays con valores para contenido en lista
-            //$data['arr_levels'] = $this->Item_model->arr_cod('category_id = 3');
+            $data['arr_types'] = $this->Item_model->arr_cod('category_id = 172');
             
         //Cargar vista
             $this->App_model->view(TPL_ADMIN, $data);
@@ -113,7 +113,7 @@ class Charges extends CI_Controller{
 
     /**
      * Formulario para la edición de los datos de un cobro.
-     * 2016-11-05
+     * 2019-11-05
      */
     function edit($charge_id)
     {
@@ -141,7 +141,7 @@ class Charges extends CI_Controller{
 
     /**
      * Todos los grupos de una institución y generación, correspondiente a un cobro
-     * Si el grupo está asociado al cobro, charte_id será > 0.
+     * Si el grupo está asociado al cobro, charge_id será > 0.
      * 2019-12-10
      */
     function get_groups($charge_id)

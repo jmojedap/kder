@@ -36,6 +36,9 @@ class Users extends CI_Controller{
             $this->App_model->view(TPL_ADMIN, $data);
     }
 
+    /**
+     * Listado de usuarios filtrados por un criterio de búsqueda, páginado
+     */
     function get($num_page = 1)
     {
         $data = $this->User_model->get($num_page);
