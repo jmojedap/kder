@@ -24,8 +24,7 @@ class File_model extends CI_Model{
     /**
      * Realiza el upload de un file al servidor, crea el registro asociado en
      * la tabla "file".
-     * 
-     * @return type
+     * 2020-02-22
      */
     function upload($file_id = NULL)
     {
@@ -52,7 +51,7 @@ class File_model extends CI_Model{
         else    //No se cargó
         {
             $data = array('status' => 0, 'message' => 'El archivo no fue cargado');
-            $data['html'] = $this->upload->display_errors('<div role="alert" class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><i class="fa fa-warning"></i> ', '</div>');
+            $data['html'] = $this->upload->display_errors('<div class="alert alert-danger alert-dismissible fade show" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>', '</div>');
         }
         
         return $data;

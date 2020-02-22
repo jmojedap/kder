@@ -1,46 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Document</title>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<style>
+	.day{
+		width: 15px;
+		height: 15px;
+		display: block;
+		border: 1px solid #666;
+		text-align: center;
+		margin-bottom: 1px;
+		font-size: 0.5em;
+		float: left;
+	}
+</style>
 
-	<style>
-		body{
-			background-color: #ff4845;
-		}
+<?php
+	$week_day = 1;
+	$date_1 = '2019-01-29';
+	$date = '2019-01-29';
+?>
 
-		div.center_box{
-			max-width: 360px;
-			height: 480px;
-			margin: 0px auto;
-			margin-top: 30px;
-			background-color: white;
-			-webkit-border-radius: 5px;
-			-moz-border-radius: 5px;
-			border-radius: 5px;
-			text-align: center;
-		}
-	</style>
-
-</head>
-
-
-<body>
-	<div class="container">
-		<div class="center_box card">
-			<div class="card-body">
-				<a href="<?php echo base_url() ?>" class="">
-					<img src="<?php echo URL_IMG . 'app/start_logo.png' ?>" alt="logo app" class="animated zoomIn">
-				</a>
-				<?php $this->load->view('accounts/login_v') ?>
-			</div>
+<div class="calendar">
+	<?php foreach ( $days->result() as $period ) { ?>
+		<?php if ( $week_day != $period->week_day ) { ?>
+			<br>
+		<?php } ?>
+		<div class="day" title="<?php echo $period->id ?>">
+			<?php echo $period->day ?>
 		</div>
-	</div>
-</body>
-</html>
+
+		<?php
+			$week_day = $period->week_day;
+		?>
+	<?php } ?>
+</div>
+
+<table class="table">
+	<?php for ( $i=0; $i < 7; $i++ ) { ?>
+		<tr>
+			<?php for ( $j=0; $j < 21; $j+=7 ) { ?>
+				<?php $sum = $i + $j ?>
+				<td>
+					<?php echo $date; ?>
+				</td>
+				<?php
+					$mktime = strtotime(date("Y-m-d", strtotime($date)) . " +{$sum} days");
+					$date = date('Y-m-d', $mktime);
+				?>		
+			<?php } ?>
+		</tr>
+		<?php
+			$mktime = strtotime(date("Y-m-d", strtotime($date_1)) . " +{$i} days");
+			$date = date('Y-m-d', $mktime);
+		?>
+	<?php } ?>
+</table>
+
+<a v-bind:href="`<?php echo base_url("destino") ?>` + elemento" class="clase">
+	contenido
+</a>

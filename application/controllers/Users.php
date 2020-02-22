@@ -127,7 +127,7 @@ class Users extends CI_Controller{
      */ 
     function insert()
     {
-        $res_validation = $this->User_model->validate_row();
+        $res_validation = $this->User_model->validate();
         
         if ( $res_validation['status'] )
         {
@@ -194,9 +194,9 @@ class Users extends CI_Controller{
      * 
      * @param type $user_id
      */
-    function validate_row($user_id = NULL)
+    function validate($user_id = NULL)
     {
-        $data = $this->User_model->validate_row($user_id);
+        $data = $this->User_model->validate($user_id);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 

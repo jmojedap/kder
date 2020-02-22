@@ -80,7 +80,7 @@
                 id="field-id_number"
                 name="id_number"
                 class="form-control"
-                v-bind:class="{ 'is-invalid': ! validation.id_number_is_unique }"
+                v-bind:class="{ 'is-invalid': ! validation.id_number_unique }"
                 placeholder="Número de documento"
                 title="Solo números, sin puntos, debe tener al menos 5 dígitos"
                 required
@@ -106,7 +106,7 @@
                     id="field-username"
                     name="username"
                     class="form-control"
-                    v-bind:class="{ 'is-invalid': ! validation.username_is_unique }"
+                    v-bind:class="{ 'is-invalid': ! validation.username_unique }"
                     placeholder="username"
                     title="Puede contener letras y números, entre 6 y 25 caractéres, no debe contener espacios ni caracteres especiales"
                     required
@@ -150,11 +150,11 @@
 
     <div class="form-group row">
         <div class="offset-4 col-md-8">
-            <button class="btn btn-secondary w120p" type="button" v-on:click="toggle_show_form">
-                Cancelar
-            </button>
             <button class="btn btn-success w120p" type="submit">
                 Crear
+            </button>
+            <button class="btn btn-secondary w120p" type="button" v-on:click="toggle_show_form">
+                Cancelar
             </button>
         </div>
     </div>

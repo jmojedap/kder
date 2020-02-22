@@ -24,9 +24,7 @@
             <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
         </div>
         
-        <div class="form-group clearfix">
-            <a href="<?php echo base_url('accounts/recovery') ?>">¿Olvidaste los datos de tu cuenta?</a>
-        </div>
+        <hr>
         
         <div class="form-group">
             <a href="<?php echo $g_client->createAuthUrl(); ?>" class="btn btn_google btn-block">
@@ -45,6 +43,10 @@
     </div>
 
     <p>¿No tienes una cuenta? <a href="<?php echo base_url('accounts/signup') ?>">Regístrate</a></p>
+    <p>
+        <a href="<?php echo base_url('accounts/recovery') ?>">¿Olvidaste los datos de tu cuenta?</a>
+    </p>
+
 </div>
 
 <script>

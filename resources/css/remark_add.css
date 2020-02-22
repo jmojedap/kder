@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
+
+    #head_title{
+        color: #777;
+        font-family: 'Ubuntu', sans-serif;
+    }
+
+    #head_subtitle {
+        font-family: 'Ubuntu', sans-serif;
+        color: #007bff;
+    }

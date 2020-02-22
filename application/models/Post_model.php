@@ -1,7 +1,7 @@
 <?php
 class Post_model extends CI_Model{
 
-    function basic_data($post_id)
+    function basic($post_id)
     {
         $row = $this->Db_model->row_id('post', $post_id);
 
@@ -20,61 +20,37 @@ class Post_model extends CI_Model{
     
     /**
      * Insertar un registro en la tabla post.
-     * 
-     * @param type $arr_row
-     * @return type
+     * 2020-02-22
      */
     function insert($arr_row = NULL)
     {
         if ( is_null($arr_row) ) { $arr_row = $this->arr_row('insert'); }
+
+        $data = array('status' => 0);
         
         //Insert in table
             $this->db->insert('post', $arr_row);
-            $post_id = $this->db->insert_id();
+            $data['saved_id'] = $this->db->insert_id();
 
-        //Set result
-            $result['status'] = 1;
-            $result['post_id'] = $post_id;
-            $result['message'] = 'Post creado';
-        
-        return $result;
-    }
-
-    /**
-     * Actualiza un registro en la tabla.
-     * 
-     * @param type $arr_row
-     * @return type
-     */
-    function update($post_id, $arr_row)
-    {   
-        $arr_row = $this->Db_model->arr_row();
-
-        //Actualizar
-            $this->db->where('id', $post_id);
-            $this->db->update('post', $arr_row);
-
-        $data = array('status' => 1, 'message' => 'Los cambios fueron guardados');
+        if ( $data['saved_id'] > 0 ) { $data['status'] = 1; }
         
         return $data;
     }
 
     /**
      * Actualiza un registro en la tabla post
-     * 2019-11-29
+     * 2020-02-22
      */
-    function save($post_id)
+    function update($post_id)
     {
-        $data = array('status' => 0, 'message' => 'Ocurrió un error al guardar');
+        $data = array('status' => 0);
 
         //Guardar
             $arr_row = $this->Db_model->arr_row($post_id);
             $saved_id = $this->Db_model->save('post', "id = {$post_id}", $arr_row);
 
         //Actualizar resultado
-            if ( $saved_id > 0 ){
-                $data = array('status' => 1, 'message' => 'Los cambios fueron guardados', 'saved_id' => $saved_id);
-            }
+            if ( $saved_id > 0 ){ $data = array('status' => 1); }
         
         return $data;
     }
@@ -120,53 +96,39 @@ class Post_model extends CI_Model{
     function explore_data($num_page)
     {
         //Data inicial, de la tabla
-            $data = $this->explore_table_data($num_page);
+            $data = $this->get($num_page);
         
         //Elemento de exploración
             $data['controller'] = 'posts';                      //Nombre del controlador
+            $data['cf'] = 'posts/explore/';                      //Nombre del controlador
             $data['views_folder'] = 'posts/explore/';           //Carpeta donde están las vistas de exploración
-            $data['head_title'] = 'Posts';
-                
-        //Otros
-            $data['search_num_rows'] = $this->search_num_rows($data['filters']);
-            $data['head_subtitle'] = $this->search_num_rows($data['filters']);
-            $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $data['per_page']);   //Cantidad de páginas
-
+            
         //Vistas
+            $data['head_title'] = 'Posts';
+            $data['head_subtitle'] = $data['search_num_rows'];
             $data['view_a'] = $data['views_folder'] . 'explore_v';
             $data['nav_2'] = $data['views_folder'] . 'menu_v';
         
         return $data;
     }
 
-    /**
-     * Array con los datos para la tabla de la vista de exploración
-     * 
-     * @param type $num_page
-     * @return string
-     */
-    function explore_table_data($num_page)
+    function get($num_page)
     {
-        //Elemento de exploración
-            $data['cf'] = 'posts/explore/';     //CF Controlador Función
-            $data['adv_filters'] = array('type');
-        
-        //Paginación
-            $data['num_page'] = $num_page;                  //Número de la página de datos que se está consultado
-            $data['per_page'] = 15;                           //Cantidad de registros por página
-            $offset = ($num_page - 1) * $data['per_page'];    //Número de la página de datos que se está consultado
-        
+        //Referencia
+            $per_page = 10;                             //Cantidad de registros por página
+            $offset = ($num_page - 1) * $per_page;      //Número de la página de datos que se está consultado
+
         //Búsqueda y Resultados
             $this->load->model('Search_model');
             $data['filters'] = $this->Search_model->filters();
+            $elements = $this->search($data['filters'], $per_page, $offset);    //Resultados para página
+        
+        //Cargar datos
+            $data['list'] = $elements->result();
             $data['str_filters'] = $this->Search_model->str_filters();
-            $data['elements'] = $this->Post_model->search($data['filters'], $data['per_page'], $offset);    //Resultados para página
-            
-        //Otros
-            $data['search_num_rows'] = $this->Post_model->search_num_rows($data['filters']);
-            $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $data['per_page']);   //Cantidad de páginas
-            $data['all_selected'] = '-'. $this->pml->query_to_str($data['elements'], 'id');           //Para selección masiva de todos los elementos de la página
-            
+            $data['search_num_rows'] = $this->search_num_rows($data['filters']);
+            $data['max_page'] = ceil($this->pml->if_zero($data['search_num_rows'],1) / $per_page);   //Cantidad de páginas
+
         return $data;
     }
     
@@ -260,10 +222,6 @@ class Post_model extends CI_Model{
         if ( $role <= 2 ) 
         {   //Desarrollador, todos los post
             $condition = 'id > 0';
-        } elseif ( $role == 10 )  {   //Directivo
-            $condition = 'institution_id = ' . $this->session->userdata('institution_id');
-        } else {
-            $condition = 'id = 0';
         }
         
         return $condition;
@@ -298,10 +256,10 @@ class Post_model extends CI_Model{
     {
         $arr_row = $this->input->post();
         $arr_row['editor_id'] = $this->session->userdata('user_id');
-        $arr_row['slug'] = $this->Db_model->unique_slug($arr_row['post_name'], 'post');
         
         if ( $process == 'insert' )
         {
+            $arr_row['slug'] = $this->Db_model->unique_slug($arr_row['post_name'], 'post');
             $arr_row['creator_id'] = $this->session->userdata('user_id');
         }
         
@@ -378,6 +336,98 @@ class Post_model extends CI_Model{
             $this->db->update('post', $arr_row);
         }
         
+        return $data;
+    }
+
+// IMPORTAR
+//-----------------------------------------------------------------------------}
+
+    /**
+     * Array con configuración de la vista de importación según el tipo de usuario
+     * que se va a importar.
+     * 2019-11-20
+     */
+    function import_config($type)
+    {
+        $data = array();
+
+        if ( $type == 'general' )
+        {
+            $data['help_note'] = 'Se importarán posts a la base de datos.';
+            $data['help_tips'] = array();
+            $data['template_file_name'] = 'f50_posts.xlsx';
+            $data['sheet_name'] = 'posts';
+            $data['head_subtitle'] = 'Importar';
+            $data['destination_form'] = "posts/import_e/{$type}";
+        }
+
+        return $data;
+    }
+
+    /**
+     * Importa posts a la base de datos
+     * 2020-02-22
+     */
+    function import($arr_sheet)
+    {
+        $data = array('quan_imported' => 0, 'results' => array());
+        
+        foreach ( $arr_sheet as $key => $row_data )
+        {
+            $data_import = $this->import_post($row_data);
+            $data['quan_imported'] += $data_import['status'];
+            $data['results'][$key + 2] = $data_import;
+        }
+        
+        return $data;
+    }
+
+    /**
+     * Realiza la importación de una fila del archivo excel. Valida los campos, crea registro
+     * en la tabla post, y agrega al grupo asignado.
+     * 2020-02-22
+     */
+    function import_post($row_data)
+    {
+        //Validar
+            $error_text = '';
+                            
+            if ( strlen($row_data[0]) == 0 ) { $error_text = 'La casilla Nombre está vacía. '; }
+            if ( strlen($row_data[1]) == 0 ) { $error_text .= 'La casilla Cod Tipo está vacía. '; }
+            if ( strlen($row_data[2]) == 0 ) { $error_text .= 'La casilla Resumen está vacía. '; }
+            if ( strlen($row_data[14]) == 0 ) { $error_text .= 'La casilla Fecha Publicación está vacía. '; }
+
+        //Si no hay error
+            if ( $error_text == '' )
+            {
+                $arr_row['post_name'] = $row_data[0];
+                $arr_row['type_id'] = $row_data[1];
+                $arr_row['excerpt'] = $row_data[2];
+                $arr_row['content'] = $row_data[3];
+                $arr_row['content_json'] = $row_data[4];
+                $arr_row['keywords'] = $row_data[5];
+                $arr_row['code'] = $row_data[6];
+                $arr_row['place_id'] = $this->pml->if_strlen($row_data[7], 0);
+                $arr_row['related_1'] = $this->pml->if_strlen($row_data[8], 0);
+                $arr_row['related_2'] = $this->pml->if_strlen($row_data[9], 0);
+                $arr_row['image_id'] = $this->pml->if_strlen($row_data[10], 0);
+                $arr_row['text_1'] = $this->pml->if_strlen($row_data[11], '');
+                $arr_row['text_2'] = $this->pml->if_strlen($row_data[12], '');
+                $arr_row['status'] = $this->pml->if_strlen($row_data[13], 2);
+                $arr_row['published_at'] = $this->pml->dexcel_dmysql($row_data[14]);
+                $arr_row['slug'] = $this->Db_model->unique_slug($row_data[0], 'post');
+                
+                $arr_row['creator_id'] = $this->session->userdata('user_id');
+                $arr_row['editor_id'] = $this->session->userdata('user_id');
+
+                //Guardar en tabla user
+                $data_insert = $this->insert($arr_row);
+
+                $data = array('status' => 1, 'text' => '', 'imported_id' => $data_insert['saved_id']);
+            } else {
+                $data = array('status' => 0, 'text' => $error_text, 'imported_id' => 0);
+            }
+
         return $data;
     }
 }

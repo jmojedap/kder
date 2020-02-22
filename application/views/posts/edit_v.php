@@ -3,7 +3,10 @@
 <?php
     $arr_fields = array(
         'status',
+        'slug',
+        'keywords',
         'parent_id',
+        'place_id',
         'related_1',
         'text_1',
         'text_2',
@@ -36,7 +39,7 @@
             success: function(response){
                 if ( response.status == 1 )
                 {
-                    toastr['success'](response.message);
+                    toastr['success']('Guardado');
                 }
             }
         });
@@ -44,36 +47,41 @@
     });
 </script>
 
-<div id="edit_post" style="max-width: 1500px; margin: 0px auto;">
+<div id="edit_post">
     <form accept-charset="utf-8" method="POST" id="post_form">
         <div class="row">
             <div class="col-md-7">
-                <textarea name="content" id="field-content" class="form-control"><?php echo $row->content ?></textarea>
-                <br>
+                <div class="form-group">
+                    <label for="excerpt">excerpt</label>
+                    <textarea name="excerpt" id="field-excerpt" rows="3" class="form-control"><?php echo $row->excerpt ?></textarea>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="content" class="form-control-label">content</label>
+                    <textarea name="content" id="field-content" class="form-control"><?php echo $row->content ?></textarea>
+                </div>
 
                 <div class="form-group">
                     <label for="content_json">content json</label>
                     <textarea name="content_json" id="field-content_json" rows="3" class="form-control"><?php echo $row->content_json ?></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="excerpt">excerpt</label>
-                    <textarea name="excerpt" id="field-excerpt" rows="3" class="form-control"><?php echo $row->excerpt ?></textarea>
-                </div>
 
             </div>
             <div class="col-md-5">
                 <div class="form-group row">
-                    <div class="col-md-9 offset-md-3">
+                    <div class="col-md-8 offset-md-4">
                         <button class="btn btn-success btn-block" type="submit">
+                            <i class="fa fa-save"></i>
                             Guardar
                         </button>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="post_name" class="col-md-3 col-form-label">Post Name</label>
-                    <div class="col-md-9">
+                    <label for="post_name" class="col-md-4 col-form-label text-right">Post Name</label>
+                    <div class="col-md-8">
                         <input
                             type="text"
                             name="post_name"
@@ -87,16 +95,32 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="type_id" class="col-md-3 col-form-label">Type</label>
-                    <div class="col-md-9">
+                    <label for="type_id" class="col-md-4 col-form-label text-right">Type</label>
+                    <div class="col-md-8">
                         <?php echo form_dropdown('type_id', $options_type, $row->type_id, 'class="form-control"') ?>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="published_at" class="col-md-4 col-form-label text-right">Fecha publicación</label>
+                    <div class="col-md-8">
+                        <input
+                            type="text"
+                            id="field-published_at"
+                            name="published_at"
+                            required
+                            class="form-control"
+                            placeholder="Fecha publicación"
+                            title="Fecha publicación"
+                            value="<?php echo $row->published_at ?>"
+                            >
                     </div>
                 </div>
 
                 <?php foreach ( $arr_fields as $field ) { ?>
                     <div class="form-group row">
-                        <label for="<?php echo $field ?>" class="col-md-3 col-form-label"><?php echo str_replace('_',' ',$field) ?></label>
-                        <div class="col-md-9">
+                        <label for="<?php echo $field ?>" class="col-md-4 col-form-label text-right"><?php echo str_replace('_',' ',$field) ?></label>
+                        <div class="col-md-8">
                             <input
                                 type="text"
                                 name="<?php echo $field ?>"

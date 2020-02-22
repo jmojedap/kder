@@ -1,17 +1,17 @@
 <div class="row">
-    <div class="col col-md-7">
+    <div class="col col-md-6">
         <div class="card">
             <div class="card-body">      
                 <?= form_open_multipart($destination_form) ?>
                     <div class="form-group row">
-                        <label for="file" class="col-md-3">Archivo</label>
+                        <label for="file" class="col-md-3 col-form-label text-right">Archivo</label>
                         <div class="col-md-9">
                             <input type="file" class="form-control" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="sheet_name" class="col-md-3 control-label">Hoja de cálculo</label>
+                        <label for="sheet_name" class="col-md-3 col-form-label text-right">Hoja de cálculo</label>
                         <div class="col-md-9">
                             <input
                                 type="text"
@@ -27,7 +27,7 @@
                 
                     <div class="form-group row">
                         <div class="col-md-9 offset-md-3">
-                            <button class="btn btn-primary">Importar</button>
+                            <button class="btn btn-primary w120p">Importar</button>
                         </div>
                     </div>
                 <?= form_close() ?>
@@ -35,7 +35,7 @@
         </div>
     </div>
     
-    <div class="col col-md-5">
+    <div class="col col-md-6">
         <div class="card">
             <div class="card-body">
                 <h5>¿En qué consiste este proceso?</h5>

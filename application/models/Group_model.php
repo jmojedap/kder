@@ -277,11 +277,19 @@ class Group_model extends CI_Model{
         return $arr_row;
     }
     
-    function deletable()
+    /**
+     * Establece permiso para eliminar un grupo
+     */
+    function deletable($group_id)
     {
         $deletable = 0;
-        if ( $this->session->userdata('role') <= 1 ) { $deletable = 1; }
+        $row = $this->Db_model->row_id('groups', $group_id);
 
+        //echo $row->institution_id . ' = ' . $this->session->userdata('institution_id');
+
+        if ( $this->session->userdata('role') <= 1 ) { $deletable = 1; }
+        if ( $row->institution_id == $this->session->userdata('institution_id') ) { $deletable = 1; }
+        
         return $deletable;
     }
 
@@ -291,7 +299,7 @@ class Group_model extends CI_Model{
      */
     function delete($group_id)
     {
-        $quan_deleted = 0;
+        $qty_deleted = 0;
 
         if ( $this->deletable($group_id) ) 
         {
@@ -306,10 +314,10 @@ class Group_model extends CI_Model{
                 $this->db->where('id', $group_id);
                 $this->db->delete('groups');
 
-            $quan_deleted = $this->db->affected_rows();
+            $qty_deleted = $this->db->affected_rows();
         }
 
-        return $quan_deleted;
+        return $qty_deleted;
     }
 
 // GESTIÓN DE CAMPOS DEPENDIENTES
@@ -489,16 +497,17 @@ class Group_model extends CI_Model{
 
     /**
      * Agrega estudiante un grupo
-     * 2019-11-06
+     * 2020-02-10
      */
     function add_student($group_id, $user_id)
     {
         $data = array('status' => 0, 'ug_id' => '0');   //Resultado inicial por defecto
 
         //Construir registro para tabla grupo_usuerio
-        $arr_row = $this->Db_model->arr_row(FALSE);
         $arr_row['group_id'] = $group_id;
         $arr_row['user_id'] = $user_id;
+        $arr_row['editor_id'] = $this->session->userdata('user_id');
+        $arr_row['creator_id'] = $this->session->userdata('user_id');
 
         //Guardar
         $condition = "group_id = {$arr_row['group_id']} AND user_id = {$arr_row['user_id']}";

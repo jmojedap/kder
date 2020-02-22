@@ -1,28 +1,40 @@
+
+body{
+    height: 100vh;
+    padding-top: 20px;
+    background: rgb(255,81,78);
+    background: -moz-linear-gradient(0deg, rgba(255,81,78,1) 0%, rgba(232,55,52,1) 100%);
+    background: -webkit-linear-gradient(0deg, rgba(255,81,78,1) 0%, rgba(232,55,52,1) 100%);
+    background: linear-gradient(0deg, rgba(255,81,78,1) 0%, rgba(232,55,52,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff514e",endColorstr="#e83734",GradientType=1);
+}
+
+div.start_container{
+    background-color: white;
+    padding: 30px;
+    width: 320px;
+    margin: 0 auto;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #e83734;
+}
+
+div.start_content{
+    max-width: 280px;
+    margin: 0 auto;
+}
+
+div.start_links{
+    font-size: 0.9em;
+}
+
 .btn_google{
-    background-color: #FFFFFF;
-    border: 1px solid #d9d9d9;
+    background-color: #FAFAFA;
+    border: 1px solid #DDDDDD;
 }
 
 .btn_google:hover{
-    background-color: #DDD;
-    border: 1px solid #d1d1d1;
-}
-
-.page-register:before {
-  background-image: url("../templates/remark/base/assets/examples/images/login-3.jpg"); }
-
-.page-register form {
-    margin: 22px auto;
-    width: 302px;
-}
-
-@media (max-width: 479.98px) {
-  .page-register form {
-    width: auto; } }
-
-.inicio_marco{
-    background-color: rgba(50,50,50,0.75);
-    padding: 20px;
-    border-radius: 4px;
-    
+    background-color: #f1f1f1;
+    border: 1px solid #AAAAAA;
 }

@@ -48,24 +48,22 @@ class Groups extends CI_Controller{
 
     /**
      * AJAX JSON
-     * Eliminar un conjunto de posts seleccionados
+     * Eliminar un conjunto de posts seleccionados. Limintada para roles 11 y 13.
      */
     function delete_selected()
     {
+        $data = array('status' => 0, 'qty_deleted' => 0);
         $selected = explode(',', $this->input->post('selected'));
-        $qty_deleted = 0;
         
         foreach ( $selected as $row_id ) 
         {
-            $qty_deleted += $this->Group_model->delete($row_id);
+            $data['qty_deleted'] += $this->Group_model->delete($row_id);
         }
-        
-        $result['status'] = 1;
-        $result['message'] = 'Cantidad eliminados : ' . $qty_deleted;
-        $result['qty_deleted'] = $qty_deleted;
+
+        if ( $data['qty_deleted'] > 0 ) { $data['status'] = 1;}
         
         //Salida
-        $this->output->set_content_type('application/json')->set_output(json_encode($result));
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
     
@@ -181,7 +179,7 @@ class Groups extends CI_Controller{
      */
     function insert_student($group_id)
     {
-        $data = array('status' => 0, 'message' => 'El estudiante no fue creado');
+        $data = array('status' => 0);
 
         $this->load->model('User_model');
         $data_insert = $this->User_model->insert();

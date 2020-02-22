@@ -1,31 +1,4 @@
-<script>
-// Variables
-//-----------------------------------------------------------------------------
-    user_id = '<?php echo $row->id ?>';
-
-// Document Ready
-//-----------------------------------------------------------------------------
-
-    $(document).ready(function(){
-        $('#btn_set_activation_key').click(function(){
-            set_activation_key();
-        });
-    });
-
-// Functions
-//-----------------------------------------------------------------------------
-
-    function set_activation_key(){
-        $.ajax({        
-            type: 'POST',
-            url: app_url + 'users/set_activation_key/' + user_id,
-            success: function(response){
-                $('#activation_key').html(app_url + 'accounts/activation/' + response);
-                toastr['success']('Se actualizó la clave de activación');
-            }
-        });
-    }
-</script>
+<?php $this->load->view('users/profile/activation_script_v') ?>
 
 <?php 
     //Imagen
@@ -49,30 +22,15 @@
                         Acceder
                     </a>
                 <?php } ?>
-                
-                <?php if ($this->session->userdata('rol_id') != $this->session->userdata('user_id') ) { ?>
-                    <a href="<?php echo base_url("messages/create_conversation/{$row->id}") ?>" role="button" class="btn btn-primary" title="Enviar mensaje a este usuario">
-                        <i class="fa fa-envelope"></i>
-                        Mensaje
-                    </a>
-                <?php } ?>
 
             </div>
             <div class="card-footer">
                 <div class="row no-space">
-                    <div class="col-4">
+                    <div class="col-12">
                         <?php if ( strlen($row->birth_date) > 0 ) { ?>
                             <strong class="profile-stat-count"><?php echo $this->pml->age($row->birth_date); ?></strong>
                             <span>Años</span>
                         <?php } ?>
-                    </div>
-                    <div class="col-4">
-                        <strong class="profile-stat-count">180</strong>
-                        <span>Following</span>
-                    </div>
-                    <div class="col-4">
-                        <strong class="profile-stat-count"><?php echo $qty_login ?></strong>
-                        <span>Sesiones</span>
                     </div>
                 </div>
             </div>

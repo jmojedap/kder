@@ -44,43 +44,6 @@ class Institutions extends CI_Controller{
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
-    function explore_ant()
-    {        
-        //Datos básicos de la exploración
-            $data = $this->Institution_model->explore_data(1);
-        
-        //Opciones de filtros de búsqueda
-            $data['options_place'] = $this->App_model->options_place('type_id = 4', 'cr', 'Todas');
-            
-        //Arrays con valores para contenido en lista
-            //$data['arr_roles'] = $this->Item_model->arr_cod('category_id = 58');
-            
-        //Cargar vista
-            $this->App_model->view(TPL_ADMIN, $data);
-    }
-
-    /**
-     * AJAX
-     * Devuelve JSON, que incluye string HTML de la tabla de exploración para la
-     * página $num_page, y los filtros enviados por post
-     * 
-     * @param type $num_page
-     */
-    function explore_table($num_page = 1)
-    {
-        //Datos básicos de la exploración
-            $data = $this->Institution_model->explore_table_data($num_page);
-        
-        //Arrays con valores para contenido en lista
-            //$data['arr_roles'] = $this->Item_model->arr_cod('category_id = 58');
-        
-        //Preparar respuesta
-            $data['html'] = $this->load->view('institutions/explore/table_v', $data, TRUE);
-        
-        //Salida
-            $this->output->set_content_type('application/json')->set_output(json_encode($data));
-    }
-
     /**
      * AJAX JSON
      * Eliminar un conjunto de posts seleccionados

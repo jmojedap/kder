@@ -2,15 +2,15 @@
 <script>
 // Variables
 //-----------------------------------------------------------------------------
-    var level_names = <?php echo json_encode($arr_levels); ?>;
+    var type_names = <?php echo json_encode($arr_types); ?>;
 
 // Filters
 //-----------------------------------------------------------------------------
 
-    Vue.filter('level_name', function (value) {
-        if (!value) return '';
-        value = level_names[value];
-        return value;
+    Vue.filter('type_name', function (value) {
+        if (!value) return '-';
+        new_value = type_names[value];
+        return new_value;
     })
 
 // App
@@ -66,18 +66,14 @@
                 
                 axios.post(app_url + this.controller + '/delete_selected', params)
                 .then(response => {
+                    this.hide_deleted();
+                    this.selected = [];
                     if ( response.data.status == 1 )
                     {
-                        this.hide_deleted();
                         toastr_cl = 'info';
-                        //toastr_text = 'Registros eliminados';
-                        toastr_text = 'Registros eliminados: ' + response.data.qty_deleted;
-                        this.selected = [];
-                    } else {
-                        toastr_cl = 'error';
-                        toastr_text = 'Error. No se eliminaron los registros.';
+                        toastr_text = 'Registros eliminados';
+                        toastr[toastr_cl](toastr_text);
                     }
-                    toastr[toastr_cl](toastr_text);
                 })
                 .catch(function (error) {
                     console.log(error);

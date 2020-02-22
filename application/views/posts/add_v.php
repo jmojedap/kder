@@ -1,37 +1,38 @@
-<?php //$this->load->view('assets/select2'); ?>
-
 <?php 
     $options_type = $this->Item_model->options('category_id = 33', 'Tipo de post');
 ?>
 
 <div id="add_post">
-    <div class="card" style="max-width: 750px; margin: 0 auto;">
+    <div class="card center_box_750">
         <div class="card-body">
             <form id="add_form" accept-charset="utf-8" @submit.prevent="send_form">
                 <div class="form-group row">
-                    <div class="offset-md-4 col-md-8 col-sm-12">
-                        <button class="btn btn-success btn-block" type="submit">
-                            Crear
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="post_name" class="col-md-4 control-label">Nombre post</label>
+                    <label for="post_name" class="col-md-4 col-form-label text-right">Nombre post</label>
                     <div class="col-md-8">
-                        <input id="field-post_name" name="post_name" class="form-control" placeholder="Nombre post"
-                            title="Nombre del post" required autofocus v-model="form_values.post_name">
+                        <input
+                            id="field-post_name" class="form-control"
+                            name="post_name"
+                            placeholder="Nombre post" title="Nombre del post"
+                            required autofocus
+                            v-model="form_values.post_name">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="type_id" class="col-md-4 control-label">Tipo</label>
+                    <label for="type_id" class="col-md-4 col-form-label text-right">Tipo</label>
                     <div class="col-md-8">
                         <?php echo form_dropdown('type_id', $options_type, '', 'class="form-control" required v-model="form_values.type"') ?>
                     </div>
                 </div>
-            </form>
 
+                <div class="form-group row">
+                    <div class="offset-md-4 col-md-8 col-sm-12">
+                        <button class="btn btn-success w120p" type="submit">
+                            Crear
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -62,9 +63,7 @@
             </div>
         </div>
     </div>
-
 </div>
-
 
 <?php
 $this->load->view('posts/add_vue_v');

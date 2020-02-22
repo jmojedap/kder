@@ -76,7 +76,13 @@ class App extends CI_Controller {
 
     function test()
     {
-        $this->load->view('app/test_v');
+        $data['view_a'] = 'app/test_v';
+        $data['head_title'] = 'Calendario';
+
+        $this->load->model('Period_model');
+        $data['days'] = $this->Period_model->weekly_lapse('2019-12-30', '2021-01-03');
+
+        $this->load->view(TPL_ADMIN, $data);
     }
 
     function maps()

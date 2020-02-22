@@ -38,14 +38,12 @@
     };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['info', 'edit', 'image'];
-    sections_rol.admn = ['info'];
-    sections_rol.mdlo = ['info', 'edit'];
+    sections_rol.dvlp = ['info', 'image', 'edit'];
+    sections_rol.admn = ['info', 'image', 'edit'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_rol[app_r]) 
     {
-        //console.log(sections_rol[rol][key_section]);
         var key = sections_rol[app_r][key_section];   //Identificar elemento
         nav_2.push(sections[key]);    //Agregar el elemento correspondiente
     }

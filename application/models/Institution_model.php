@@ -87,11 +87,12 @@ class Institution_model extends CI_Model{
         $role_filter = $this->role_filter($this->session->userdata('user_id'));
 
         //Construir consulta
-            $this->db->select('institution.id, name, email, institution.city_id, place_name, address');
+            $this->db->select('institution.id, name, institution.email, institution.city_id, place_name, address, owner_id, user.display_name AS owner_name');
             $this->db->join('place', 'institution.city_id = place.id');
+            $this->db->join('user', 'institution.owner_id = user.id');
         
         //Crear array con términos de búsqueda
-            $words_condition = $this->Search_model->words_condition($filters['q'], array('name', 'full_name', 'email'));
+            $words_condition = $this->Search_model->words_condition($filters['q'], array('name', 'full_name', 'institution.email'));
             if ( $words_condition )
             {
                 $this->db->where($words_condition);
@@ -103,7 +104,7 @@ class Institution_model extends CI_Model{
                 $order_type = $this->pml->if_strlen($filters['ot'], 'ASC');
                 $this->db->order_by($filters['o'], $order_type);
             } else {
-                $this->db->order_by('edited_at', 'DESC');
+                $this->db->order_by('institution.edited_at', 'DESC');
             }
             
         //Filtros

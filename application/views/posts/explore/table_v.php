@@ -1,57 +1,53 @@
 <?php
     //Clases columnas
-        $col_cl['status'] = 'd-none d-md-table-cell d-lg-table-cell';
-        $col_cl['type'] = 'd-none d-md-table-cell d-lg-table-cell';
-        $col_cl['description'] = 'd-none d-md-table-cell d-lg-table-cell';
-        $col_cl['edited'] = 'd-none d-lg-table-cell d-xl-table-cell';
-        $col_cl['editor'] = 'd-none d-lg-table-cell d-xl-table-cell';
-
+        $cl_col['id'] = 'd-none d-md-table-cell d-lg-table-cell';
+        $cl_col['title'] = 'd-none d-md-table-cell d-lg-table-cell';
+        $cl_col['type'] = 'd-none d-md-table-cell d-lg-table-cell';
+        $cl_col['excerpt'] = 'd-none d-md-table-cell d-lg-table-cell';
 ?>
 
-<table class="table bg-white" cellspacing="0">
-    <thead>
-            <tr class="">
-                <th width="10px" class="">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="check_all" name="check_all">
-                        <label class="custom-control-label" for="check_all">
-                            <span class="text-hide">-</span>
-                        </label>
-                    </div>
-                </th>
-                <th width="50px;">ID</th>
-                <th width="250px">Post</th>
-                <th class="<?php echo $col_cl['type'] ?>">Tipo</th>
-            </tr>
+<div class="table-responsive">
+    <table class="table table-hover bg-white">
+        <thead>
+            <th width="46px">
+                <div class="checkbox-custom checkbox-primary">
+                    <input type="checkbox" @click="select_all" v-model="all_selected">
+                    <label for="inputUnchecked"></label>
+                </div>
+            </th>
+            <th>Nombre</th>
+            <th class="<?php echo $cl_col['type'] ?>">Tipo</th>
+            <th class="<?php echo $cl_col['excerpt'] ?>">Resumen</th>
+            
+            <th width="50px"></th>
         </thead>
-    <tbody>
-        <?php foreach ($elements->result() as $row_element){ ?>
-            <?php
-                
-            ?>
-
-            <tr id="row_<?php echo $row_element->id ?>">
-                <td class="">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input check_row" data-id="<?php echo $row_element->id ?>" id="check_<?php echo $row_element->id ?>">
-                        <label class="custom-control-label" for="check_<?php echo $row_element->id ?>">
-                            <span class="text-hide">-</span>
-                        </label>
+        <tbody>
+            <tr v-for="(element, key) in list" v-bind:id="`row_` + element.id">
+                <td>
+                    <div class="checkbox-custom checkbox-primary">
+                        <input type="checkbox" v-model="selected" v-bind:value="element.id">
+                        <label for="inputUnchecked"></label>
                     </div>
                 </td>
                 
-                <td><?php echo $row_element->id ?></td>
-                
-                <td>
-                    <a href="#" onclick="load_cf('posts/info/<?php echo $row_element->id ?>')">
-                        <?php echo $row_element->post_name ?>
+                <td class="<?php echo $cl_col['title'] ?>">
+                    <a v-bind:href="`<?php echo base_url("posts/info/") ?>` + element.id">
+                        {{ element.post_name }}
                     </a>
                 </td>
-
-                <td class="<?php echo $col_cl['type'] ?>">
-                    <?php echo $arr_types[$row_element->type_id] ?>
+                <td class="<?php echo $cl_col['type'] ?>">
+                    {{ element.type_id | type_name  }}
+                </td>
+                <td class="<?php echo $cl_col['excerpt'] ?>">
+                    {{ element.excerpt }}
+                </td>
+                
+                <td>
+                    <button class="btn btn-light btn-sm w27p" data-toggle="modal" data-target="#detail_modal" @click="set_current(key)">
+                        <i class="fa fa-info"></i>
+                    </button>
                 </td>
             </tr>
-        <?php } //foreach ?>
-    </tbody>
-</table>  
+        </tbody>
+    </table>
+</div>

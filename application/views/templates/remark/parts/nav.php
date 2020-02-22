@@ -1,3 +1,18 @@
+
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
+
+    #head_title{
+        color: #777;
+        font-family: 'Ubuntu', sans-serif;
+    }
+
+    #head_subtitle {
+        font-family: 'Ubuntu', sans-serif;
+        color: #007bff;
+    }
+</style>
+
 <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
 
     <div class="navbar-header">
@@ -29,12 +44,16 @@
         <!-- Navbar Collapse -->
         <div class="collapse navbar-collapse navbar-collapse-toolbar" id="site-navbar-collapse">
             <div class="float-left" style="padding-top: 12px; font-size: 2em;">
-                <span id="head_title" style="color: #777">
+                <span id="head_title">
                     <?php echo $head_title ?>
                 </span>
-                <small style="color: #007bff" id="head_subtitle">
-                    <?php echo $head_subtitle ?>
-                </small>
+                <span class="text-muted"></span>
+                <?php if ( isset($head_subtitle) ) { ?>
+                    &middot;
+                    <small id="head_subtitle">
+                        <?php echo $head_subtitle ?>
+                    </small>
+                <?php } ?>
             </div>
             <!-- Navbar Toolbar Right -->
             <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">

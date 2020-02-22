@@ -78,11 +78,21 @@
     <div class="col-md-4">
         <img
             id="user_image"
-            class="img-rounded img-bordered img-bordered-primary"
+            class="img-rounded img-bordered img-bordered-primary mb-2"
             src="<?php echo $att_img['src'] ?>"
             alt=""
             width="100%"
             >
+            <?php if ( $row->image_id > 0 ) { ?>
+                <a class="btn btn-default" id="btn_crop" href="<?php echo base_url("accounts/edit/crop") ?>">
+                    <i class="fa fa-crop"></i>
+                    Recortar
+                </a>
+                <button class="btn btn-warning" id="btn_remove_image">
+                    <i class="fa fa-times"></i>
+                    Quitar imagen
+                </button>
+            <?php } ?>
     </div>
     <div class="col-md-8">
         <div class="card">
@@ -90,8 +100,8 @@
                 <form accept-charset="utf-8" method="POST" id="file_form">
 
                     <div class="form-group row">
-                        <label for="field_file" class="col-sm-2 control-label">Archivo *</label>
-                        <div class="col-sm-10">
+                        <label for="field_file" class="col-md-4 col-form-label text-right">Archivo imagen</label>
+                        <div class="col-md-8">
                             <input
                                 type="file"
                                 name="file_field"
@@ -105,22 +115,13 @@
                     </div>
 
                     <div class="form-group row">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button class="btn btn-success" type="submit">Cargar</button>
+                        <div class="offset-md-4 col-md-4">
+                            <button class="btn btn-success w120p" type="submit">Cargar</button>
                         </div>
                     </div>
                 </form>
-                <hr/>
-                <?php if ( $row->image_id > 0 ) { ?>
-                    <a class="btn btn-default" id="btn_crop" href="<?php echo base_url("accounts/edit/crop") ?>">
-                        <i class="fa fa-crop"></i>
-                        Recortar
-                    </a>
-                    <button class="btn btn-warning" id="btn_remove_image">
-                        <i class="fa fa-times"></i>
-                        Quitar imagen
-                    </button>
-                <?php } ?>
+                
+                
             </div>
         </div>
     

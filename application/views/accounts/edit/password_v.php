@@ -5,8 +5,8 @@
             <form accept-charset="utf-8" id="password_form" @submit.prevent="send_form">
                 
                 <div class="form-group row">
-                    <label for="current_password" class="col-md-5 control-label">
-                        <span class="float-right">Contraseña actual</span>
+                    <label for="current_password" class="col-md-5 col-form-label text-right">
+                        Contraseña actual
                     </label>
                     <div class="col-md-7">
                         <input
@@ -23,8 +23,8 @@
                 </div>
                 
                 <div class="form-group row">
-                        <label for="password" class="col-md-5 control-label">
-                            <span class="float-right">Nueva contraseña</span>
+                        <label for="password" class="col-md-5 col-form-label text-right">
+                            Nueva contraseña
                         </label>
                         <div class="col-md-7">
                             <input
@@ -41,8 +41,8 @@
                     </div>
             
                 <div class="form-group row">
-                    <label for="passconf" class="col-md-5 control-label">
-                        <span class="float-right">Confirmar contraseña</span>
+                    <label for="passconf" class="col-md-5 col-form-label text-right">
+                        Confirmar contraseña
                     </label>
                     <div class="col-md-7">
                         <input

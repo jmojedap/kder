@@ -2,6 +2,7 @@
     //Clases columnas
         $cl_col['id'] = 'd-none d-md-table-cell d-lg-table-cell';
         $cl_col['title'] = 'd-none d-md-table-cell d-lg-table-cell';
+        $cl_col['owner'] = 'd-none d-md-table-cell d-lg-table-cell';
         $cl_col['city'] = 'd-none d-md-table-cell d-lg-table-cell';
 ?>
 
@@ -15,6 +16,7 @@
                 </div>
             </th>
             <th>Nombre</th>
+            <th class="<?php echo $cl_col['owner'] ?>">Propietario</th>
             <th class="<?php echo $cl_col['city'] ?>">Ciudad</th>
             
             <th width="50px"></th>
@@ -31,6 +33,11 @@
                 <td class="<?php echo $cl_col['title'] ?>">
                     <a v-bind:href="`<?php echo base_url("institutions/info/") ?>` + element.id">
                         {{ element.name }}
+                    </a>
+                </td>
+                <td class="<?php echo $cl_col['owner'] ?>">
+                    <a v-bind:href="`<?php echo base_url("users/profile/") ?>` + element.owner_id">
+                        {{ element.owner_name }}
                     </a>
                 </td>
 

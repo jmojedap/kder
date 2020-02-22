@@ -46,7 +46,7 @@ class Accounts extends CI_Controller {
                 $data['head_title'] = APP_NAME;
                 $data['view_a'] = 'accounts/login_v';
                 $data['g_client'] = $this->Account_model->g_client(); //Para botón login con Google
-                $this->load->view('templates/bootstrap/start_v', $data);
+                $this->load->view('templates/remark/start_v', $data);
             }
     }
 
@@ -99,7 +99,7 @@ class Accounts extends CI_Controller {
         $data['with_email'] = $with_email;
         $data['g_client'] = $this->Account_model->g_client(); //Para botón login con Google
         $data['recaptcha_sitekey'] = K_RCSK;    //config/constants.php
-        $this->load->view('templates/bootstrap/start_v', $data);
+        $this->load->view('templates/remark/start_v', $data);
     }
     
     /**
@@ -283,9 +283,7 @@ class Accounts extends CI_Controller {
                 $data['message'] = 'La contraseña se cambió exitosamente.';
             }
         
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($data));   
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));   
     }
 
 //RECUPERACIÓN DE CUENTAS
@@ -303,7 +301,7 @@ class Accounts extends CI_Controller {
         } else {
             $data['head_title'] = 'Restauración de contraseña';
             $data['view_a'] = 'accounts/recovery_v';
-            $this->load->view('templates/bootstrap/start_v', $data);
+            $this->load->view('templates/remark/start_v', $data);
         }
     }
 

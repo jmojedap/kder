@@ -250,7 +250,7 @@ class User_model extends CI_Model{
     function update($user_id, $arr_row)
     {
         $this->load->model('Account_model');
-        $data_validation = $this->validate_row($user_id, $arr_row);  //Validar datos
+        $data_validation = $this->validate($user_id, $arr_row);  //Validar datos
         
         $data = $data_validation;
         
@@ -328,7 +328,7 @@ class User_model extends CI_Model{
      * Valida datos de un user nuevo o existente, verificando validez respecto
      * a users ya existentes en la base de datos.
      */
-    function validate_row($user_id = NULL)
+    function validate($user_id = NULL)
     {
         $data = array('status' => 1, 'message' => 'Los datos de usuario son válidos');
         
@@ -357,7 +357,7 @@ class User_model extends CI_Model{
      */
     function username_validation($username, $user_id = null)
     {
-        $validation['username_is_unique'] = $this->Db_model->is_unique('user', 'username', $username, $user_id);
+        $validation['username_unique'] = $this->Db_model->is_unique('user', 'username', $username, $user_id);
         return $validation;
     }
 
@@ -368,7 +368,7 @@ class User_model extends CI_Model{
      */
     function email_validation($email, $user_id = null)
     {
-        $validation['email_is_unique'] = $this->Db_model->is_unique('user', 'email', $email, $user_id);
+        $validation['email_unique'] = $this->Db_model->is_unique('user', 'email', $email, $user_id);
 
         return $validation;
     }
@@ -379,7 +379,7 @@ class User_model extends CI_Model{
      */
     function id_number_validation($id_number, $user_id = null)
     {
-        $validation['id_number_is_unique'] = $this->Db_model->is_unique('user', 'id_number', $id_number, $user_id);
+        $validation['id_number_unique'] = $this->Db_model->is_unique('user', 'id_number', $id_number, $user_id);
         return $validation;
     }
 

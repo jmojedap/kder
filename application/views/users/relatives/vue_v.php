@@ -56,7 +56,7 @@
                 });   
             },
             validate_send: function () {
-                axios.post(app_url + 'users/validate_row/', $('#add_form').serialize())
+                axios.post(app_url + 'users/validate/', $('#add_form').serialize())
                 .then(response => {
                     if ( response.data.status == 1 ) {
                         this.send_form();
@@ -98,7 +98,7 @@
                 });
             },
             validate_form: function() {
-                axios.post(app_url + 'users/validate_row/', $('#add_form').serialize())
+                axios.post(app_url + 'users/validate/', $('#add_form').serialize())
                 .then(response => {
                     //this.form_valido = response.data.status;
                     this.validation = response.data.validation;

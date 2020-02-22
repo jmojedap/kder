@@ -41,14 +41,14 @@
                 $('#status_text').html('Enviando archivo');
             },
             success: function(response){
-                console.log(response.message);
-                ///*$('#status_text').html(response.message);
                 if ( response.status == 1 )
                 {
                     $('#post_image').attr('src', response.src);
                     $('#image_section').show();
+                    $('#image_form').hide();
                     $('#file_form')[0].reset();
-                    //window.location = app_url + 'posts/cropping/' + post_id;
+                } else{
+                    $('#upload_response').html(response.html);
                 }
             }
         });
@@ -61,11 +61,11 @@
             type: 'POST',
             url: app_url + 'posts/remove_image/' + post_id,
             success: function (response) {
-                console.log(response.status);
                 if ( response.status == 1 )
                 {
                     $('#post_image').attr('src', src_default);
                     $('#image_section').hide();
+                    $('#image_form').show();
                     toastr['info']('La imagen del post fue eliminada');
                 }
             }

@@ -79,11 +79,11 @@
                 </div>
             </div>
             
-            <button type="submit" class="btn btn-success btn-block">
+            <button type="submit" class="btn btn-success w120p">
                 Recortar
             </button>
 
-            <a class="btn btn-secondary btn-block" href="<?php echo base_url($back_destination) ?>">
+            <a class="btn btn-secondary w120p" href="<?php echo base_url($back_destination) ?>">
                 <i class="fa fa-arrow-left"></i>
                 No recortar
             </a>

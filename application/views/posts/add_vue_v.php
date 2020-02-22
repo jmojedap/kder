@@ -33,7 +33,7 @@
                     console.log('status: ' + response.data.message);
                     if ( response.data.status == 1 )
                     {
-                        this.row_id = response.data.post_id;
+                        this.row_id = response.data.saved_id;
                         this.clean_form();
                         $('#modal_created').modal();
                     }

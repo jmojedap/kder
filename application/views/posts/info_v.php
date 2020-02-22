@@ -22,26 +22,23 @@
                     <td>slug</td>
                     <td><?php echo $row->slug ?></td>
                 </tr>
+                <tr>
+                    <td>image_id</td>
+                    <td><?php echo $row->image_id ?></td>
+                </tr>
             </tbody>
         </table>
-    </div>
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-body">
-                <div>
-                    <h3>excerpt</h3>
-                    <?php echo $row->excerpt ?>
-                </div>
-                <div>
-                    <h3>content</h3>
-                    <?php echo $row->content ?>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
+
         <table class="table bg-white">
             <tbody>
+                <tr>
+                    <td>count comments</td>
+                    <td><?php echo $row->count_comments ?></td>
+                </tr>
+                <tr>
+                    <td>published at</td>
+                    <td><?php echo $row->published_at ?></td>
+                </tr>
                 <tr>
                     <td>editor_id</td>
                     <td><?php echo $row->editor_id ?></td>
@@ -60,5 +57,31 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h2><?php echo $row->post_name ?></h2>
+                <div>
+                    <h4 class="text-muted">content</h4>
+                    <?php echo $row->excerpt ?>
+                </div>
+                <hr>
+                <div>
+                    <h4 class="text-muted">content</h4>
+                    <?php echo $row->content ?>
+                </div>
+                <hr>
+                <div>
+                    <h4 class="text-muted">content json</h4>
+                    <?php echo $row->content_json ?>
+                </div>
+                <hr>
+                <div>
+                    <h4 class="text-muted">keywords:</h4>
+                    <?php echo $row->keywords ?>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

@@ -2,6 +2,7 @@
     $app_cf_index = $this->uri->segment(1) . '_' . $this->uri->segment(2);
     
     $cl_nav_2['posts_explore'] = '';
+    $cl_nav_2['posts_import'] = '';
     $cl_nav_2['posts_add'] = '';
     
     $cl_nav_2[$app_cf_index] = 'active';
@@ -14,10 +15,17 @@
     var sections_rol = [];
     
     sections.explore = {
-        'icon': 'fa fa-list-alt',
+        'icon': 'fa fa-search',
         'text': 'Explorar',
         'class': '<?php echo $cl_nav_2['posts_explore'] ?>',
         'cf': 'posts/explore'
+    };
+
+    sections.import = {
+        'icon': 'fa fa-upload',
+        'text': 'Importar',
+        'class': '<?php echo $cl_nav_2['posts_import'] ?>',
+        'cf': 'posts/import'
     };
 
     sections.add = {
@@ -28,8 +36,8 @@
     };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['explore', 'add'];
-    sections_rol.admn = ['explore', 'add'];
+    sections_rol.dvlp = ['explore', 'import', 'add'];
+    sections_rol.admn = ['explore', 'import', 'add'];
     sections_rol.edtr = ['explore', 'add'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
