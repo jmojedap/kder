@@ -6,11 +6,8 @@ class Accounts extends CI_Controller {
     function __construct() 
     {
         parent::__construct();
-        
         $this->load->model('Account_model');
-        
-        //Local time set
-        date_default_timezone_set("America/Bogota");
+        date_default_timezone_set("America/Bogota");    //Local time set
     }
 
     /**

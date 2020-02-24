@@ -1,5 +1,5 @@
 <script>
-    var random = '16073' + Math.floor(Math.random() * 100000);
+    /*var random = '16073' + Math.floor(Math.random() * 100000);
     var form_values = {};
     var form_values = {
         first_name: 'Nancy',
@@ -11,9 +11,9 @@
         //username: '',
         birth_date: '1990-06-13',
         gender: '01'
-    };
+    };*/
     
-    /*var form_values = {
+    var form_values = {
         first_name: '',
         last_name: '',
         display_name: '',
@@ -25,7 +25,7 @@
         city_id: '',
         birth_date: '1990-01-01',
         gender: '01'
-    };*/
+    };
     new Vue({
         el: '#app_relatives',
         created: function(){

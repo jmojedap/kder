@@ -239,14 +239,14 @@ class Users extends CI_Controller{
         
         $data_upload = $this->File_model->upload();
         
-        $data = array('status' => 0, 'message' => 'La imagen no fue asignada');
+        $data = $data_upload;
         if ( $data_upload['status'] )
         {
-            $this->User_model->remove_image($user_id);                              //Quitar image actual, si tiene una
-            $data = $this->User_model->set_image($user_id, $data_upload['row']->id);   //Asignar imagen nueva
+            $this->User_model->remove_image($user_id);                                  //Quitar image actual, si tiene una
+            $data = $this->User_model->set_image($user_id, $data_upload['row']->id);    //Asignar imagen nueva
         }
 
-        $this->output->set_content_type('application/json')->set_output(json_encode($data_upload));
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
     /**

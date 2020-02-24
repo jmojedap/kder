@@ -79,7 +79,7 @@
                         this.get_list();
                         /*this.row_id = response.data.saved_id;*/
                         this.clean_form();
-                        toastr['success']('El estudiante fue agregado al grupo');
+                        toastr['success']('Estudiante agregado');
                     }
                 })
                 .catch(function (error) {

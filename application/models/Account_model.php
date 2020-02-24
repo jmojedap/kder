@@ -5,10 +5,6 @@ class Account_model extends CI_Model{
     /**
      * Realiza la validación de login, user y password. Valida coincidencia
      * de password, y status del user.
-     * 
-     * @param type $userlogin
-     * @param type $password
-     * @return int
      */
     function validate_login($userlogin, $password)
     {
@@ -41,8 +37,8 @@ class Account_model extends CI_Model{
     function login_cookie()
     {
         $this->load->helper('cookie');
-        get_cookie('leli_sesion');
-        $rememberme = $this->input->cookie('lelisesionrc');
+        get_cookie('dekinder_sesion');
+        $rememberme = $this->input->cookie('dekindersesionrc');
 
         $condition = "activation_key = '{$rememberme}'";
         $row_user = $this->Db_model->row('user', $condition);
@@ -232,8 +228,6 @@ class Account_model extends CI_Model{
 
     /**
      * Set an activation key for user account recovery
-     * 
-     * @param type $user_id
      */
     function activation_key($user_id)
     {
@@ -408,7 +402,7 @@ class Account_model extends CI_Model{
             $this->email->initialize($config);
             $this->email->from('accounts@' . APP_DOMAIN, APP_NAME);
             $this->email->to($row_user->email);
-            $this->email->bcc('jmojedap@gmail.com, vebonit@gmail.com');
+            $this->email->bcc('jmojedap@gmail.com');
             $this->email->message($this->activation_message($user_id, $activation_type));
             $this->email->subject($subject);
             
@@ -416,11 +410,7 @@ class Account_model extends CI_Model{
     }
 
     /**
-     * Devuelve texto de la vista que se envía por email a un usuario para activación o restauración de su cuenta
-     * 
-     * @param type $user_id
-     * @param type $activation_type
-     * @return type
+     * Texto de la vista que se envía por email a un usuario para activación o restauración de su cuenta
      */
     function activation_message($user_id, $activation_type)
     {

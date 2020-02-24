@@ -1,5 +1,3 @@
-<?php $this->load->view('assets/select2'); ?>
-
 <?php 
     $role_options = $this->Item_model->options('category_id = 58 AND cod >= 10 AND cod < 20', 'Rol de usuario');
     $gender_options = $this->Item_model->options('category_id = 59 AND cod <= 2', 'Sexo');
@@ -11,7 +9,7 @@
         <input type="hidden" name="institution_id" value="<?php echo $this->session->userdata('institution_id'); ?>">
 
         <div class="form-group row">
-            <label for="first_name" class="col-md-4 control-label text-right">Nombres y Apellidos</label>
+            <label for="first_name" class="col-md-4 col-form-label text-right">Nombres | Apellidos</label>
             <div class="col-md-4">
                 <input
                     id="field-first_name"
@@ -38,14 +36,10 @@
         </div>
 
         <div class="form-group row">
-            <label for="display_name" class="col-md-4 control-label text-right">Mostrar como</label>
+            <label for="display_name" class="col-md-4 col-form-label text-right">Mostrar como</label>
             <div class="col-md-8">
                 <div class="input-group">
-                    <div class="input-group-prepend">
-                        <button type="button" class="btn btn-primary" title="Generar Mostrar Como" v-on:click="generate_display_name">
-                            <i class="fa fa-magic"></i>
-                        </button>
-                    </div>
+                    
                     <input
                         type="text"
                         id="field-display_name"
@@ -57,12 +51,17 @@
                         v-model="form_values.display_name"
                         v-on:focus="empty_generate_display_name"
                         >
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" title="Generar Mostrar Como" v-on:click="generate_display_name">
+                            <i class="fa fa-magic"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
         
         <div class="form-group row" id="form-group_id_number">
-            <label for="id_number" class="col-md-4 control-label text-right">No. Documento</label>
+            <label for="id_number" class="col-md-4 col-form-label text-right">No. Documento</label>
             <div class="col-md-4">
                 <input
                     id="field-id_number"
@@ -86,7 +85,7 @@
         </div>
         
         <div class="form-group row" id="form-group_email">
-            <label for="email" class="col-md-4 control-label text-right">Correo electrónico</label>
+            <label for="email" class="col-md-4 col-form-label text-right">Correo electrónico</label>
             <div class="col-md-8">
                 <input
                     id="field-email"
@@ -106,14 +105,9 @@
         </div>
         
         <div class="form-group row" id="form-group_username">
-            <label for="username" class="col-md-4 control-label text-right">Username</label>
+            <label for="username" class="col-md-4 col-form-label text-right">Username</label>
             <div class="col-md-8">
                 <div class="input-group">
-                    <div class="input-group-prepend">
-                        <button type="button" class="btn btn-primary" title="Generar username" v-on:click="generate_username">
-                            <i class="fa fa-magic"></i>
-                        </button>
-                    </div>
                     <!-- /btn-group -->
                     <input
                         id="field-username"
@@ -127,6 +121,11 @@
                         v-model="form_values.username"
                         v-on:change="validate_form"
                         >
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" title="Generar username" v-on:click="generate_username">
+                            <i class="fa fa-magic"></i>
+                        </button>
+                    </div>
                     
                     <span class="invalid-feedback">
                         El username escrito no está disponible, por favor elija otro
@@ -136,7 +135,7 @@
         </div>
         
         <div class="form-group row">
-            <label for="password" class="col-md-4 control-label text-right">Contraseña</label>
+            <label for="password" class="col-md-4 col-form-label text-right">Contraseña</label>
             <div class="col-md-8">
                 <input
                     id="field-password"
@@ -152,14 +151,14 @@
         </div>        
         
         <div class="form-group row">
-            <label for="role" class="col-md-4 control-label text-right">Rol</label>
+            <label for="role" class="col-md-4 col-form-label text-right">Rol</label>
             <div class="col-md-8">
                 <?php echo form_dropdown('role', $role_options, '021', 'class="form-control" required v-model="form_values.role"') ?>
             </div>
         </div>
         
         <div class="form-group row">
-            <label for="gender" class="col-md-4 control-label text-right">Sexo</label>
+            <label for="gender" class="col-md-4 col-form-label text-right">Sexo</label>
             <div class="col-md-8">
                 <?php echo form_dropdown('gender', $gender_options, '', 'class="form-control" required v-model="form_values.gender"') ?>
             </div>
@@ -168,7 +167,7 @@
         <hr>
 
         <div class="form-group row">
-            <label for="birth_date" class="col-md-4 control-label text-right">Fecha de nacimiento</label>
+            <label for="birth_date" class="col-md-4 col-form-label text-right">Fecha de nacimiento</label>
             <div class="col-md-8">
                 <input
                     id="field-birth_date"
@@ -181,7 +180,7 @@
         </div>
         
         <div class="form-group row">
-            <label for="celular" class="col-md-4 control-label text-right">Teléfono / Celular</label>
+            <label for="celular" class="col-md-4 col-form-label text-right">Teléfono / Celular</label>
             <div class="col-md-8">
                 <input
                     id="field-phone_number"

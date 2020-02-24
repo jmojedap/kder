@@ -1,44 +1,41 @@
 <?php
     $att_img = $this->App_model->att_img_user($row);
-    $att_img['id'] = 'img_user';
-    $att_img['class'] = 'img-rounded img-bordered img-bordered-primary';
-    $att_img['width'] = '100%';
-
     $destination_form = "users/set_image/{$row->id}";
 
-    $att_form = array(
-        'class' => 'form-horizontal'
-    );
+    $style_image_section = '';
+    if ( $row->image_id == 0 ) { $style_image_section = 'display: none;';}
+
+    $style_form_section = 'display: none;';
+    if ( $row->image_id == 0 ) { $style_form_section = '';}
 ?>
 
 <script>
 // Variables
 //-----------------------------------------------------------------------------
+    var user_id = '<?php echo $row->id ?>';
+    var src_default = '<?php echo URL_IMG ?>app/nd.png';
 
-    var user_id = <?php echo $row->id ?>;
-    var src_default = '<?php echo URL_IMG . 'users/user.png' ?>';
-    
 // Document Ready
 //-----------------------------------------------------------------------------
+    $(document).ready(function(){
 
-    $(document).ready(function()
-    {
+        //Al submit formulario, prevenir evento por defecto y ejecutar función ajax
+        $('#file_form').submit(function()
+        {
+            send_form();
+            return false;
+        });
+
         $('#btn_remove_image').click(function(){
             remove_image();
         });
-
-        $('#file_form').submit(function()
-        {
-            set_image();
-            return false;
-        });
     });
-    
-// Funciones
+
+// Functions
 //-----------------------------------------------------------------------------
 
     /* Función AJAX para envío de archivo JSON a plataforma */
-    function set_image()
+    function send_form()
     {
         var form = $('#file_form')[0];
         var form_data = new FormData(form);
@@ -49,20 +46,25 @@
             processData: false,  // Important!
             contentType: false,
             cache: false,
-            url: url_api + 'users/set_image/' + user_id,
+            url: app_url + 'users/set_image/' + user_id,
             data: form_data,
             beforeSend: function(){
-                //$('#status_text').html('Enviando archivo');
+                $('#status_text').html('Enviando archivo');
             },
             success: function(response){
                 if ( response.status == 1 )
                 {
-                    window.location = app_url + 'users/edit/' + user_id +'/cropping';
+                    $('#user_image').attr('src', response.src);
+                    $('#image_section').show();
+                    $('#image_form').hide();
+                    $('#file_form')[0].reset();
+                } else{
+                    $('#upload_response').html(response.html);
                 }
             }
         });
     }
-    
+
     //Ajax
     function remove_image()
     {
@@ -70,59 +72,66 @@
             type: 'POST',
             url: app_url + 'users/remove_image/' + user_id,
             success: function (response) {
-                console.log(response.status);
                 if ( response.status == 1 )
                 {
                     $('#user_image').attr('src', src_default);
-                    $('#btn_remove_image').hide();
-                    $('#btn_crop').hide();
-                    toastr['success']('Imagen de usuario eliminada');
+                    $('#image_section').hide();
+                    $('#image_form').show();
+                    toastr['info']('La imagen de usuario fue eliminada');
                 }
             }
         });
     }
 </script>
 
-<div class="">
-    <div class="row">
-        <div class="col-md-4">
-            <img id="user_image" src="<?php echo $att_img['src'] ?>" alt="Imagen usuario" width="100%" class="rounded">
-        </div>
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <form accept-charset="utf-8" method="POST" id="file_form">
-                        <div class="form-group row">
-                            <label for="file_field" class="col-sm-2 control-label">Archivo *</label>
-                            <div class="col-sm-10">
-                                <input type="file" name="file_field" required="1" accept="image/*">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button class="btn btn-success w120p" type="submit">Cargar</button>
-                            </div>
-                        </div>
-                    </form>
-                    <hr/>
-                    <?php if ( $row->image_id > 0 ) { ?>
-                        <a class="btn btn-default" id="btn_crop" href="<?php echo base_url("users/edit/{$row->id}/cropping") ?>">
-                            <i class="fa fa-crop"></i>
-                            Recortar
-                        </a>
-                        <button class="btn btn-warning" id="btn_remove_image">
-                            <i class="fa fa-times"></i>
-                            Quitar imagen
-                        </button>
-                    <?php } ?>
-                    
-                    <?php $this->load->view('common/process_result_v'); ?>
-                    
-                </div>
-            </div>
+<div class="card center_box_450" id="image_section" style="<?php echo $style_image_section ?>">
+    <img
+        id="user_image"
+        class="card-img-top"
+        width="100%"
+        src="<?php echo $att_img['src'] ?>"
+        alt="Imagen usuario"
+        onerror="<?php echo $att_img['onerror'] ?>"
+    >
+    <div class="card-body">
         
-        </div>
+
+        <a class="btn btn-info" id="btn_crop" href="<?php echo base_url("posts/cropping/{$row->id}") ?>">
+            <i class="fa fa-crop"></i> Recortar
+        </a>
+        <button class="btn btn-warning" id="btn_remove_image">
+            <i class="fa fa-trash"></i> Eliminar
+        </button>
     </div>
 </div>
 
+<div id="image_form" style="<?php echo $style_form_section ?>">
+    <div class="card center_box_750">
+        <div class="card-body">
+            <form accept-charset="utf-8" method="POST" id="file_form">
+                <div class="form-group row">
+                    <label for="file_field" class="col-md-3 col-form-label text-right">Archivo</label>
+                    <div class="col-md-9">
+                        <input
+                            type="file"
+                            name="file_field"
+                            required
+                            class="form-control"
+                            placeholder="Archivo"
+                            title="Arcivo a cargar"
+                            >
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-9 offset-md-3">
+                        <button class="btn btn-success w120p" type="submit">
+                            Cargar
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div id="upload_response"></div>
+        </div>
+    </div>
+</div>

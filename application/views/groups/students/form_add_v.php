@@ -8,7 +8,7 @@
     <input type="hidden" name="role" value="23">
 
     <div class="form-group row">
-        <label for="first_name" class="col-md-4 control-label">Nombres y Apellidos</label>
+        <label for="first_name" class="col-md-4 col-form-label text-right">Nombres | Apellidos</label>
         <div class="col-md-4">
             <input
                 id="field-first_name"
@@ -35,7 +35,7 @@
     </div>
 
     <div class="form-group row">
-        <label for="display_name" class="col-md-4 col-form-label">Mostrar como</label>
+        <label for="display_name" class="col-md-4 col-form-label text-right">Mostrar como</label>
         <div class="col-md-8">
             <div class="input-group">
                 <input
@@ -59,7 +59,7 @@
     </div>
 
     <div class="form-group row">
-        <label for="code" class="col-md-4 col-form-label">Código estudiante</label>
+        <label for="code" class="col-md-4 col-form-label text-right">Código estudiante</label>
         <div class="col-md-8">
             <input
                 type="text"
@@ -74,7 +74,7 @@
     </div>
     
     <div class="form-group row" id="form-group_id_number">
-        <label for="id_number" class="col-md-4 control-label">No. Documento</label>
+        <label for="id_number" class="col-md-4 col-form-label text-right">No. Documento</label>
         <div class="col-md-4">
             <input
                 id="field-id_number"
@@ -98,7 +98,7 @@
     </div>
     
     <div class="form-group row" id="form-group_username">
-        <label for="username" class="col-md-4 control-label">Username</label>
+        <label for="username" class="col-md-4 col-form-label text-right">Username</label>
         <div class="col-md-8">
             <div class="input-group">
                 <!-- /btn-group -->
@@ -129,14 +129,14 @@
     </div>
     
     <div class="form-group row">
-        <label for="gender" class="col-md-4 control-label">Sexo</label>
+        <label for="gender" class="col-md-4 col-form-label text-right">Sexo</label>
         <div class="col-md-8">
             <?php echo form_dropdown('gender', $gender_options, '', 'class="form-control" required v-model="form_values.gender"') ?>
         </div>
     </div>
 
     <div class="form-group row">
-        <label for="birth_date" class="col-md-4 control-label">Fecha de nacimiento</label>
+        <label for="birth_date" class="col-md-4 col-form-label text-right">Fecha de nacimiento</label>
         <div class="col-md-8">
             <input
                 id="field-birth_date"

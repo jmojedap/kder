@@ -11,7 +11,7 @@
         <div class="card-body">
             <form id="edit_form" accept-charset="utf-8" @submit.prevent="validate_send">
                 <div class="form-group row">
-                    <label for="first_name" class="col-md-4 controle-label">Nombre | Apellidos</label>
+                    <label for="first_name" class="col-md-4 col-form-label text-right">Nombre | Apellidos</label>
                     <div class="col-md-4">
                         <input
                             id="field-first_name"
@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="display_name" class="col-md-4 controle-label">Mostrar como</label>
+                    <label for="display_name" class="col-md-4 col-form-label text-right">Mostrar como</label>
                     <div class="col-md-8">
                         <input
                             id="field-display_name"
@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="form-group row" id="form-group_id_number">
-                    <label for="id_number" class="col-md-4 controle-label">No. Documento</label>
+                    <label for="id_number" class="col-md-4 col-form-label text-right">No. Documento</label>
                     <div class="col-md-4">
                         <input
                             id="field-id_number"
@@ -77,7 +77,7 @@
                 </div>
 
                 <div class="form-group row" id="form-group_username">
-                    <label for="username" class="col-md-4 control-label">Username</label>
+                    <label for="username" class="col-md-4 col-form-label text-right">Username</label>
                     <div class="col-md-8">
                         <div class="input-group">
                             <!-- /btn-group -->
@@ -107,7 +107,7 @@
                 </div>
 
                 <div class="form-group row" id="form-group_email">
-                    <label for="email" class="col-md-4 control-label">Correo electrónico</label>
+                    <label for="email" class="col-md-4 col-form-label text-right">Correo electrónico</label>
                     <div class="col-md-8">
                         <input
                             id="field-email"
@@ -128,14 +128,14 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="city_id" class="col-md-4 controle-label">Ciudad residencia</label>
+                    <label for="city_id" class="col-md-4 col-form-label text-right">Ciudad residencia</label>
                     <div class="col-md-8">
                         <?php echo form_dropdown('city_id', $options_city, $row->city_id, 'id="field-city_id" class="form-control form-control-chosen"') ?>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="birth_date" class="col-md-4 controle-label">Fecha de nacimiento</label>
+                    <label for="birth_date" class="col-md-4 col-form-label text-right">Fecha de nacimiento</label>
                     <div class="col-md-8">
                         <input
                             id="field-birth_date"
@@ -148,14 +148,14 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="gender" class="col-md-4 controle-label">Sexo</label>
+                    <label for="gender" class="col-md-4 col-form-label text-right">Sexo</label>
                     <div class="col-md-8">
                         <?php echo form_dropdown('gender', $options_gender, $row->gender, 'class="form-control" required') ?>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="celular" class="col-md-4 controle-label">Número celular</label>
+                    <label for="celular" class="col-md-4 col-form-label text-right">Número celular</label>
                     <div class="col-md-8">
                         <input
                             id="field-phone_number"
@@ -237,7 +237,7 @@
                         console.log('status: ' + response.data.message);
                         if (response.data.status == 1)
                         {
-                        toastr['success']('Datos actualizados');
+                        toastr['success']('Guardado');
                         }
                     })
                     .catch(function (error) {

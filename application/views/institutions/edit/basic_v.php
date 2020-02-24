@@ -42,10 +42,11 @@
 
                 <div class="form-group row">
                     <label for="email" class="col-md-4 col-form-label text-right">Correo electrónico</label>
-                    <div class="col-md-4">
+                    <div class="col-md-8">
                         <input
                             id="field-email"
                             name="email"
+                            type="email"
                             class="form-control"
                             v-bind:class="{ 'is-invalid': ! validation.email_is_unique }"
                             placeholder="Correo electrónico"
@@ -60,7 +61,7 @@
                 </div>
 
                 <div class="form-group row" id="form-group_id_number">
-                    <label for="id_number" class="col-md-4 col-form-label text-right">Documento / Tipo</label>
+                    <label for="id_number" class="col-md-4 col-form-label text-right">Documento | Tipo</label>
                     <div class="col-md-4">
                         <input
                             id="field-id_number"
@@ -205,7 +206,6 @@
                         result = 'error';
                         if ( response.data.status == 1 ){ result = 'success'; }
                         toastr[result](response.data.message);
-
                     })
                     .catch(function (error) {
                         console.log(error);

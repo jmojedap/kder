@@ -54,6 +54,35 @@
                 ]
             },
             {
+                id: 'nav_1_datos',
+                text: 'Datos',
+                active: false,
+                style: '',
+                icon: 'fa fa-fw fa-table',
+                cf: '',
+                submenu: true,
+                subelements: [
+                    {
+                        text: 'Posts',
+                        active: false,
+                        icon: 'far fa-newspaper',
+                        cf: 'posts/explore'
+                    },
+                    {
+                        text: 'Archivos',
+                        active: false,
+                        icon: 'fa fa-fw fa-file',
+                        cf: 'files/explore'
+                    },
+                    {
+                        text: 'Eventos',
+                        active: false,
+                        icon: 'fa fa-fw fa-calendar',
+                        cf: 'events/explore'
+                    }
+                ]
+            },
+            {
                 id: 'nav_1_ajustes',
                 text: 'Ajustes',
                 active: false,
@@ -75,22 +104,10 @@
                         cf: 'items/manage'
                     },
                     {
-                        text: 'Posts',
-                        active: false,
-                        icon: 'fa fa-fw fa-bars',
-                        cf: 'posts/explore'
-                    },
-                    {
                         text: 'Base de datos',
                         active: false,
                         icon: 'fa fa-fw fa-database',
                         cf: 'sync/panel'
-                    },
-                    {
-                        text: 'Eventos',
-                        active: false,
-                        icon: 'fa fa-fw fa-calendar',
-                        cf: 'events/explore'
                     }
                 ]
             }

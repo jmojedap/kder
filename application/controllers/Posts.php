@@ -120,7 +120,8 @@ class Posts extends CI_Controller{
         
         //Array data espefícicas
             $data['nav_2'] = 'posts/menu_v';
-            $data['view_a'] = 'posts/edit_v';
+            $data['head_subtitle'] = 'Editar';
+            $data['view_a'] = $this->edit_view($data['row']);
         
         $this->App_model->view(TPL_ADMIN, $data);
     }
@@ -133,6 +134,21 @@ class Posts extends CI_Controller{
     {
         $data = $this->Post_model->update($post_id);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    /**
+     * Nombre de la vista con el formulario para la edición del post. Puede cambiar dependiendo
+     * del tipo (type_id).
+     * 2020-02-23
+     */
+    function edit_view($row)
+    {
+        $edit_view = 'posts/edit_v';
+        if ( $row->type_id == 19) {
+            $edit_view = 'posts/types/glossary/edit_v';
+        }
+
+        return $edit_view;
     }
     
 // IMAGEN PRINCIPAL DEL POST
@@ -192,7 +208,7 @@ class Posts extends CI_Controller{
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
-// IMPORTACIÓN DE USUARIOS
+// IMPORTACIÓN DE POSTS
 //-----------------------------------------------------------------------------
 
     /**

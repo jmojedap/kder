@@ -39,12 +39,12 @@
     }
 </script>
 
-<div id="add_file" style="max-width: 700px; margin: 0 auto;">
+<div id="add_file" class="center_box_750">
     <div class="card">
         <div class="card-body">
             <form accept-charset="utf-8" method="POST" id="file_form" @submit.prevent="send_form">
                 <div class="form-group row">
-                    <label for="file_field" class="col-md-3 col-form-label ">Archivo</label>
+                    <label for="file_field" class="col-md-3 col-form-label text-right">Archivo</label>
                     <div class="col-md-9">
                         <input
                             type="file"
@@ -59,7 +59,7 @@
 
                 <div class="form-group row">
                     <div class="col-md-9 offset-md-3">
-                        <button class="btn btn-success btn-block" type="submit">
+                        <button class="btn btn-success w120p" type="submit">
                             Cargar
                         </button>
                     </div>

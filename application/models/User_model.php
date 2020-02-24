@@ -394,7 +394,7 @@ class User_model extends CI_Model{
      */
     function set_image($user_id, $file_id)
     {
-        $data = array('status' => 0, 'message' => 'La imagen no fue asignada'); //Resultado inicial
+        $data = array('status' => 0); //Resultado inicial
         $row_file = $this->Db_model->row_id('file', $file_id);
         
         $arr_row['image_id'] = $row_file->id;
@@ -406,7 +406,7 @@ class User_model extends CI_Model{
         
         if ( $this->db->affected_rows() )
         {
-            $data = array('status' => 1, 'message' => 'La imagen de perfil fue asignada');
+            $data = array('status' => 1);
             $data['src'] = URL_UPLOADS . $row_file->folder . $row_file->file_name;  //URL de la imagen cargada
         }
 

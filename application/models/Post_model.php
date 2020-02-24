@@ -289,9 +289,6 @@ class Post_model extends CI_Model{
     
     /**
      * Asigna una imagen registrada en la tabla archivo como imagen del post
-     * 
-     * @param type $post_id
-     * @param type $file_id
      */
     function set_image($post_id, $file_id)
     {
