@@ -10,9 +10,9 @@
         id="post_image"
         class="card-img-top"
         width="100%"
-        src="<?php echo $att_image['src'] ?>"
-        alt="<?php echo $att_image['alt'] ?>"
-        onerror="<?php echo $att_image['onerror'] ?>"
+        src="<?php echo $att_img['src'] ?>"
+        alt="<?php echo $att_img['alt'] ?>"
+        onerror="<?php echo $att_img['onerror'] ?>"
     >
     <div class="card-body">
         

@@ -169,7 +169,7 @@ class Posts extends CI_Controller{
         $data = $this->Post_model->basic($post_id);        
 
         $data['image_id'] = $data['row']->image_id;
-        $data['src_image'] = $data['att_image']['src'];
+        $data['src_image'] = $data['att_img']['src'];
         $data['back_destination'] = "posts/image/{$post_id}";
 
         $data['view_a'] = 'files/cropping_v';

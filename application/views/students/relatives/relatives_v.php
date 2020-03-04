@@ -2,7 +2,7 @@
 
 <script>
     var user_id = '<?php echo $row->id ?>';
-    var relatives_source = '<?php echo base_url("users/relatives_autocomplete/{$row->id}/{$row->institution_id}") ?>';
+    var relatives_source = '<?php echo base_url("students/relatives_autocomplete/{$row->id}/{$row->institution_id}") ?>';
 
     $( function() {
       
@@ -15,9 +15,9 @@
         function add_relative(item){
             $.ajax({
                 type: 'POST',
-                url: app_url + 'users/add_relative/' + user_id + '/' + item.id,
+                url: app_url + 'students/add_relative/' + user_id + '/' + item.id,
                 success: function(response){
-                    window.location = app_url + 'users/relatives/' + user_id;
+                    window.location = app_url + 'students/relatives/' + user_id;
                 }
             });
         }
@@ -92,12 +92,12 @@
     <div class="card center_box_750" v-show="show_form">
         <div class="card-body">
             <h3 class="card-title">Nuevo usuario</h3>
-            <?php $this->load->view('users/relatives/form_add_v') ?>
+            <?php $this->load->view('students/relatives/form_add_v') ?>
         </div>
     </div>
 
-    <?php $this->load->view('users/relatives/modal_remove_v') ?>
+    <?php $this->load->view('students/relatives/modal_remove_v') ?>
 
 </div>
 
-<?php $this->load->view('users/relatives/vue_v') ?>
+<?php $this->load->view('students/relatives/vue_v') ?>

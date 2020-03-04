@@ -26,8 +26,8 @@ class Item_model extends CI_Model{
         //Construir búsqueda
         //Crear array con términos de búsqueda
             if ( strlen($filters['q']) > 2 ){
-                $palabras = $this->Busqueda_model->palabras($filters['q']);
-                $concat_fields = $this->Busqueda_model->concat_fields(array('item', 'item_largo', 'abreviatura', 'slug'));
+                $palabras = $this->Searh_model->palabras($filters['q']);
+                $concat_fields = $this->Search_model->concat_fields(array('item_name', 'long_name', 'abbreviation', 'slug'));
 
                 foreach ($palabras as $palabra) {
                     $this->db->like("CONCAT({$concat_fields})", $palabra);
@@ -105,7 +105,7 @@ class Item_model extends CI_Model{
      * @param type $field
      * @return type
      */
-    function cod($category_id, $value, $field = 'abreviatura')
+    function cod($category_id, $value, $field = 'abbreviation')
     {   
         $condition = "category_id = {$category_id} AND {$field} = '{$value}'";
         $cod = $this->Pcrn->field('item', $condition, 'cod');
@@ -243,7 +243,7 @@ class Item_model extends CI_Model{
      */
     function options_id($condition, $empty_value = NULL)
     {
-        $select = 'CONCAT("0", (id)) AS field_indice_str, item_name AS field_value';
+        $select = 'CONCAT("0", (id)) AS field_index_str, item_name AS field_value';
         
         $this->db->select($select);
         $this->db->where($condition);
@@ -251,7 +251,7 @@ class Item_model extends CI_Model{
         $this->db->order_by('cod', 'ASC');
         $query = $this->db->get('item');
         
-        $options_pre = $this->pml->query_to_array($query, 'field_value', 'field_indice_str');
+        $options_pre = $this->pml->query_to_array($query, 'field_value', 'field_index_str');
         
         if ( ! is_null($empty_value) ) {
             $options = array_merge(array('' => '[ ' . $empty_value . ' ]'), $options_pre);
@@ -266,38 +266,39 @@ class Item_model extends CI_Model{
      * Devuelve array con valuees predeterminados para utilizar en la función
      * Item_model->arr_item
      * 
-     * @param type $estilo
+     * @param type $format
      * @return string
      */
-    function arr_config_item($estilo = 'cod')
+    function arr_config_item($format = 'cod')
     {
         $arr_config['order_type'] = 'ASC';
-        $arr_config['field_value'] = 'item';
+        $arr_config['field_value'] = 'item_name';
         
-        switch ($estilo) 
+        switch ($format) 
         {
             case 'id':
                 //id, ordenado alfabéticamente
-                $arr_config['field_indice'] = 'id';
-                $arr_config['order_by'] = 'item';
+                $arr_config['field_index'] = 'id';
+                $arr_config['order_by'] = 'item_name';
                 $arr_config['str'] = TRUE;
                 break;
             case 'cod':
                 //cod, ordenado por cod
-                $arr_config['field_indice'] = 'cod';
+                $arr_config['field_index'] = 'cod';
                 $arr_config['order_by'] = 'cod';
                 $arr_config['str'] = TRUE;
                 break;
             case 'cod_num':
                 //cod, ordenado por cod, numérico
-                $arr_config['field_indice'] = 'cod';
+                $arr_config['field_index'] = 'cod';
                 $arr_config['order_by'] = 'cod';
                 $arr_config['str'] = FALSE;
                 break;
             case 'cod_abr':
                 //cod, abreviatura, string
-                $arr_config['field_indice'] = 'cod';
-                $arr_config['field_value'] = 'abreviatura';
+                $arr_config['field_index'] = 'cod';
+                $arr_config['field_value'] = 'abbreviation';
+                $arr_config['order_by'] = 'abbreviation';
                 $arr_config['str'] = TRUE;
                 break;
         }
@@ -309,37 +310,37 @@ class Item_model extends CI_Model{
      * Devuelve un array con índice y value para una categoría específica de items
      * Dadas unas características definidas en el array $config
      * 
-     * @param type $estilo
+     * @param type $format
      * @return type
      */
-    function arr_item($condition, $estilo = 'cod')
+    function arr_item($condition, $format = 'cod')
     {
         
-        $config = $this->arr_config_item($estilo);
+        $config = $this->arr_config_item($format);
         
-        $select = $config['field_indice'] . ' AS field_indice, CONCAT("0", (' . $config['field_indice'] . ')) AS field_indice_str, ' . $config['field_value'] .' AS field_value';
+        $select = $config['field_index'] . ' AS field_index, CONCAT("0", (' . $config['field_index'] . ')) AS field_index_str, ' . $config['field_value'] .' AS field_value';
         
-        $indice = 'field_indice_str';
-        if ( ! $config['str'] ) { $indice = 'field_indice'; }
+        $indice = 'field_index_str';
+        if ( ! $config['str'] ) { $indice = 'field_index'; }
         
         $this->db->select($select);
         $this->db->where($condition);
         $this->db->order_by($config['order_by'], $config['order_type']);
         $query = $this->db->get('item');
         
-        $arr_item = $this->Pcrn->query_to_array($query, 'field_value', $indice);
+        $arr_item = $this->pml->query_to_array($query, 'field_value', $indice);
         
         return $arr_item;
     }
     
     function arr_field($category_id, $field)
     {
-        $config = $this->arr_config_item($estilo);
+        $config = $this->arr_config_item($format);
         
-        $select = $config['field_indice'] . ' AS field_indice, CONCAT("0", (cod)) AS field_indice_str, ' . $field .' AS field_value';
+        $select = $config['field_index'] . ' AS field_index, CONCAT("0", (cod)) AS field_index_str, ' . $field .' AS field_value';
         
-        $indice = 'field_indice_str';
-        if ( ! $config['str'] ) { $indice = 'field_indice'; }
+        $indice = 'field_index_str';
+        if ( ! $config['str'] ) { $indice = 'field_index'; }
         
         $this->db->select($select);
         if ( $category_id > 0 ) { $this->db->where('category_id', $category_id); }
@@ -347,7 +348,7 @@ class Item_model extends CI_Model{
         $this->db->order_by($config['order_by'], $config['order_type']);
         $query = $this->db->get('item');
         
-        $arr_item = $this->Pcrn->query_to_array($query, 'field_value', $indice);
+        $arr_item = $this->pml->query_to_array($query, 'field_value', $indice);
         
         return $arr_item;
     }

@@ -38,9 +38,9 @@
     <div class="col col-md-6">
         <div class="card">
             <div class="card-body">
-                <h5>¿En qué consiste este proceso?</h5>
+                <h4 class="text-success">¿En qué consiste este proceso?</h4>
                 <p>
-                    Usted podrá importar masivamente registros a la plataforma con un archivo de Excel con un formato predefinido.
+                    Usted puede importar masivamente datos a la plataforma utilizando un archivo de Excel con un formato definido.
                 </p>
                 <p>
                     <i class="fa fa-info-circle text-info"></i>
@@ -51,6 +51,7 @@
                 <ul>
                     <li>El tipo de archivo requerido es <b class="text-success">Excel (.xlsx)</b>.</li>
                     <li>Verifique que el primer registro esté ubicado en la <b class="text-success">fila 2</b> de la hoja de cálculo.</li>
+                    <li>El nombre por defecto de la Hoja de cálculo en el archivo de Excel de ejemplo es '<b class="text-success"><?php echo $sheet_name ?></b>', sin embargo ustede puede cambiarlo.</li>
                     <?php foreach($help_tips as $tip) : ?>
                         <li>
                             <?php echo $tip ?>

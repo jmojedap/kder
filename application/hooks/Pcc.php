@@ -95,6 +95,9 @@ class Pcc {
         $public_functions[] = 'sync/quan_rows';
         
         $public_functions[] = 'orders/confirmation_payu';
+
+        $public_functions[] = 'admin/phpinfo';
+        $public_functions[] = 'admin/session';
         
         return $public_functions;
     }

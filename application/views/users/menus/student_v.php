@@ -2,7 +2,8 @@
     $app_cf_index = $this->uri->segment(1) . '_' . $this->uri->segment(2);
     
     $cl_nav_2['users_profile'] = '';
-    $cl_nav_2['users_relatives'] = '';
+    $cl_nav_2['users_notes'] = '';
+    $cl_nav_2['students_relatives'] = '';
     $cl_nav_2['users_edit'] = '';
     //$cl_nav_2['users_import'] = '';
     
@@ -16,6 +17,13 @@
     var sections_rol = [];
     var element_id = '<?php echo $row->id ?>';
     
+    sections.explore = {
+        'icon': 'fa fa-arrow-left',
+        'text': 'Explorar',
+        'class': '<?php echo $cl_nav_2['users_explore'] ?>',
+        'cf': 'users/explore/'
+    };
+
     sections.profile = {
         'icon': 'fa fa-user',
         'text': 'Perfil',
@@ -23,11 +31,18 @@
         'cf': 'users/profile/' + element_id
     };
 
+    sections.notes = {
+        'icon': 'far fa-sticky-note',
+        'text': 'Anotaciones',
+        'class': '<?php echo $cl_nav_2['users_notes'] ?>',
+        'cf': 'users/notes/' + element_id
+    };
+
     sections.relatives = {
         'icon': 'fa fa-heart',
         'text': 'Familia',
-        'class': '<?php echo $cl_nav_2['users_relatives'] ?>',
-        'cf': 'users/relatives/' + element_id
+        'class': '<?php echo $cl_nav_2['students_relatives'] ?>',
+        'cf': 'students/relatives/' + element_id
     };
 
     sections.edit = {
@@ -38,7 +53,7 @@
     };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['profile', 'relatives', 'edit'];
+    sections_rol.dvlp = ['explore', 'profile', 'notes', 'relatives', 'edit'];
     sections_rol.admn = ['profile'];
     sections_rol.prpt = ['profile', 'edit'];
     

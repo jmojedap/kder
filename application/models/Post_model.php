@@ -7,7 +7,7 @@ class Post_model extends CI_Model{
 
         $data['post_id'] = $post_id;
         $data['row'] = $row;
-        $data['att_image'] = $this->att_image($row);
+        $data['att_img'] = $this->att_img($row);
         $data['head_title'] = $data['row']->post_name;
         $data['view_a'] = 'posts/post_v';
         $data['nav_2'] = 'posts/menu_v';
@@ -90,8 +90,6 @@ class Post_model extends CI_Model{
     
     /**
      * Array con los datos para la vista de exploración
-     * 
-     * @return string
      */
     function explore_data($num_page)
     {
@@ -269,9 +267,9 @@ class Post_model extends CI_Model{
 // GESTIÓN DE IMAGEN
 //-----------------------------------------------------------------------------
 
-    function att_image($row)
+    function att_img($row)
     {
-        $att_image = array(
+        $att_img = array(
             'src' => URL_IMG . 'app/nd.png',
             'alt' => 'Imagen del Post ' . $row->id,
             'onerror' => "this.src='" . URL_IMG . "app/nd.png'"
@@ -280,11 +278,11 @@ class Post_model extends CI_Model{
         $row_file = $this->Db_model->row_id('file', $row->image_id);
         if ( ! is_null($row_file) )
         {
-            $att_image['src'] = URL_UPLOADS . $row_file->folder . $row_file->file_name;
-            $att_image['alt'] = $row_file->title;
+            $att_img['src'] = URL_UPLOADS . $row_file->folder . $row_file->file_name;
+            $att_img['alt'] = $row_file->title;
         }
 
-        return $att_image;
+        return $att_img;
     }
     
     /**
@@ -367,12 +365,12 @@ class Post_model extends CI_Model{
      */
     function import($arr_sheet)
     {
-        $data = array('quan_imported' => 0, 'results' => array());
+        $data = array('qty_imported' => 0, 'results' => array());
         
         foreach ( $arr_sheet as $key => $row_data )
         {
             $data_import = $this->import_post($row_data);
-            $data['quan_imported'] += $data_import['status'];
+            $data['qty_imported'] += $data_import['status'];
             $data['results'][$key + 2] = $data_import;
         }
         

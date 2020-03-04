@@ -12,7 +12,7 @@
     }
 </style>
 
-<?php $this->load->view('app/menus/elements_' . $this->session->userdata('role')) ?>
+<?php $this->load->view('templates/remark/menus/elements_' . $this->session->userdata('role')) ?>
 
 <div class="site-menubar" id="nav_1">
     <div class="site-menubar-body">
@@ -66,29 +66,6 @@
 </div>
 
 <script>
-    /*$(document).ready(function()
-    {
-        $('.nav_1_link').click(function()
-        {
-            if ( $(this).data('cf').length > 0 )
-            {
-                app_cf = $(this).data('cf');
-                load_sections('nav_1');
-
-                $('.nav_1_link').removeClass('active');
-                $(this).addClass('active');
-                
-                if ( $(this).data('parent_id') ) 
-                {
-                    var parent_id = '#' + $(this).data('parent_id');
-                    $(parent_id).addClass('active');
-                }
-            }
-        });
-    });*/
-</script>
-
-<script>
     new Vue({
         el: '#nav_1',
         data: {
@@ -108,11 +85,6 @@
                     $('.site-menu-item').removeClass('active');
                     $('.has-sub').removeClass('open');
                 }
-
-                /*if ( ! this.elements[i].submenu )
-                {
-                    
-                }*/
             },
             load_sections_sub: function(i,j){
                 $('.site-menu-item').removeClass('active');

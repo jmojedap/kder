@@ -318,6 +318,7 @@ class Users extends CI_Controller{
             $data['arr_sheet'] = $imported_data['arr_sheet'];
             $data['sheet_name'] = $this->input->post('sheet_name');
             $data['back_destination'] = "users/explore/";
+            $data['cf_open'] = 'users/info/';
         
         //Cargar vista
             $data['head_title'] = 'Usuarios';
@@ -342,47 +343,33 @@ class Users extends CI_Controller{
         
         $this->output->set_content_type('application/json')->set_output($username);
     }
-    
-// FAMILIARES DEL ESTUDIANTE
+
+// ANOTACIONES
 //-----------------------------------------------------------------------------
 
-    /**
-     * Familiares del estudiantes
-     * 2019-11-26
-     */
-    function relatives($user_id)
+    function notes($user_id)
     {
         $data = $this->User_model->basic($user_id);
-        
-        $data['relatives'] = $this->User_model->relatives($user_id);
 
-        $data['subtitle_head'] = 'Familiares';
-        $data['view_a'] = 'users/relatives/relatives_v';
+        $data['options_type'] = $this->Item_model->options('category_id = 191');
+
+        $data['arr_types'] = $this->Item_model->arr_item('category_id = 191', 'cod_num');
+
+        $data['view_a'] = 'users/notes/notes_v';
+        $data['subtitle_head'] = 'Anotaciones';
         $this->App_model->view(TPL_ADMIN, $data);
     }
 
-    function get_relatives($user_id)
+    function get_notes($user_id)
     {
-        $relatives = $this->User_model->relatives($user_id);
-        $this->output->set_content_type('application/json')->set_output(json_encode($relatives->result()));
+        $this->load->model('Note_model');
+        $data = $this->User_model->notes($user_id);
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
-    /**
-     * Agrega un registro a la tabla user, y lo asigna al grupo_id
-     * 2019-11-26
-     */
-    function insert_relative($user_id, $relation_type)
+    function save_note($user_id, $note_id = 0)
     {
-        $data = array('status' => 0);
-
-        $this->load->model('User_model');
-        $data_insert = $this->User_model->insert();
-        if ( $data_insert['saved_id'] > 0 )
-        {
-            $data = $this->User_model->add_relative($user_id, $data_insert['saved_id'], $relation_type);
-            $data['relative_id'] = $data_insert['saved_id'];
-        }
-
+        $data = $this->User_model->save_note($user_id, $note_id);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 

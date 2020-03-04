@@ -47,7 +47,7 @@
         },
         methods: {
             get_list: function(){
-                axios.get(app_url + 'users/get_relatives/' + this.user_id)
+                axios.get(app_url + 'students/get_relatives/' + this.user_id)
                 .then(response => {
                     this.list = response.data;
                 })
@@ -69,7 +69,7 @@
                 });
             },
             send_form: function() {
-                axios.post(app_url + 'users/insert_relative/' + this.user_id + '/' + this.relation_type, $('#add_form').serialize())
+                axios.post(app_url + 'students/insert_relative/' + this.user_id + '/' + this.relation_type, $('#add_form').serialize())
                 .then(response => {
                     console.log('status: ' + response.data.message);
                     if ( response.data.status == 1 )

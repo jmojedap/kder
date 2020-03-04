@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="<?php echo URL_RESOURCES ?>templates/remark/global/css/bootstrap-extend.min.css">
         <link rel="stylesheet" href="<?php echo URL_RESOURCES ?>templates/remark/base/assets/css/site.min.css">
         <link rel="stylesheet" href="<?php echo URL_RESOURCES ?>css/style_pml.css">
+        <link rel="stylesheet" href="<?php echo URL_RESOURCES ?>css/remark_pml.css">
 
         <!-- Plugins -->
         <link rel="stylesheet" href="<?php echo URL_RESOURCES ?>templates/remark/global/vendor/asscrollable/asScrollable.css">

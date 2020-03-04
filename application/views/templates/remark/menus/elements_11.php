@@ -1,6 +1,16 @@
 <script>
     var nav_1_elements = [
             {
+                id: 'nav_1_students',
+                text: 'Estudiantes',
+                active: false,
+                style: '',
+                icon: 'fa fa-fw fa-user-graduate',
+                cf: 'students/explore',
+                submenu: false,
+                subelements: []
+            },
+            {
                 id: 'nav_1_usuarios',
                 text: 'Usuarios',
                 active: false,

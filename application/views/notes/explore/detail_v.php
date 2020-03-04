@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="detail_modal_label">{{ element.display_name }}</h5>
+                <h5 class="modal-title" id="detail_modal_label">{{ element.post_name }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -11,30 +11,35 @@
             <div class="modal-body">
                 <table class="table table-borderless table-sm">
                     <tr>
-                        <td>ID Grupo</td>
+                        <td>ID</td>
                         <td>{{ element.id }}</td>
                     </tr>
                     <tr>
-                        <td>Nombre</td>
+                        <td>Asunto</td>
                         <td>
-                            {{ element.name }}
+                            {{ element.post_name }}
                         </td>
                     </tr>
                     <tr>
-                        <td>Título</td>
-                        <td>{{ element.title }}</td>
+                        <td>Creada por</td>
+                        <td>
+                            {{ element.creator_display_name }} en 
+                        </td>
                     </tr>
                     <tr>
-                        <td>Nivel</td>
-                        <td>{{ element.level | level_name }}</td>
+                        <td>Creada en</td>
+                        <td>
+                            {{ element.created_at }}, 
+                            {{ element.created_at | ago }}
+                        </td>
                     </tr>
                 </table>
                 <p>
-                    {{ element.description }}
+                    {{ element.excerpt }}
                 </p>
             </div>
             <div class="modal-footer">
-                    <a class="btn btn-primary w100p" v-bind:href="`<?php echo base_url('groups/info/') ?>` + element.id">Abrir</a>
+                    <a class="btn btn-primary w100p" v-bind:href="`<?php echo base_url('notes/info/') ?>` + element.id">Abrir</a>
                     <button type="button" class="btn btn-secondary w100p" data-dismiss="modal">Cerrar</button>
             </div>
         </div>

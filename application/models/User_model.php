@@ -155,6 +155,7 @@ class User_model extends CI_Model{
             $condition = 'id > 0';
         } elseif ( $role == 11 )  {   //Directivo
             $condition = 'institution_id = ' . $this->session->userdata('institution_id');
+            $condition .= ' AND role < 20';
         } else {
             $condition = 'id = 0';
         }
@@ -450,11 +451,13 @@ class User_model extends CI_Model{
         if ( $type == 'students' )
         {
             $data['help_note'] = 'Se importarán estudiantes a la plataforma asignándolos a grupos existentes.';
-            $data['help_tips'] = array();
+            $data['help_tips'] = array(
+                'El grupo (o grupos) al que se va a importar los estudiantes, deben crearse previamente.'
+            );
             $data['template_file_name'] = 'f02_estudiantes.xlsx';
             $data['sheet_name'] = 'estudiantes';
-            $data['head_subtitle'] = 'Importar estudiantes';
-            $data['destination_form'] = "users/import_e/{$type}";
+            $data['head_subtitle'] = 'Importar';
+            $data['destination_form'] = "students/import_e/";
         }
 
         return $data;
@@ -469,13 +472,13 @@ class User_model extends CI_Model{
      */
     function import($arr_sheet)
     {
-        $data = array('quan_imported' => 0, 'results' => array());
+        $data = array('qty_imported' => 0, 'results' => array());
         $this->load->model('Group_model');
         
         foreach ( $arr_sheet as $key => $row_data )
         {
             $data_import = $this->import_student($row_data);
-            $data['quan_imported'] += $data_import['status'];
+            $data['qty_imported'] += $data_import['status'];
             $data['results'][$key + 2] = $data_import;
         }
         
@@ -602,47 +605,4 @@ class User_model extends CI_Model{
         
         return $meta_id;
     }
-
-// Gestión de Familiares y acudientes
-//-----------------------------------------------------------------------------
-
-    /**
-     * Query listado de familiares de un estudiante.
-     * 2019-11-26
-     */
-    function relatives($user_id)
-    {
-        $this->db->select('user.id, display_name, username, email, phone_number, src_thumbnail, item_name AS relation_type');
-        $this->db->join('user_meta', "user.id = user_meta.related_1 AND user_meta.user_id = {$user_id}");
-        $this->db->join('item', 'item.cod = user_meta.cat_1 AND item.category_id = 171');
-        $this->db->where('user_meta.type_id', 1051);
-        $relatives = $this->db->get('user');
-
-        return $relatives;
-    }
-
-    /**
-     * Le asigna un familiar o acudiente a un estudiante
-     * 2019-11-26
-     */
-    function add_relative($user_id, $relative_id, $relation_type)
-    {
-        $data = array('status' => 0, 'meta_id' => '0');    //Resultado inicial por defecto
-
-        //Construir registro y guardar
-            $arr_row['user_id'] = $user_id;
-            $arr_row['type_id'] = 1051;             //Familiar
-            $arr_row['related_1'] = $relative_id;   //ID del usuario familiar
-            $arr_row['cat_1'] = $relation_type;     //Tipo de familiar
-            $arr_row['creator_id'] = $this->session->userdata('user_id');
-            $arr_row['editor_id'] = $this->session->userdata('user_id');
-
-            $meta_id = $this->save_meta($arr_row);
-
-        //Actualizar resultado
-        if ( $meta_id ) { $data = array('status' => 1, 'meta_id' => $meta_id); }
-
-        return $data;
-    }
-    
 }

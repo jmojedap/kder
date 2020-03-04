@@ -11,30 +11,38 @@
             <div class="modal-body">
                 <table class="table table-borderless table-sm">
                     <tr>
-                        <td>ID Grupo</td>
+                        <td>ID</td>
                         <td>{{ element.id }}</td>
                     </tr>
                     <tr>
                         <td>Nombre</td>
                         <td>
-                            {{ element.name }}
+                            {{ element.display_name }}
                         </td>
                     </tr>
                     <tr>
-                        <td>Título</td>
-                        <td>{{ element.title }}</td>
+                        <td>Grupo</td>
+                        <td>{{ element.group_title }}</td>
                     </tr>
                     <tr>
-                        <td>Nivel</td>
-                        <td>{{ element.level | level_name }}</td>
+                        <td>No. Documento</td>
+                        <td>{{ element.id_number }}</td>
+                    </tr>
+                    <tr>
+                        <td>Código</td>
+                        <td>{{ element.code }}</td>
+                    </tr>
+                    <tr>
+                        <td>Correo</td>
+                        <td>{{ element.email }}</td>
                     </tr>
                 </table>
                 <p>
-                    {{ element.description }}
+                    {{ element.admin_notes }}
                 </p>
             </div>
             <div class="modal-footer">
-                    <a class="btn btn-primary w100p" v-bind:href="`<?php echo base_url('groups/info/') ?>` + element.id">Abrir</a>
+                    <a class="btn btn-primary w100p" v-bind:href="`<?php echo base_url('users/profile/') ?>` + element.id">Abrir</a>
                     <button type="button" class="btn btn-secondary w100p" data-dismiss="modal">Cerrar</button>
             </div>
         </div>

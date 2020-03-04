@@ -41,9 +41,7 @@ class Admin extends CI_Controller {
     {
         $data['options'] = $this->db->get('sis_option')->result();
 
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($data));
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
     /**
@@ -57,9 +55,7 @@ class Admin extends CI_Controller {
         $data = array('status' => 0, 'message' => 'La opción no fue guardada');
         if ( ! is_null($option_id) ) { $data = array('status' => 1, 'message' => 'Opción guardada: ' . $option_id); }
 
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($data));
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
     /**
@@ -68,16 +64,8 @@ class Admin extends CI_Controller {
     function delete_option($option_id)
     {
         $data = $this->Admin_model->delete_option($option_id);
-        
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($data));
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
-    
-    
-    
-//CRUD DE TABLA item    
-//---------------------------------------------------------------------------------------------------
     
     /**
      * ml > master login
@@ -101,8 +89,6 @@ class Admin extends CI_Controller {
     /**
      * VISTA
      * Listado y formulario para gestión de ACL
-     * 
-     * @param type $controller
      */
     function acl($subdomain = 'admin', $controller = 'users')
     {
@@ -123,8 +109,6 @@ class Admin extends CI_Controller {
     /**
      * JSON
      * Lista de procesos en la tabla sis_acl, por controller
-     * 
-     * @param type $controller
      */
     function acl_list($subdomain = 'admin', $controller = 'users')
     {
@@ -142,9 +126,6 @@ class Admin extends CI_Controller {
     /**
      * AJAX JSON
      * Recibe datos de formulario en admin/acl_list, guarda datos en la tabla
-     * sis_acl
-     * 
-     * @param type $row_id
      */
     function acl_save($row_id = 0)
     {
@@ -156,9 +137,7 @@ class Admin extends CI_Controller {
         //Guardar
             $data = $this->Admin_model->acl_save($arr_row, $row_id);
         
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($data));
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
     /**
@@ -169,13 +148,26 @@ class Admin extends CI_Controller {
     {
         $data = $this->Admin_model->acl_delete($row_id, $controller);
         
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($data));
-    }        
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
 
 // Pruebas y desarrollo
 //-----------------------------------------------------------------------------
+
+    /**
+     * JSON Datos de sesión del usuario
+     */
+    function session()
+    {
+        $data = $this->session->userdata();;
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    function phpinfo()
+    {
+        phpinfo();
+    }
 
     /**
      * Reestablecer sistema para pruebas

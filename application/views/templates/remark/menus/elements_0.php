@@ -31,6 +31,16 @@
                 subelements: []
             },
             {
+                id: 'nav_1_notes',
+                text: 'Anotaciones',
+                active: false,
+                style: '',
+                icon: 'far fa-fw fa-sticky-note',
+                cf: 'notes/explore',
+                submenu: false,
+                subelements: []
+            },
+            {
                 id: 'nav_1_payments',
                 text: 'Pagos',
                 active: false,

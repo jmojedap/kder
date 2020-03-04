@@ -1,5 +1,5 @@
 <?php
-    $quan_not_imported = count($results) - $quan_imported;
+    $quan_not_imported = count($results) - $qty_imported;
 
     $status_icons = array(
         0 => 'fa fa-exclamation-triangle',
@@ -39,7 +39,7 @@
         <tr>
             <td>Filas importadas</td>
             <td><i class="fa fa-check-circle text-success"></i></td>
-            <td><?php echo $quan_imported ?></td>
+            <td><?php echo $qty_imported ?></td>
         </tr>
         <tr class="<?php echo $class_not_imported ?>">
             <td>Filas no importadas</td>
@@ -63,6 +63,7 @@
         <th width="50px"></th>
         <th width="50px">Importada</th>
         <th>Descripción</th>
+        <th width="50px"></th>
     </thead>
     <tbody>
         <?php foreach ( $results as $row_number => $result ) { ?>
@@ -75,11 +76,14 @@
                     <?php echo $status_text[$result['status']] ?>
                 </td>
                 <td><?php echo $result['text'] ?></td>
+                <td>
+                    <?php if ( $result['imported_id'] > 0 ) { ?>
+                        <a href="<?php echo base_url($cf_open) . $result['imported_id'] ?>" class="btn btn-success" target="_blank">
+                            Abrir
+                        </a>
+                    <?php } ?>
+                </td>
             </tr>
         <?php } ?>
     </tbody>
 </table>
-
-
-
-
