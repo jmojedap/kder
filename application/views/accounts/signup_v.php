@@ -62,8 +62,8 @@
             O usa tu cuenta de Gmail para ingresar
         </div>
         <div class="form-group">
-            <a href="<?php echo $g_client->createAuthUrl(); ?>" class="btn btn-light btn-block btn_google" style="" title="Registrarme utilizando mi cuenta de Google">
-                <img src="<?php echo URL_IMG . 'app/google.png'?>" style="width: 20px">
+            <a href="<?= $g_client->createAuthUrl(); ?>" class="btn btn-light btn-block btn_google" style="" title="Registrarme utilizando mi cuenta de Google">
+                <img src="<?= URL_IMG . 'app/google.png'?>" style="width: 20px">
                 Ingresa con Google
             </a>
         </div>
@@ -72,14 +72,12 @@
 
     
 
-    <p class="text-center">¿Ya tienes una cuenta? <a href="<?php echo base_url('accounts/login') ?>">Iniciar sesión</a></p>
+    <p class="text-center">¿Ya tienes una cuenta? <a href="<?= base_url('accounts/login') ?>">Iniciar sesión</a></p>
 </div>
 
 
 
 <script>
-    var app_url = '<?php echo base_url() ?>';
-    var url_api = '<?php echo URL_API ?>';
     new Vue({
         el: '#signup_app',
         data: {
@@ -99,7 +97,7 @@
                     .then(response => {
                         console.log(response.data.message);
                         if ( response.data.status == 1 ) {
-                            window.location = app_url + 'accounts/registered/' + response.data.saved_id;
+                            window.location = url_app + 'accounts/registered/' + response.data.saved_id;
                         } else {
                             this.recaptcha_message = response.data.recaptcha_message;
                         }

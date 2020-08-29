@@ -176,7 +176,7 @@ class Db_model extends CI_Model{
     {
         $arr_row = $this->input->post();
         
-        $arr_row['editor_id'] = $this->session->userdata('user_id');
+        $arr_row['updater_id'] = $this->session->userdata('user_id');
         $arr_row['creator_id'] = $this->session->userdata('user_id');
         
         if ( $row_id == 0 ) { unset($arr_row['creator_id']); }

@@ -35,7 +35,7 @@
             this.get_list();
         },
         data: {
-            group_id: '<?php echo $row->id ?>',
+            group_id: '<?= $row->id ?>',
             key: 0,
             gu_id: 0,
             list: [],
@@ -49,7 +49,7 @@
         },
         methods: {
             get_list: function(){
-                axios.get(app_url + 'groups/get_students/' + this.group_id)
+                axios.get(url_app + 'groups/get_students/' + this.group_id)
                 .then(response => {
                     this.list = response.data;
                 })
@@ -58,7 +58,7 @@
                 });   
             },
             validate_send: function () {
-                axios.post(app_url + 'users/validate/', $('#add_form').serialize())
+                axios.post(url_app + 'users/validate/', $('#add_form').serialize())
                 .then(response => {
                     if ( response.data.status == 1 ) {
                         this.send_form();
@@ -71,7 +71,7 @@
                 });
             },
             send_form: function() {
-                axios.post(app_url + 'groups/insert_student/' + this.group_id, $('#add_form').serialize())
+                axios.post(url_app + 'groups/insert_student/' + this.group_id, $('#add_form').serialize())
                 .then(response => {
                     console.log('status: ' + response.data.message);
                     if ( response.data.status == 1 )
@@ -91,7 +91,7 @@
                 params.append('first_name', this.form_values.first_name);
                 params.append('last_name', this.form_values.last_name);
                 
-                axios.post(app_url + 'users/username/', params)
+                axios.post(url_app + 'users/username/', params)
                 .then(response => {
                     this.form_values.username = response.data;
                 })
@@ -100,7 +100,7 @@
                 });
             },
             validate_form: function() {
-                axios.post(app_url + 'users/validate/', $('#add_form').serialize())
+                axios.post(url_app + 'users/validate/', $('#add_form').serialize())
                 .then(response => {
                     //this.form_valido = response.data.status;
                     this.validation = response.data.validation;
@@ -129,7 +129,7 @@
             },
             remove_student: function(){
                 this.gu_id = this.list[this.key].gu_id;
-                axios.get(app_url + 'groups/remove_student/' + this.group_id + '/' + this.list[this.key].id + '/' + this.gu_id)
+                axios.get(url_app + 'groups/remove_student/' + this.group_id + '/' + this.list[this.key].id + '/' + this.gu_id)
                 .then(response => {
                     var type = 'info';
                     if ( response.data.status == 1 ) { type = 'success' }

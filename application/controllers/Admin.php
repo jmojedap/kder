@@ -151,6 +151,21 @@ class Admin extends CI_Controller {
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
+// Colores
+//-----------------------------------------------------------------------------
+
+    /**
+     * Conjunto de colores de la herramienta
+     * 2020-03-18
+     */
+    function colors()
+    {
+        $data['head_title'] = 'Colores';
+        $data['nav_2'] = 'system/admin/menu_v';
+        $data['view_a'] = 'system/admin/colors_v';
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
 // Pruebas y desarrollo
 //-----------------------------------------------------------------------------
 

@@ -172,7 +172,7 @@ class Institutions extends CI_Controller{
             {
                 $view_a = 'files/cropping_v';
                 $data['image_id'] = $data['row']->image_id;
-                $data['src_image'] = $data['att_img']['src'];
+                $data['url_image'] = $data['att_img']['src'];
                 $data['back_destination'] = "institutions/edit/{$institution_id}/image";
             }
         

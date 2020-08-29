@@ -22,20 +22,20 @@
             ?>
             <tr>
                 <td>
-                    <img class="rounded" src="<?php echo $src_user ?>" alt="Imagen Girl">
+                    <img class="rounded" src="<?= $src_user ?>" alt="Imagen Girl">
                 </td>
                 <td>
-                    <?php echo $this->App_model->name_user($row_girl->girl_id) ?>
+                    <?= $this->App_model->name_user($row_girl->girl_id) ?>
                 </td>
                 <td>
                     <div class="progress">
                         <div class="progress-bar"
                             role="progressbar"
-                            style="width: <?php echo $pct ?>%;"
-                            aria-valuenow="<?php echo $pct ?>"
+                            style="width: <?= $pct ?>%;"
+                            aria-valuenow="<?= $pct ?>"
                             aria-valuemin="0" aria-valuemax="100"
                             >
-                            <?php echo $row_girl->count_visits ?>
+                            <?= $row_girl->count_visits ?>
                         </div>
                     </div>
                 </td>

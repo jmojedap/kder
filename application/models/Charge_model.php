@@ -114,7 +114,7 @@ class Charge_model extends CI_Model{
                 $order_type = $this->pml->if_strlen($filters['ot'], 'ASC');
                 $this->db->order_by($filters['o'], $order_type);
             } else {
-                $this->db->order_by('edited_at', 'DESC');
+                $this->db->order_by('updated_at', 'DESC');
             }
             
         //Filtros
@@ -274,7 +274,7 @@ class Charge_model extends CI_Model{
     {
         $arr_row = $this->input->post();
         $arr_row['type_id'] = 4031; //Post tipo cobro (charge)
-        $arr_row['editor_id'] = $this->session->userdata('user_id');
+        $arr_row['updater_id'] = $this->session->userdata('user_id');
         
         if ( ! ($charge_id > 0) )
         {
@@ -449,7 +449,7 @@ class Charge_model extends CI_Model{
 
     function students_group($charge_id, $group_id)
     {
-        $this->db->select('payment.id AS payment_id, user.id, user.display_name, user.src_thumbnail, user.username, payment.status AS payment_status, payed_value, payment.edited_at');
+        $this->db->select('payment.id AS payment_id, user.id, user.display_name, user.url_thumbnail, user.username, payment.status AS payment_status, payed_value, payment.updated_at');
         $this->db->join('payment', 'user.id = payment.student_id');
         $this->db->where('payment.group_id', $group_id);
         $this->db->order_by('last_name', 'ASC');    

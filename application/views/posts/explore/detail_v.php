@@ -20,13 +20,16 @@
                             {{ element.post_name }}
                         </td>
                     </tr>
+                    <tr>
+                        <td>Tipo</td>
+                        <td>
+                            {{ element.type_id | type_name  }}
+                        </td>
+                    </tr>
                 </table>
-                <p>
-                    {{ element.excerpt }}
-                </p>
             </div>
             <div class="modal-footer">
-                    <a class="btn btn-primary w100p" v-bind:href="`<?php echo base_url('posts/info/') ?>` + element.id">Abrir</a>
+                    <a class="btn btn-primary w100p" v-bind:href="`<?= base_url('posts/info/') ?>` + element.id">Abrir</a>
                     <button type="button" class="btn btn-secondary w100p" data-dismiss="modal">Cerrar</button>
             </div>
         </div>

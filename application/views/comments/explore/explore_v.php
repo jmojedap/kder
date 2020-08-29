@@ -9,7 +9,7 @@
                     <i class="fa fa-trash"></i>
                 </span>
             </button>
-            <a href="<?php echo base_url('comments/export') ?>" class="btn btn-light" title="Descargar en Excel">
+            <a href="<?= base_url('comments/export') ?>" class="btn btn-light" title="Descargar en Excel">
                 <i class="fa fa-download"></i>
             </a>
         </div>

@@ -97,7 +97,7 @@
                         </span>
                     </div>
                     <div class="col-md-4">
-                        <?php echo form_dropdown('id_number_type', $options_id_number_type, '', 'class="form-control" required v-model="form_values.id_number_type"') ?>
+                        <?= form_dropdown('id_number_type', $options_id_number_type, '', 'class="form-control" required v-model="form_values.id_number_type"') ?>
                     </div>
                 </div>
                 
@@ -124,7 +124,7 @@
                 <div class="form-group row">
                     <label for="gender" class="col-md-4 col-form-label text-right">Sexo</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('gender', $options_gender, $row->gender, 'class="form-control" required') ?>
+                        <?= form_dropdown('gender', $options_gender, $row->gender, 'class="form-control" required') ?>
                     </div>
                 </div>
 
@@ -145,7 +145,7 @@
                 <div class="form-group row">
                     <label for="city_id" class="col-md-4 col-form-label text-right">Ciudad residencia</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('city_id', $options_city, $row->city_id, 'id="field-city_id" class="form-control form-control-chosen" required') ?>
+                        <?= form_dropdown('city_id', $options_city, $row->city_id, 'id="field-city_id" class="form-control form-control-chosen" required') ?>
                     </div>
                 </div>
 
@@ -200,7 +200,7 @@
                     <div class="form-group row">
                         <label for="role" class="col-md-4 col-form-label text-right">Rol</label>
                         <div class="col-md-8">
-                            <?php echo form_dropdown('role', $options_role, '', 'class="form-control" v-model="form_values.role"') ?>
+                            <?= form_dropdown('role', $options_role, '', 'class="form-control" v-model="form_values.role"') ?>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -231,26 +231,26 @@
 <script>
     //Loading values in variable
     var form_values = {
-            first_name: '<?php echo $row->first_name ?>',
-            last_name: '<?php echo $row->last_name ?>',
-            display_name: '<?php echo $row->display_name ?>',
-            id_number: '<?php echo $row->id_number ?>',
-            id_number_type: '0<?php echo $row->id_number_type ?>',
-            email: '<?php echo $row->email ?>',
-            username: '<?php echo $row->username ?>',
-            role: '0<?php echo $row->role ?>',
-            birth_date: '<?php echo $row->birth_date ?>',
-            gender: '<?php echo $row->gender ?>',
-            phone_number: '<?php echo $row->phone_number ?>',
-            city_id: '0<?php echo $row->city_id ?>',
-            admin_notes: '<?php echo $row->admin_notes ?>',
-            code: '<?php echo $row->code ?>'
+            first_name: '<?= $row->first_name ?>',
+            last_name: '<?= $row->last_name ?>',
+            display_name: '<?= $row->display_name ?>',
+            id_number: '<?= $row->id_number ?>',
+            id_number_type: '0<?= $row->id_number_type ?>',
+            email: '<?= $row->email ?>',
+            username: '<?= $row->username ?>',
+            role: '0<?= $row->role ?>',
+            birth_date: '<?= $row->birth_date ?>',
+            gender: '<?= $row->gender ?>',
+            phone_number: '<?= $row->phone_number ?>',
+            city_id: '0<?= $row->city_id ?>',
+            admin_notes: '<?= $row->admin_notes ?>',
+            code: '<?= $row->code ?>'
     };
     new Vue({
     el: '#app_edit',
         data: {
             form_values: form_values,
-            row_id: '<?php echo $row->id ?>',
+            row_id: '<?= $row->id ?>',
             validation: {
                 id_number_unique: true,
                 username_unique: true,
@@ -259,7 +259,7 @@
         },
         methods: {
             validate_form: function() {
-                axios.post(app_url + 'users/validate/' + this.row_id, $('#edit_form').serialize())
+                axios.post(url_app + 'users/validate/' + this.row_id, $('#edit_form').serialize())
                 .then(response => {
                     //this.formulario_valido = response.data.status;
                     this.validation = response.data.validation;
@@ -269,7 +269,7 @@
                 });
             },
             validate_send: function () {
-                axios.post(app_url + 'users/validate/' + this.row_id, $('#edit_form').serialize())
+                axios.post(url_app + 'users/validate/' + this.row_id, $('#edit_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                     this.send_form();
@@ -282,7 +282,7 @@
                 });
             },
             send_form: function() {
-                axios.post(app_url + 'users/update/' + this.row_id, $('#edit_form').serialize())
+                axios.post(url_app + 'users/update/' + this.row_id, $('#edit_form').serialize())
                     .then(response => {
                         console.log('status: ' + response.data.mensaje);
                         if (response.data.status == 1)
@@ -299,7 +299,7 @@
                 params.append('first_name', this.form_values.first_name);
                 params.append('last_name', this.form_values.last_name);
                 
-                axios.post(app_url + 'users/username/', params)
+                axios.post(url_app + 'users/username/', params)
                 .then(response => {
                     this.form_values.username = response.data;
                 })

@@ -8,23 +8,23 @@
         <meta name="keywords" content="software, administracion, jardin infantil, app, aplicación, colombia">
         <meta name="author" content="Pacarina Media Lab">
 
-        <title><?php echo $head_title ?></title>
+        <title><?= $head_title ?></title>
 
-        <link rel="apple-touch-icon" href="<?php echo URL_IMG ?>app/favicon.png">
-        <link rel="shortcut icon" href="<?php echo URL_IMG ?>app/favicon.png">
+        <link rel="apple-touch-icon" href="<?= URL_IMG ?>app/favicon.png">
+        <link rel="shortcut icon" href="<?= URL_IMG ?>app/favicon.png">
 
         <!-- Estilos -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-        <link rel="stylesheet" href="<?php echo URL_RESOURCES ?>templates/remark/global/css/bootstrap-extend.min.css">
-        <link rel="stylesheet" href="<?php echo URL_RESOURCES ?>templates/remark/base/assets/css/site.min.css">
+        <link rel="stylesheet" href="<?= URL_RESOURCES ?>templates/remark/global/css/bootstrap-extend.min.css">
+        <link rel="stylesheet" href="<?= URL_RESOURCES ?>templates/remark/base/assets/css/site.min.css">
 
         <!-- Adicionales -->
-        <link rel="stylesheet" href="<?php echo URL_RESOURCES . 'css/start.css' ?>">
+        <link rel="stylesheet" href="<?= URL_RESOURCES . 'css/start.css' ?>">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="<?php echo URL_RESOURCES ?>templates/remark/global/fonts/web-icons/web-icons.min.css">
+        <link rel="stylesheet" href="<?= URL_RESOURCES ?>templates/remark/global/fonts/web-icons/web-icons.min.css">
         <link rel="stylesheet" href="<?php //echo URL_PTL . 'global/fonts/brand-icons/brand-icons.min.css'?>">
-         <link rel="stylesheet" href="<?php echo URL_RESOURCES ?>templates/remark/global/fonts/font-awesome/font-awesome.min.css?v4.0.2">
+         <link rel="stylesheet" href="<?= URL_RESOURCES ?>templates/remark/global/fonts/font-awesome/font-awesome.min.css?v4.0.2">
         <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
         
         <!-- Core  -->
@@ -43,8 +43,8 @@
                 <div class="col-md-4 offset-md-1 col-sm-12">
                     <div class="text-center inicio_marco">
                         <div class="brand">
-                            <a href="<?php echo base_url() ?>">
-                                <img class="brand-img" src="<?php echo URL_IMG ?>app/md_logo.png" alt="...">
+                            <a href="<?= base_url() ?>">
+                                <img class="brand-img" src="<?= URL_IMG ?>app/md_logo.png" alt="...">
                             </a>
                         </div>
                         
@@ -60,7 +60,7 @@
                                 Creado por 
                                 <a href="http://www.pacarina.com" target="_blank">Pacarina Media Lab</a>
                                 <br/>
-                                <img src="<?php echo URL_IMG ?>app/bandera.png" alt="bandera">
+                                <img src="<?= URL_IMG ?>app/bandera.png" alt="bandera">
                                 Colombia
                             </p>
                             <p>© 2019 | Derechos Reservados</p>

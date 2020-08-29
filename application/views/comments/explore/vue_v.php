@@ -15,7 +15,7 @@
         },
         methods: {
             get_list: function (){
-                axios.post(app_url + 'comments/get/' + this.num_page, $('#search_form').serialize())
+                axios.post(url_app + 'comments/get/' + this.num_page, $('#search_form').serialize())
                 .then(response => {
                     this.list = response.data.list;
                     this.search_num_rows = response.data.search_num_rows;
@@ -60,7 +60,7 @@
                 var params = new FormData();
                 params.append('selected', this.selected);
                 
-                axios.post(app_url + 'comments/delete_selected/', params)
+                axios.post(url_app + 'comments/delete_selected/', params)
                 .then(response => {
                     for ( key_s in this.selected ) {   //Recorrer selected
                         for ( key_u in this.list ) {       //Recorrer list elementos

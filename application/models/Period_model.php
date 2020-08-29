@@ -114,7 +114,7 @@ class Period_model extends CI_Model{
                 $order_type = $this->pml->if_strlen($filters['ot'], 'ASC');
                 $this->db->order_by($filters['o'], $order_type);
             } else {
-                $this->db->order_by('edited_at', 'DESC');
+                $this->db->order_by('updated_at', 'DESC');
             }
             
         //Filtros
@@ -269,7 +269,7 @@ class Period_model extends CI_Model{
     function arr_row($period_id)
     {
         $arr_row = $this->input->post();
-        $arr_row['editor_id'] = $this->session->userdata('user_id');
+        $arr_row['updater_id'] = $this->session->userdata('user_id');
         
         if ( ! ($period_id > 0) )
         {

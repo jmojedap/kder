@@ -2,8 +2,8 @@
 // Variables
 //-----------------------------------------------------------------------------
 
-    var user_id = <?php echo $row->id ?>;
-    var src_default = '<?php echo URL_IMG ?>users/user.png';
+    var user_id = <?= $row->id ?>;
+    var src_default = '<?= URL_IMG ?>users/user.png';
     
 // Document Ready
 //-----------------------------------------------------------------------------
@@ -44,7 +44,7 @@
             success: function(response){
                 if ( response.status == 1 )
                 {
-                    window.location = app_url + 'accounts/edit/crop/';
+                    window.location = url_app + 'accounts/edit/crop/';
                 }
             }
         });
@@ -79,12 +79,12 @@
         <img
             id="user_image"
             class="img-rounded img-bordered img-bordered-primary mb-2"
-            src="<?php echo $att_img['src'] ?>"
+            src="<?= $att_img['src'] ?>"
             alt=""
             width="100%"
             >
             <?php if ( $row->image_id > 0 ) { ?>
-                <a class="btn btn-default" id="btn_crop" href="<?php echo base_url("accounts/edit/crop") ?>">
+                <a class="btn btn-default" id="btn_crop" href="<?= base_url("accounts/edit/crop") ?>">
                     <i class="fa fa-crop"></i>
                     Recortar
                 </a>

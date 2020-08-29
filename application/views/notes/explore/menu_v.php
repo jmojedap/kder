@@ -13,10 +13,10 @@
     var sections_rol = [];
     
     sections.explore = {
-        'icon': 'fa fa-search',
-        'text': 'Explorar',
-        'class': '<?php echo $cl_nav_2['notes_explore'] ?>',
-        'cf': 'notes/explore'
+        icon: 'fa fa-search',
+        text: 'Explorar',
+        class: '<?= $cl_nav_2['notes_explore'] ?>',
+        cf: 'notes/explore'
     };
     
     //Secciones para cada rol

@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="detail_modal_label">{{ element.display_name }}</h5>
+                <h5 class="modal-title" id="detail_modal_label">{{ element.title }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -17,23 +17,22 @@
                     <tr>
                         <td>Nombre</td>
                         <td>
-                            {{ element.file_name }}
+                            {{ element.title }}
                         </td>
                     </tr>
                     <tr>
-                        <td>Ruta</td>
-                        <td>
-                            <?php echo URL_UPLOADS ?>{{ element.folder }}{{ element.file_name }}
-                        </td>
+                        <td>Nombre archivo</td>
+                        <td>{{ element.file_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Creado</td>
+                        <td>{{ element.created_at }}</td>
                     </tr>
                 </table>
-                <p>
-                    {{ element.excerpt }}
-                </p>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary w100p" v-bind:href="`<?php echo base_url('files/info/') ?>` + element.id">Abrir</a>
-                <button type="button" class="btn btn-secondary w100p" data-dismiss="modal">Cerrar</button>
+                    <a class="btn btn-primary w100p" v-bind:href="`<?= base_url('users/profile/') ?>` + element.id">Abrir</a>
+                    <button type="button" class="btn btn-secondary w100p" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

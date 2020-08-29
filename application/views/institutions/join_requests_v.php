@@ -12,16 +12,16 @@
         </p>
         <dl class="row">
             <dt class="col-md-3">Institución</dt>
-            <dd class="col-md-9"><?php echo $this->Db_model->field_id('institution', $request->related_1, 'name') ?></dd>
+            <dd class="col-md-9"><?= $this->Db_model->field_id('institution', $request->related_1, 'name') ?></dd>
 
             <dt class="col-md-3">Vincular como</dt>
-            <dd class="col-md-9"><?php echo $this->Item_model->name(58, $request->cat_1) ?></dd>
+            <dd class="col-md-9"><?= $this->Item_model->name(58, $request->cat_1) ?></dd>
 
             <dt class="col-md-3">Solicitud creada</dt>
-            <dd class="col-md-9"><?php echo $this->pml->date_format($request->created_at, 'Y-m-d') ?></dd>
+            <dd class="col-md-9"><?= $this->pml->date_format($request->created_at, 'Y-m-d') ?></dd>
 
             <dt class="col-md-3">Hace</dt>
-            <dd class="col-md-9"><?php echo $this->pml->ago($request->created_at) ?></dd>
+            <dd class="col-md-9"><?= $this->pml->ago($request->created_at) ?></dd>
         </dl>
     </div>
 </div>

@@ -90,7 +90,7 @@ class User_model extends CI_Model{
         $role_filter = $this->role_filter($this->session->userdata('user_id'));
 
         //Construir consulta
-            $this->db->select('id, username, display_name, first_name, last_name, city_id, id_number, email, role, image_id, src_image, src_thumbnail, status, code');
+            $this->db->select('id, username, display_name, first_name, last_name, city_id, id_number, email, role, image_id, url_image, url_thumbnail, status, code');
         
         //Crear array con términos de búsqueda
             $words_condition = $this->Search_model->words_condition($filters['q'], array('first_name', 'last_name', 'display_name', 'email', 'id_number', 'code'));
@@ -105,7 +105,7 @@ class User_model extends CI_Model{
                 $order_type = $this->pml->if_strlen($filters['ot'], 'ASC');
                 $this->db->order_by($filters['o'], $order_type);
             } else {
-                $this->db->order_by('edited_at', 'DESC');
+                $this->db->order_by('updated_at', 'DESC');
             }
             
         //Filtros
@@ -304,7 +304,7 @@ class User_model extends CI_Model{
         
         $arr_row = $this->input->post();
         
-        $arr_row['editor_id'] = $this->session->userdata('user_id');
+        $arr_row['updater_id'] = $this->session->userdata('user_id');
 
         //Si se le estableció contraseña
         if ( isset($arr_row['password']) )
@@ -399,8 +399,8 @@ class User_model extends CI_Model{
         $row_file = $this->Db_model->row_id('file', $file_id);
         
         $arr_row['image_id'] = $row_file->id;
-        $arr_row['src_image'] = $row_file->folder . $row_file->file_name;
-        $arr_row['src_thumbnail'] = $row_file->folder . 'sm_' . $row_file->file_name;
+        $arr_row['url_image'] = $row_file->folder . $row_file->file_name;
+        $arr_row['url_thumbnail'] = $row_file->folder . 'sm_' . $row_file->file_name;
         
         $this->db->where('id', $user_id);
         $this->db->update('user', $arr_row);
@@ -518,7 +518,7 @@ class User_model extends CI_Model{
                 $arr_row['birth_date'] = date('Y-m-d H:i:s', $this->pml->dexcel_unix($row_data[5]));
                 $arr_row['code'] = $row_data[6];
                 $arr_row['creator_id'] = $this->session->userdata('user_id');
-                $arr_row['editor_id'] = $this->session->userdata('user_id');
+                $arr_row['updater_id'] = $this->session->userdata('user_id');
 
                 //Guardar en tabla user
                 $data_insert = $this->insert($arr_row);

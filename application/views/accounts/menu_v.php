@@ -13,20 +13,20 @@
     var sections = [];
     var nav_2 = [];
     var sections_rol = [];
-    var element_id = '<?php echo $row->id ?>';
+    var element_id = '<?= $row->id ?>';
     
     sections.profile = {
-        'icon': 'fa fa-user',
-        'text': 'Perfil',
-        'class': '<?php echo $cl_nav_2['accounts_profile'] ?>',
-        'cf': 'accounts/profile/'
+        icon: 'fa fa-user',
+        text: 'Perfil',
+        class: '<?= $cl_nav_2['accounts_profile'] ?>',
+        cf: 'accounts/profile/'
     };
 
     sections.edit = {
-        'icon': 'fa fa-pencil-alt',
-        'text': 'Editar',
-        'class': '<?php echo $cl_nav_2['accounts_edit'] ?>',
-        'cf': 'accounts/edit/basic'
+        icon: 'fa fa-pencil-alt',
+        text: 'Editar',
+        class: '<?= $cl_nav_2['accounts_edit'] ?>',
+        cf: 'accounts/edit/basic'
     };
     
     //Secciones para cada rol

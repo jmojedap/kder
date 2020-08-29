@@ -2,22 +2,22 @@
 body{
     height: 100vh;
     padding-top: 20px;
-    background: rgb(255,81,78);
-    background: -moz-linear-gradient(0deg, rgba(255,81,78,1) 0%, rgba(232,55,52,1) 100%);
-    background: -webkit-linear-gradient(0deg, rgba(255,81,78,1) 0%, rgba(232,55,52,1) 100%);
-    background: linear-gradient(0deg, rgba(255,81,78,1) 0%, rgba(232,55,52,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff514e",endColorstr="#e83734",GradientType=1);
+    background: rgb(100,166,250);
+    background: -moz-linear-gradient(180deg, rgba(100,166,250,1) 0%, rgba(54,141,255,1) 100%);
+    background: -webkit-linear-gradient(180deg, rgba(100,166,250,1) 0%, rgba(54,141,255,1) 100%);
+    background: linear-gradient(180deg, rgba(100,166,250,1) 0%, rgba(54,141,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#64a6fa",endColorstr="#368dff",GradientType=1);
 }
 
 div.start_container{
-    background-color: white;
-    padding: 30px;
-    width: 320px;
+    background-color: #FFFFFF;
+    padding: 20px;
+    width: 350px;
     margin: 0 auto;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
-    border: 1px solid #e83734;
+    border: 1px solid #f1f1f1;
 }
 
 div.start_content{

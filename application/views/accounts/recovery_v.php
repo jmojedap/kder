@@ -52,11 +52,11 @@
         </div>
     </div>
 
-    <p>¿No tienes una cuenta? <a href="<?php echo base_url('accounts/signup') ?>">Regístrate</a></p>
+    <p>¿No tienes una cuenta? <a href="<?= base_url('accounts/signup') ?>">Regístrate</a></p>
 </div>
 
 <script>
-    var api_url = '<?php echo URL_API ?>';
+    var api_url = '<?= URL_API ?>';
     new Vue({
         el: '#recovery_app',
         data: {

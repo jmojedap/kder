@@ -15,11 +15,11 @@
                     <label for="inputUnchecked"></label>
                 </div>
             </th>
-            <th class="<?php echo $cl_col['thumbnail'] ?>"></th>
-            <th class="<?php echo $cl_col['client'] ?>">Nombre</th>
-            <th class="<?php echo $cl_col['type'] ?>">Tipo</th>
-            <th class="<?php echo $cl_col['excerpt'] ?>">Anotación</th>
-            <th class="<?php echo $cl_col['created'] ?>">Creado por</th>
+            <th class="<?= $cl_col['thumbnail'] ?>"></th>
+            <th class="<?= $cl_col['client'] ?>">Nombre</th>
+            <th class="<?= $cl_col['type'] ?>">Tipo</th>
+            <th class="<?= $cl_col['excerpt'] ?>">Anotación</th>
+            <th class="<?= $cl_col['created'] ?>">Creado por</th>
             <th width="50px"></th>
         </thead>
         <tbody>
@@ -30,34 +30,34 @@
                         <label for="inputUnchecked"></label>
                     </div>
                 </td>
-                <td class="<?php echo $cl_col['thumbnail'] ?>">
-                    <a v-bind:href="`<?php echo base_url("users/notes/") ?>` + element.client_id">    
+                <td class="<?= $cl_col['thumbnail'] ?>">
+                    <a v-bind:href="`<?= base_url("users/notes/") ?>` + element.client_id">    
                         <img
-                            v-bind:src="`<?php echo URL_UPLOADS ?>` + element.client_src_thumbnail"
+                            v-bind:src="`<?= URL_UPLOADS ?>` + element.client_url_thumbnail"
                             class="rounded rounded-circle w50p"
                             alt="imagen cliente"
-                            onerror="this.src='<?php echo URL_IMG ?>users/sm_user.png'"
+                            onerror="this.src='<?= URL_IMG ?>users/sm_user.png'"
                         >
                     </a>
                 </td>
-                <td class="<?php echo $cl_col['client'] ?>">
-                    <a v-bind:href="`<?php echo base_url("users/notes/") ?>` + element.client_id">
+                <td class="<?= $cl_col['client'] ?>">
+                    <a v-bind:href="`<?= base_url("users/notes/") ?>` + element.client_id">
                         {{ element.client_display_name }}
                     </a>
                 </td>
-                <td class="<?php echo $cl_col['type'] ?>">
+                <td class="<?= $cl_col['type'] ?>">
                     {{ element.cat_1 | type_name }}
                 </td>
 
-                <td class="<?php echo $cl_col['excerpt'] ?>">
-                    <a v-bind:href="`<?php echo base_url("notes/info/") ?>` + element.id">
+                <td class="<?= $cl_col['excerpt'] ?>">
+                    <a v-bind:href="`<?= base_url("notes/info/") ?>` + element.id">
                         {{ element.post_name }}
                     </a>
                     <br>
                     {{ element.excerpt }}
                 </td>
 
-                <td class="<?php echo $cl_col['created'] ?>">
+                <td class="<?= $cl_col['created'] ?>">
                     {{ element.creator_display_name }}
                     <br>
                     <span class="text-muted">{{ element.created_at | ago }}</span>

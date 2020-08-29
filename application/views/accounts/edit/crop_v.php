@@ -14,7 +14,7 @@
 <div class="row">
     <div class="col-md-9">
         <div class="img-container">
-            <img id="image" src="<?php echo $src_image ?>" alt="Picture">
+            <img id="image" src="<?= $url_image ?>" alt="Picture">
         </div>
     </div>
     <div class="col-md-3">

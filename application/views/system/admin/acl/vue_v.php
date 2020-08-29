@@ -20,7 +20,7 @@
                 { value: 'app', name: 'App'},
                 { value: 'admin', name: 'Admin'}
             ],
-            controllers: <?php echo json_encode($controllers->result()) ?>,
+            controllers: <?= json_encode($controllers->result()) ?>,
             form_values: {
                 subdomain: '',
                 controller: '',
@@ -28,8 +28,8 @@
                 description: ''
             },
             list: [],
-            controller: '<?php echo $controller ?>',
-            subdomain: '<?php echo $subdomain ?>',
+            controller: '<?= $controller ?>',
+            subdomain: '<?= $subdomain ?>',
             config_form: {
                 title: 'Nuevo proceso',
                 button_text: 'Agregar',
@@ -38,10 +38,10 @@
         },
         methods: {
             get_list: function (){
-                axios.get(app_url + 'admin/acl_list/' + this.subdomain + '/' + this.controller)
+                axios.get(url_app + 'admin/acl_list/' + this.subdomain + '/' + this.controller)
                 .then(response => {
                     this.list = response.data;
-                    history.pushState(null, null, app_url + 'admin/acl/' + this.subdomain + '/' + this.controller);
+                    history.pushState(null, null, url_app + 'admin/acl/' + this.subdomain + '/' + this.controller);
                 })
                 .catch(function (error) {
                      console.log(error);
@@ -65,7 +65,7 @@
                 //this.$refs.campo_id_interno.focus();
             },
             send_form: function(){
-                axios.post(app_url + 'admin/acl_save/' + this.row_id, $('#acl_form').serialize())
+                axios.post(url_app + 'admin/acl_save/' + this.row_id, $('#acl_form').serialize())
                 .then(response => {
                     console.log(response.data.status);
                     if ( response.data.status == 1 ) 
@@ -95,7 +95,7 @@
                 console.log(this.row_id);
             },
             delete_element: function() {
-                axios.get(app_url + 'admin/acl_delete/' + this.row_id + '/' + this.controller)
+                axios.get(url_app + 'admin/acl_delete/' + this.row_id + '/' + this.controller)
                 .then(response => {
                     console.log(response.data);
                     if ( response.data.status == 1 ){

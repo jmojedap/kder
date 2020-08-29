@@ -27,13 +27,13 @@
                 style="width: 200px;"
                 title="Seleccione el método de sincronización"
                 >
-                <?php echo $method_name ?>
+                <?= $method_name ?>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item">Método Sincro</a>
-                <a href="<?php echo base_url('sync/panel/') ?>" class="dropdown-item">Auto</a>
-                <a href="<?php echo base_url('sync/panel/1') ?>" class="dropdown-item">Total</a>
-                <a href="<?php echo base_url('sync/panel/2') ?>" class="dropdown-item">Nuevos ID</a>
+                <a href="<?= base_url('sync/panel/') ?>" class="dropdown-item">Auto</a>
+                <a href="<?= base_url('sync/panel/1') ?>" class="dropdown-item">Total</a>
+                <a href="<?= base_url('sync/panel/2') ?>" class="dropdown-item">Nuevos ID</a>
             </div>
         </div>
     </div>
@@ -43,14 +43,14 @@
     <thead>
         <th width="40px"></th>
         <th>
-            <?php echo anchor("sync/panel/?ob=table_name&ot={$ot_alt}", 'Tabla', 'class="" title=""') ?>
+            <?= anchor("sync/panel/?ob=table_name&ot={$ot_alt}", 'Tabla', 'class="" title=""') ?>
         </th>
         
         <th class="d-none">
             ID L/S
         </th>
         <th class="text-center" title="Cantidad registros Local vs. Servidor">
-            <?php echo anchor("sync/panel/?ob=quan_rows&ot={$ot_alt}", 'Registros L | S') ?>
+            <?= anchor("sync/panel/?ob=quan_rows&ot={$ot_alt}", 'Registros L | S') ?>
         </th>
         <th title="Diferencia en el número de registros ">Dif</th>
         <th width="150px">Estado</th>
@@ -60,7 +60,7 @@
             <i class="fa fa-clock"></i> t estimado
         </th>
         <th>
-            <a href="<?php echo base_url("sync/panel/?ob=sincro_date&ot={$ot_alt}") ?>">Sincronizada</a>
+            <a href="<?= base_url("sync/panel/?ob=sincro_date&ot={$ot_alt}") ?>">Sincronizada</a>
         </th>
     </thead>
     <tbody>
@@ -85,14 +85,14 @@
                 
             ?>
 
-            <tr id="row_<?php echo $row_table->table_name ?>">
+            <tr id="row_<?= $row_table->table_name ?>">
                 <td>
                     <button
-                        id="sincro_<?php echo $row_table->table_name ?>"
+                        id="sincro_<?= $row_table->table_name ?>"
                         class="sincro btn btn-secondary btn-sm"
-                        data-table="<?php echo $row_table->table_name ?>"
-                        data-since_id="<?php echo $row_table->max_id ?>"
-                        data-method_id="<?php echo $row_table->method_id ?>"
+                        data-table="<?= $row_table->table_name ?>"
+                        data-since_id="<?= $row_table->max_id ?>"
+                        data-method_id="<?= $row_table->method_id ?>"
                         title="Sincronizar tabla"
                         >
                         <i class="fa fa-sync-alt"></i>
@@ -100,57 +100,57 @@
                 </td>
 
                 <td>
-                    <?php echo $row_table->table_name ?>
+                    <?= $row_table->table_name ?>
                 </td>
                 
                 <td class="text-right d-none">
                     <span class="text-secondary">
-                        <?php echo number_format($row_table->max_id, 0, ',', '.') ?>
+                        <?= number_format($row_table->max_id, 0, ',', '.') ?>
                     </span>
                     <br/>
                     <span class="text-secondary">
-                        <?php echo number_format($row_table->max_ids, 0, ',', '.') ?>
+                        <?= number_format($row_table->max_ids, 0, ',', '.') ?>
                     </span>
                 </td>
                 
                 <td class="text-center" title="Cantidad registros Local vs. Servidor">
                     <span>
-                        <?php echo number_format($row_table->quan_rows, 0, ',', '.') ?>
+                        <?= number_format($row_table->quan_rows, 0, ',', '.') ?>
                     </span>
                      | 
                     <span class="text-primary">
-                        <?php echo number_format($row_table->quan_rows_server, 0, ',', '.') ?>
+                        <?= number_format($row_table->quan_rows_server, 0, ',', '.') ?>
                     </span>
                 </td>
                 
-                <td class="<?php echo $att_diff['class'] ?> text-right">
-                    <?php echo number_format($att_diff['value'],0,',','.') ?>
+                <td class="<?= $att_diff['class'] ?> text-right">
+                    <?= number_format($att_diff['value'],0,',','.') ?>
                 </td>
 
-                <td id="status_<?php echo $row_table->table_name ?>" width="150px"></td>
+                <td id="status_<?= $row_table->table_name ?>" width="150px"></td>
 
                 <td>
-                    <?php echo $this->Item_model->name(71, $row_table->method_id); ?>
+                    <?= $this->Item_model->name(71, $row_table->method_id); ?>
                 </td>
 
-                <td id="percent_<?php echo $row_table->table_name ?>">
+                <td id="percent_<?= $row_table->table_name ?>">
                     <div class="progress">
                         <div
-                            id="percent_bar_<?php echo $row_table->table_name ?>"
-                            class="progress-bar active <?php echo $clase_barra ?>"
+                            id="percent_bar_<?= $row_table->table_name ?>"
+                            class="progress-bar active <?= $clase_barra ?>"
                             role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                            style="width: <?php echo $pct_row ?>%"
+                            style="width: <?= $pct_row ?>%"
                             >
                         </div>
                     </div>
                 </td>
 
                 <td class="text-center">
-                    <?php echo $this->pml->interval($row_table->start_date, $row_table->sincro_date) ?>
+                    <?= $this->pml->interval($row_table->start_date, $row_table->sincro_date) ?>
                 </td>
 
-                <td id="ago_<?php echo $row_table->table_name ?>" class="<?php echo $ago_class ?>" title="<?php echo $row_table->sincro_date ?>">
-                    <?php echo $this->pml->ago($row_table->sincro_date) ?>
+                <td id="ago_<?= $row_table->table_name ?>" class="<?= $ago_class ?>" title="<?= $row_table->sincro_date ?>">
+                    <?= $this->pml->ago($row_table->sincro_date) ?>
                 </td>
             </tr>
         <?php endforeach ?>

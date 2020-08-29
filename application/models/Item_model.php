@@ -10,49 +10,6 @@ class Item_model extends CI_Model{
 // CRUD ITEM
 //---------------------------------------------------------------------------------------------------------
     
-    /**
-     * Devuelve objeto query con resultados de búsqueda
-     * 
-     * @param type $filters
-     * @param type $per_page
-     * @param type $offset
-     * @return type
-     */
-    function search($filters, $per_page = NULL, $offset = NULL)
-    {
-        
-        $this->load->model('Search_model');
-        
-        //Construir búsqueda
-        //Crear array con términos de búsqueda
-            if ( strlen($filters['q']) > 2 ){
-                $palabras = $this->Searh_model->palabras($filters['q']);
-                $concat_fields = $this->Search_model->concat_fields(array('item_name', 'long_name', 'abbreviation', 'slug'));
-
-                foreach ($palabras as $palabra) {
-                    $this->db->like("CONCAT({$concat_fields})", $palabra);
-                }
-            }
-        
-        //Otros filtros
-            if ( $filters['cat'] != '' ) { $this->db->where('category_id', $filters['cat']); }    //Categoría
-            
-        //Especificaciones de consulta
-            $this->db->order_by('category_id, cod', 'ASC');
-            
-        //Obtener resultados
-        if ( is_null($per_page) ){
-            $query = $this->db->get('item'); //Resultados totales
-        } else {
-            $query = $this->db->get('item', $per_page, $offset); //Resultados por página
-        }
-        
-        return $query;
-        
-    }
-    
-    
-    
     function next_cod($category_id)
     {
         $cod = 1;
@@ -69,16 +26,28 @@ class Item_model extends CI_Model{
         return $cod;
     }
     
-    function delete($conditiones)
+    /**
+     * Elimina un registro de la tabla item, requiere ID item, e ID category, para
+     * asegurar y confirmar registro correcto.
+     * 2020-04-03
+     */
+    function delete($item_id, $category_id)
     {
-        $this->db->where($conditiones);
+        $data = array('status' => 0, 'qty_deleted' => 0);   //Resultado inicial
+
+        $this->db->where('id', $item_id);
+        $this->db->where('category_id', $category_id);
         $this->db->delete('item');
+
+        $data['qty_deleted'] = $this->db->affected_rows();
+
+        if ( $data['qty_deleted'] > 0) { $data['status'] = 1; } //Verificar resultado
+
+        return $data;
     }
     
     /**
      * Guardar un registro en la tabla item. Insertar o Editar.
-     * @param type $arr_row
-     * @return type
      */
     function save($arr_row, $item_id)
     {
@@ -87,23 +56,25 @@ class Item_model extends CI_Model{
             if ( $item_id == 0 ) { $condition = "category_id = {$arr_row['category_id']} AND cod = {$arr_row['cod']}"; }
         
         //Insert or Update
-            $response['row_id'] = $this->Db_model->save('item', $condition, $arr_row);
+            $data['saved_id'] = $this->Db_model->save('item', $condition, $arr_row);
             
         //Result
-            $response['result'] = 0;
-                if ( $response['row_id'] > 0 ) { $response['result'] = 1; }
+            $data['status'] = 0;
+            if ( $data['saved_id'] > 0 )
+            {
+                $data['status'] = 1;
+                //Modificar campos dependientes
+                $row_item = $this->Db_model->row_id('item', $data['saved_id']);
+                $this->update_ancestry($row_item);
+                $this->update_offspring($row_item);
+            }
         
-        return $response;
+        return $data;
     }
     
     /**
      * Devuelve el value del field item.cod para una categoría
      * dado un value de un field
-     * 
-     * @param type $category_id
-     * @param type $value
-     * @param type $field
-     * @return type
      */
     function cod($category_id, $value, $field = 'abbreviation')
     {   
@@ -118,6 +89,7 @@ class Item_model extends CI_Model{
     
     function items($category_id)
     {
+        $this->db->order_by('ancestry', 'ASC');
         $this->db->order_by('cod', 'ASC');
         $items = $this->db->get_where('item', "category_id = {$category_id}");
         
@@ -351,5 +323,155 @@ class Item_model extends CI_Model{
         $arr_item = $this->pml->query_to_array($query, 'field_value', $indice);
         
         return $arr_item;
+    }
+
+// IMPORTAR
+//-----------------------------------------------------------------------------}
+
+    /**
+     * Array con configuración de la vista de importación 
+     * 2020-04-01
+     */
+    function import_config()
+    {
+        $data['help_note'] = 'Se importarán items a la BD';
+        $data['help_tips'] = array();
+        $data['template_file_name'] = 'f60_items.xlsx';
+        $data['sheet_name'] = 'items';
+        $data['head_subtitle'] = 'Importar items';
+        $data['destination_form'] = "items/import_e/";
+
+        return $data;
+    }
+
+    /**
+     * Importa items a la base de datos
+     * 2020-04-01
+     */
+    function import($arr_sheet)
+    {
+        $data = array('qty_imported' => 0, 'results' => array());
+        
+        foreach ( $arr_sheet as $key => $row_data )
+        {
+            $data_import = $this->import_row($row_data);
+            $data['qty_imported'] += $data_import['status'];
+            $data['results'][$key + 2] = $data_import;
+        }
+        
+        return $data;
+    }
+
+    /**
+     * Realiza la importación de una fila del archivo excel. Valida los campos, crea registro
+     * en la tabla item
+     * 2020-04-01
+     */
+    function import_row($row_data)
+    {
+        //Validar
+            $error_text = '';
+            $row_category = $this->Db_model->row('item', "category_id = 0 AND cod = '$row_data[0]'");
+                            
+            if ( strlen($row_data[1]) == 0 ) { $error_text = 'La casilla `cod` está vacía. '; }
+            if ( strlen($row_data[2]) == 0 ) { $error_text = 'La casilla `item name` está vacía. '; }
+            if ( is_null($row_category) ) { $error_text = "El ID de category '{$row_data[0]}' no existe. "; }
+
+        //Si no hay error
+            if ( $error_text == '' )
+            {                
+                $arr_row['category_id'] = $row_data[0];
+                $arr_row['cod'] = $row_data[1];
+                $arr_row['item_name'] = $row_data[2];
+                $arr_row['abbreviation'] = ( is_null($row_data[3]) ) ? strtolower(substr($row_data[2],0,4)) : $row_data[3];
+                $arr_row['parent_id'] = ( is_null($row_data[6]) ) ? 0 : $row_data[6];
+                $arr_row['description'] = ( is_null($row_data[8]) ) ? $row_category->item_name . ' - ' . $row_data[2] : $row_data[8];
+                $arr_row['long_name'] = ( is_null($row_data[10]) ) ? $row_data[2] : $row_data[10];
+                $arr_row['short_name'] = ( is_null($row_data[11]) ) ? $row_data[2] : $row_data[11];
+                $arr_row['slug'] = $row_category->slug . '-' . $this->Db_model->unique_slug($row_data[2], 'item');
+
+                //Guardar en tabla item
+                $data_insert = $this->save($arr_row, 0);
+
+                $data = array('status' => 1, 'text' => '', 'imported_id' => $data_insert['saved_id']);
+            } else {
+                $data = array('status' => 0, 'text' => $error_text, 'imported_id' => 0);
+            }
+
+        return $data;
+    }
+
+// GESTIÓN DE JERARQUÍA DE ÍTEMS
+//-----------------------------------------------------------------------------
+
+    /**
+     * Actualiza el campo item.ancestry para un item específico
+     * 2020-05-05
+     */
+    function update_ancestry($row)
+    {
+        //Valores por iniciales defecto
+        $prefix = '-';
+        $level = 0;
+        
+        //Si tiene padre, cambiar valores
+        if ( $row->parent_id > 0 )
+        {
+            $row_parent = $this->Db_model->row('item', "category_id = {$row->category_id} AND cod = {$row->parent_id}");
+            $prefix = $row_parent->ancestry;
+            $level = $row_parent->level + 1;
+        }
+        
+        //Construir registro
+            $arr_row['ancestry'] = $prefix . $row->cod . '-';
+            $arr_row['level'] = $level;
+        
+        //Actualizar
+            $this->db->where('id', $row->id);
+            $this->db->update('item', $arr_row);   
+    }
+    
+    /**
+     * Actualiza el campo item.ancestry para todos los items correspondientes a la descendencia
+     * de un item ($row), necesaria cuando un item cambia de padre inmediado en la jerarqía
+     * 2020-05-05
+     */
+    function update_offspring($row)
+    {
+        $items = $this->offspring($row->id);
+
+        foreach ( $items->result() as $row_child )
+        {
+            $this->update_ancestry($row_child);
+        }
+    }
+    
+    /**
+     * Descendencia de un ítem, en un formato específico
+     * 2020-04-02
+     */
+    function offspring($item_id, $format = 'query')
+    {
+        $offspring = NULL;
+        $row = $this->Db_model->row_id('item', $item_id);
+        
+        $this->db->like("CONCAT('-', (ancestry), '-')", "-{$row->cod}-");
+        $this->db->where('category_id', $row->category_id);
+        $this->db->order_by('ancestry', 'ASC');
+        $query = $this->db->get('item');
+        
+        if ( $format == 'query' ) {
+            $offspring = $query;
+        } elseif ( $format == 'array' ) {
+            $offspring = $this->pml->query_to_array($query, 'id');
+        } elseif ( $format == 'string' ) {
+            $offspring = '0';
+            $arr_offspring = $this->pml->query_to_array($query, 'id');
+            if ( $query->num_rows() > 0 ) {
+                $offspring = implode(',', $arr_offspring);
+            }
+        }
+        
+        return $offspring;
     }
 }

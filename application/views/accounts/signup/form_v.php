@@ -55,8 +55,8 @@
         O usa tu cuenta de Gmail para ingresar
     </div>
     <div class="form-group">
-        <a href="<?php echo $g_client->createAuthUrl(); ?>" class="btn btn-light btn-block btn_google" style="" title="Registrarme utilizando mi cuenta de Google">
-            <img src="<?php echo URL_IMG . 'app/google.png'?>" style="width: 20px">
+        <a href="<?= $g_client->createAuthUrl(); ?>" class="btn btn-light btn-block btn_google" style="" title="Registrarme utilizando mi cuenta de Google">
+            <img src="<?= URL_IMG . 'app/google.png'?>" style="width: 20px">
             Ingresa con Google
         </a>
     </div>

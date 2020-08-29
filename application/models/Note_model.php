@@ -88,7 +88,7 @@ class Note_model extends CI_Model{
         $role_filter = $this->role_filter($this->session->userdata('user_id'));
 
         //Construir consulta
-            $this->db->select('notes.id, post_name, excerpt, notes.cat_1, notes.status, related_1 AS user_id, notes.editor_id, notes.edited_at, notes.creator_id, notes.created_at, user.display_name AS creator_display_name, user.src_thumbnail AS creator_src_thumbnail, client.display_name AS client_display_name, client.src_thumbnail AS client_src_thumbnail');
+            $this->db->select('notes.id, post_name, excerpt, notes.cat_1, notes.status, related_1 AS user_id, notes.updater_id, notes.updated_at, notes.creator_id, notes.created_at, user.display_name AS creator_display_name, user.url_thumbnail AS creator_url_thumbnail, client.display_name AS client_display_name, client.url_thumbnail AS client_url_thumbnail');
             $this->db->join('user', 'user.id = notes.creator_id');
             $this->db->join('user AS client', 'client.id = notes.related_1');
         
@@ -105,7 +105,7 @@ class Note_model extends CI_Model{
                 $order_type = $this->pml->if_strlen($filters['ot'], 'ASC');
                 $this->db->order_by($filters['o'], $order_type);
             } else {
-                $this->db->order_by('edited_at', 'DESC');
+                $this->db->order_by('updated_at', 'DESC');
             }
             
         //Filtros
@@ -233,8 +233,8 @@ class Note_model extends CI_Model{
     {
         $arr_row = $this->input->post();
         $arr_row['type_id'] = 1010; //Anotación sobre usuario
-        $arr_row['editor_id'] = $this->session->userdata('user_id');
-        $arr_row['edited_at'] = date('Y-m-d H:i:s');
+        $arr_row['updater_id'] = $this->session->userdata('user_id');
+        $arr_row['updated_at'] = date('Y-m-d H:i:s');
         
         if ( $note_id == 0 )
         {

@@ -22,8 +22,8 @@
 		<?php if ( $week_day != $period->week_day ) { ?>
 			<br>
 		<?php } ?>
-		<div class="day" title="<?php echo $period->id ?>">
-			<?php echo $period->day ?>
+		<div class="day" title="<?= $period->id ?>">
+			<?= $period->day ?>
 		</div>
 
 		<?php
@@ -38,7 +38,7 @@
 			<?php for ( $j=0; $j < 21; $j+=7 ) { ?>
 				<?php $sum = $i + $j ?>
 				<td>
-					<?php echo $date; ?>
+					<?= $date; ?>
 				</td>
 				<?php
 					$mktime = strtotime(date("Y-m-d", strtotime($date)) . " +{$sum} days");
@@ -53,6 +53,6 @@
 	<?php } ?>
 </table>
 
-<a v-bind:href="`<?php echo base_url("destino") ?>` + elemento" class="clase">
+<a v-bind:href="`<?= base_url("destino") ?>` + elemento" class="clase">
 	contenido
 </a>

@@ -13,14 +13,14 @@
                 <div class="form-group row">
                     <label for="payer_id" class="col-md-4 controle-label text-right">Pagado por</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('payer_id', $options_payer, '', 'id="field-payer_id" class="form-control form-control-chosen" v-model="form_values.payer_id"') ?>
+                        <?= form_dropdown('payer_id', $options_payer, '', 'id="field-payer_id" class="form-control form-control-chosen" v-model="form_values.payer_id"') ?>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="status" class="col-md-4 col-form-label text-right">Estado</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('status', $options_status, '0', 'class="form-control" v-model="form_values.status"') ?>
+                        <?= form_dropdown('status', $options_status, '0', 'class="form-control" v-model="form_values.status"') ?>
                     </div>
                 </div>
 
@@ -85,20 +85,20 @@
 
 <script>
     //Cargar valor en formulario
-    var form_values = <?php echo json_encode($row) ?>;
-    form_values.status = '0<?php echo $row->status ?>';
-    form_values.payer_id = '0<?php echo $row->payer_id ?>';
-    form_values.payed_at = '0<?php echo substr($row->payed_at, 0, 10) ?>';
+    var form_values = <?= json_encode($row) ?>;
+    form_values.status = '0<?= $row->status ?>';
+    form_values.payer_id = '0<?= $row->payer_id ?>';
+    form_values.payed_at = '0<?= substr($row->payed_at, 0, 10) ?>';
     
     new Vue({
     el: '#app_edit',
         data: {
             form_values: form_values,
-            row_id: '<?php echo $row->id ?>'
+            row_id: '<?= $row->id ?>'
         },
         methods: {
             send_form: function() {
-                axios.post(app_url + 'payments/save/' + this.row_id, $('#edit_form').serialize())
+                axios.post(url_app + 'payments/save/' + this.row_id, $('#edit_form').serialize())
                     .then(response => {
                         if (response.data.status == 1)
                         {

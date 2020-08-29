@@ -44,7 +44,7 @@
             <span class="float-right">Tipo</span>
         </label>
         <div class="col-md-8">
-            <?php echo form_dropdown('type_id', $options_type_id, '', 'class="form-control" required v-model="form_values.type_id"') ?>
+            <?= form_dropdown('type_id', $options_type_id, '', 'class="form-control" required v-model="form_values.type_id"') ?>
         </div>
     </div>
     

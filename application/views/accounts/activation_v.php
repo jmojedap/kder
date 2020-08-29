@@ -15,13 +15,13 @@
 
 <div id="activation_app">
     <div class="" style="text-align: center; padding-bottom: 0px;">
-        <h2 class="white"><?php echo $texts['subtitle'] ?></h2>
-        <h4 class="white"><?php echo $row->first_name . ' ' . $row->last_name ?></h4>
+        <h2 class="white"><?= $texts['subtitle'] ?></h2>
+        <h4 class="white"><?= $row->first_name . ' ' . $row->last_name ?></h4>
         <p class="text-muted">
             <i class="fa fa-user"></i>
-            <?php echo $row->username ?>
+            <?= $row->username ?>
         </p>
-        <p>Establece tu contraseña para <?php echo APP_NAME ?></p>
+        <p>Establece tu contraseña para <?= APP_NAME ?></p>
     </div>
 
     <form id="activation_form" method="post" accept-charset="utf-8" @submit.prevent="send_form">
@@ -49,7 +49,7 @@
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block">
-                <?php echo $texts['button'] ?>
+                <?= $texts['button'] ?>
             </button>
         </div>
     </form>
@@ -65,18 +65,17 @@
     new Vue({
         el: '#activation_app',
         data: {
-            app_url: '<?php echo base_url() ?>',
-            activation_key: '<?php echo $activation_key ?>',
+            activation_key: '<?= $activation_key ?>',
             hide_message: true
         },
         methods: {
             send_form: function(){
                 
-                axios.post(this.app_url + 'accounts/activate/' + this.activation_key, $('#activation_form').serialize())
+                axios.post(url_app + 'accounts/activate/' + this.activation_key, $('#activation_form').serialize())
                 .then(response => {
                     this.hide_message = response.data.status;
                     if ( response.data.status == 1 ) {
-                        window.location = this.app_url + 'app/logged';
+                        window.location = this.url_app + 'app/logged';
                     }
                 })
                 .catch(function (error) {

@@ -9,14 +9,14 @@
         <!-- Page Widget -->
         <div class="card text-center">
             <img
-                src="<?php echo $att_img['src'] ?>"
+                src="<?= $att_img['src'] ?>"
                 class="card-img-top"
                 alt="Imagen de la institución"
                 width="100%"
-                onerror="this.src='<?php echo URL_IMG . 'app/institution.png' ?>'"
+                onerror="this.src='<?= URL_IMG . 'app/institution.png' ?>'"
                 >
             <div class="card-body">
-                <h4 class="profile-user"><?php echo $row_teacher->display_name ?></h4>
+                <h4 class="profile-user"><?= $row_teacher->display_name ?></h4>
                 <p>Asignada del grupo</p>
             </div>
             <div class="card-footer">
@@ -42,44 +42,44 @@
                 <tr>
                     <td width="35%"><span class="text-muted">ID Grupo</span></td>
                     <td width="65%">
-                        <?php echo $row->id ?>
+                        <?= $row->id ?>
                     </td>
                 </tr>
 
                 <tr>
                     <td class=""><span class="text-muted">Nombre</span></td>
-                    <td><?php echo $row->name ?></td>
+                    <td><?= $row->name ?></td>
                 </tr>
                 <tr>
                     <td class=""><span class="text-muted">Título</span></td>
-                    <td><?php echo $row->title ?></td>
+                    <td><?= $row->title ?></td>
                 </tr>
 
                 <tr>
                     <td><span class="text-muted">Nivel</span></td>
-                    <td><?php echo $this->Item_model->name(3, $row->level) ?></td>
+                    <td><?= $this->Item_model->name(3, $row->level) ?></td>
                 </tr>
 
                 <tr>
                     <td><span class="text-muted">Año generación</span></td>
-                    <td><?php echo $row->generation ?></td>
+                    <td><?= $row->generation ?></td>
                 </tr>
 
                 <tr>
                     <td class=""><span class="text-muted">Descripción</span></td>
-                    <td><?php echo $row->description ?></td>
+                    <td><?= $row->description ?></td>
                 </tr>
 
                 <tr>
                     <td class=""><span class="text-muted">Editado</span></td>
                     <td>
-                        <?php echo $this->pml->date_format($row->edited_at, 'Y-m-d h:i') ?> por <?php echo $this->App_model->name_user($row->editor_id, 'du') ?>
+                        <?= $this->pml->date_format($row->updated_at, 'Y-m-d h:i') ?> por <?= $this->App_model->name_user($row->updater_id, 'du') ?>
                     </td>
                 </tr>
                 <tr>
                     <td class=""><span class="text-muted">Creado</span></td>
                     <td>
-                        <?php echo $this->pml->date_format($row->created_at, 'Y-m-d H:i') ?> por <?php echo $this->App_model->name_user($row->creator_id, 'du') ?>
+                        <?= $this->pml->date_format($row->created_at, 'Y-m-d H:i') ?> por <?= $this->App_model->name_user($row->creator_id, 'du') ?>
                     </td>
                 </tr>
             </tbody>

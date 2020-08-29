@@ -1,8 +1,8 @@
 <?php $this->load->view('assets/jquery_autocomplete') ?>
 
 <script>
-    var user_id = '<?php echo $row->id ?>';
-    var relatives_source = '<?php echo base_url("students/relatives_autocomplete/{$row->id}/{$row->institution_id}") ?>';
+    var user_id = '<?= $row->id ?>';
+    var relatives_source = '<?= base_url("students/relatives_autocomplete/{$row->id}/{$row->institution_id}") ?>';
 
     $( function() {
       
@@ -15,9 +15,9 @@
         function add_relative(item){
             $.ajax({
                 type: 'POST',
-                url: app_url + 'students/add_relative/' + user_id + '/' + item.id,
+                url: url_app + 'students/add_relative/' + user_id + '/' + item.id,
                 success: function(response){
-                    window.location = app_url + 'students/relatives/' + user_id;
+                    window.location = url_app + 'students/relatives/' + user_id;
                 }
             });
         }
@@ -43,18 +43,18 @@
         <tbody>
             <tr v-for="(relative, key) in list">
                 <td>
-                    <a v-bind:href="`<?php echo base_url('users/profile/') ?>` + relative.id">
+                    <a v-bind:href="`<?= base_url('users/profile/') ?>` + relative.id">
                         <img
                             class="rounded"
-                            v-bind:src="`<?php echo URL_UPLOADS ?>` + relative.src_thumbnail"
+                            v-bind:src="`<?= URL_UPLOADS ?>` + relative.url_thumbnail"
                             alt="Imagen estudiante"
                             style="width: 60px;"
-                            onerror="this.src='<?php echo URL_IMG ?>users/sm_user.png'"
+                            onerror="this.src='<?= URL_IMG ?>users/sm_user.png'"
                             >
                     </a>
                 </td>
                 <td>
-                    <a v-bind:href="`<?php echo base_url('users/profile/') ?>` + relative.id">
+                    <a v-bind:href="`<?= base_url('users/profile/') ?>` + relative.id">
                         {{ relative.display_name }}
                     </a>
                     <br/>

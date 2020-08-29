@@ -18,10 +18,10 @@
                     <div class="breadcrumb-holder" style="min-height: 47px">
                         <h1>
                             <span id="head_title">
-                                <?php echo $head_title ?>
+                                <?= $head_title ?>
                             </span>
                             <span id="head_subtitle" style="margin-left: 10px; color: #999; font-weight: 300; font-size: 0.7em;">
-                                <?php echo $head_subtitle ?>
+                                <?= $head_subtitle ?>
                             </span>
                         </h1>
                     </div>

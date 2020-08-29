@@ -1,25 +1,24 @@
-<script src="<?php echo URL_RESOURCES . 'js/pcrn.js' ?>"></script>
+<script src="<?= URL_RESOURCES . 'js/pcrn.js' ?>"></script>
 <?php $this->load->view('assets/momentjs') ?>
 
 <div id="app_explore">
     <div class="row">
-        <div class="col-md-6 d-none d-md-table-cell d-lg-table-cell">
+        <div class="col-md-6">
             <?php $this->load->view($views_folder . 'search_form_v'); ?>
         </div>
 
         <div class="col">
-            <a href="<?php echo base_url("groups/export/?{$str_filters}") ?>" class="btn btn-light" title="Exportar registros encontrados a Excel">
+            <a href="<?= base_url("groups/export/?{$str_filters}") ?>" class="btn btn-light only-lg" title="Exportar registros encontrados a Excel">
                 <i class="fa fa-download"></i>
             </a>
-            <a class="btn btn-light"
-                id="btn_delete_selected"
+            <button class="btn btn-light"
                 title="Eliminar elementos seleccionados"
                 data-toggle="modal"
                 data-target="#modal_delete"
                 v-show="selected.length > 0"
                 >
                 <i class="fa fa-trash"></i>
-            </a>
+            </button>
             
         </div>
         

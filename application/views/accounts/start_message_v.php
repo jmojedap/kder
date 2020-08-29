@@ -5,13 +5,13 @@
     <hr class="my-4">
     <p>Si no tienes una cuenta, regístrate</p>
     <p class="lead">
-        <a class="btn btn-primary btn-lg btn-block" href="<?php echo base_url('accounts/signup/') ?>" role="button">
+        <a class="btn btn-primary btn-lg btn-block" href="<?= base_url('accounts/signup/') ?>" role="button">
             Registrarse
         </a>
     </p>
     <p>Ya tienes una cuenta, ingresa</p>
     <p class="lead">
-        <a class="btn btn-success btn-lg btn-block" href="<?php echo base_url('accounts/signup/') ?>" role="button">
+        <a class="btn btn-success btn-lg btn-block" href="<?= base_url('accounts/signup/') ?>" role="button">
             Entrar
         </a>
     </p>

@@ -21,7 +21,7 @@
                 </p>
                 <?php if ( $with_data ) { ?>
                 <p>
-                    <a href="<?php echo base_url("institutions/my_institutions") ?>" class="btn btn-success btn-lg">
+                    <a href="<?= base_url("institutions/my_institutions") ?>" class="btn btn-success btn-lg">
                         <i class="fa fa-plus"></i>
                         Crear institución
                     </a>
@@ -157,7 +157,7 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <a href="<?php echo base_url("accounts/edit") ?>" class="btn btn-primary">
+                    <a href="<?= base_url("accounts/edit") ?>" class="btn btn-primary">
                         Ir a perfil
                     </a>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -188,7 +188,7 @@ new Vue({
         role: '',
         type: 0,
         term: '',
-        user_id: '<?php echo $this->session->userdata('
+        user_id: '<?= $this->session->userdata('
         user_id ') ?>',
         institution_id: 0,
         current_institution: [],
@@ -207,7 +207,7 @@ new Vue({
             var params = new FormData();
             params.append('q', this.term);
 
-            axios.post(app_url + 'institutions/get/', params)
+            axios.post(url_app + 'institutions/get/', params)
                 .then(response => {
                     this.list = response.data.list;
                     this.search_num_rows = response.data.search_num_rows;
@@ -224,7 +224,7 @@ new Vue({
         },
         join: function() {
             var args = this.institution_id + '/' + this.user_id + '/' + this.role;
-            axios.get(app_url + 'institutions/require_join/' + args)
+            axios.get(url_app + 'institutions/require_join/' + args)
                 .then(response => {
                     if (response.data.status == 1) {
                         this.set_sended();
@@ -239,7 +239,7 @@ new Vue({
             this.current_institution = [];
         },
         set_sended: function() {
-            window.location = app_url + 'institutions/joining';
+            window.location = url_app + 'institutions/joining';
         }
     }
 });

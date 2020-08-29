@@ -31,10 +31,10 @@
             </button>
         </div>
     </div>
-    <div id="adv_filters" style="<?php echo $filters_style ?>">
+    <div id="adv_filters" style="<?= $filters_style ?>">
         <div class="form-group row">
             <div class="col-md-9">
-                <?php echo form_dropdown('type', $options_type, $filters['type'], 'class="form-control" title="Filtrar por tipo" v-model="filters.type"'); ?>
+                <?= form_dropdown('type', $options_type, $filters['type'], 'class="form-control" title="Filtrar por tipo" v-model="filters.type"'); ?>
             </div>
             <label for="type" class="col-md-3 col-form-label">Tipo</label>
         </div>

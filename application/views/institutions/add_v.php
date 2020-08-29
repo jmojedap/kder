@@ -10,7 +10,7 @@
         <div class="card-body">
             <form id="add_form" accept-charset="utf-8" @submit.prevent="validate_send">
                 <div class="form-group row">
-                    <label for="name" class="col-md-4 controle-label">Nombre Comercial / Marca</label>
+                    <label for="name" class="col-md-4 col-form-label text-right">Nombre Comercial / Marca</label>
                     <div class="col-md-8">
                         <input
                             id="field-name"
@@ -25,7 +25,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="full_name" class="col-md-4 controle-label">Nombre Completo / Razón social</label>
+                    <label for="full_name" class="col-md-4 col-form-label text-right">Nombre Completo / Razón social</label>
                     <div class="col-md-8">
                         <input
                             id="field-full_name"
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="email" class="col-md-4 controle-label">Correo electrónico</label>
+                    <label for="email" class="col-md-4 col-form-label text-right">Correo electrónico</label>
                     <div class="col-md-4">
                         <input
                             id="field-email"
@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="form-group row" id="form-group_id_number">
-                    <label for="id_number" class="col-md-4 controle-label">NIT o Documento | Tipo</label>
+                    <label for="id_number" class="col-md-4 col-form-label text-right">NIT o Documento | Tipo</label>
                     <div class="col-md-4">
                         <input
                             id="field-id_number"
@@ -77,7 +77,7 @@
                         </span>
                     </div>
                     <div class="col-md-4">
-                        <?php echo form_dropdown('id_number_type', $options_id_number_type, '', 'class="form-control" required v-model="form_values.id_number_type"') ?>
+                        <?= form_dropdown('id_number_type', $options_id_number_type, '', 'class="form-control" required v-model="form_values.id_number_type"') ?>
                     </div>
                 </div>
 
@@ -98,14 +98,14 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="city_id" class="col-md-4 controle-label">Ciudad ubicación</label>
+                    <label for="city_id" class="col-md-4 col-form-label text-right">Ciudad ubicación</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('city_id', $options_city, '0909', 'id="field-city_id" class="form-control form-control-chosen" required') ?>
+                        <?= form_dropdown('city_id', $options_city, '0909', 'id="field-city_id" class="form-control form-control-chosen" required') ?>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="celular" class="col-md-4 controle-label">Número celular</label>
+                    <label for="celular" class="col-md-4 col-form-label text-right">Número celular</label>
                     <div class="col-md-8">
                         <input
                             id="field-phone_number"
@@ -160,7 +160,7 @@
     el: '#app_insert',
         data: {
             form_values: form_values,
-            row_id: '<?php echo $row->id ?>',
+            row_id: '<?= $row->id ?>',
             validation: {
                 email_is_unique: true,
                 id_number_is_unique: true
@@ -168,7 +168,7 @@
         },
         methods: {
             validate: function() {
-                axios.post(app_url + 'institutions/validate/', $('#add_form').serialize())
+                axios.post(url_app + 'institutions/validate/', $('#add_form').serialize())
                 .then(response => {
                     //this.formulario_valido = response.data.status;
                     this.validation = response.data.validation;
@@ -178,7 +178,7 @@
                 });
             },
             validate_send: function () {
-                axios.post(app_url + 'institutions/validate/', $('#add_form').serialize())
+                axios.post(url_app + 'institutions/validate/', $('#add_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                         this.send_form();
@@ -191,14 +191,14 @@
                 });
             },
             send_form: function() {
-                axios.post(app_url + 'institutions/insert/', $('#add_form').serialize())
+                axios.post(url_app + 'institutions/insert/', $('#add_form').serialize())
                     .then(response => {
                         console.log('status: ' + response.data.mensaje);
                         if (response.data.status == 1)
                         {
                             toastr['success']('La institución fue creada con éxito');
                             setTimeout(() => {
-                                window.location = app_url + 'institutions/info/' + response.data.institution_id;
+                                window.location = url_app + 'institutions/info/' + response.data.institution_id;
                             }, 3000);
                         }
                     })

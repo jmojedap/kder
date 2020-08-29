@@ -15,40 +15,48 @@
     var sections = [];
     var nav_2 = [];
     var sections_rol = [];
-    var element_id = '<?php echo $row->id ?>';
+    var element_id = '<?= $row->id ?>';
     
+    sections.explore = {
+        icon: 'fa fa-arrow-left',
+        text: 'Explorar',
+        class: '<?= $cl_nav_2['charges_explore'] ?>',
+        cf: 'charges/explore/',
+        'anchor': true
+    };
+
     sections.info = {
-        'icon': 'fa fa-info-circle',
-        'text': 'Información',
-        'class': '<?php echo $cl_nav_2['charges_info'] ?>',
-        'cf': 'charges/info/' + element_id
+        icon: 'fa fa-info-circle',
+        text: 'Información',
+        class: '<?= $cl_nav_2['charges_info'] ?>',
+        cf: 'charges/info/' + element_id
     };
 
     sections.students = {
-        'icon': 'fa fa-user',
-        'text': 'Estudiantes',
-        'class': '<?php echo $cl_nav_2['charges_students'] ?>',
-        'cf': 'charges/students/' + element_id
+        icon: 'fa fa-user',
+        text: 'Estudiantes',
+        class: '<?= $cl_nav_2['charges_students'] ?>',
+        cf: 'charges/students/' + element_id
     };
 
     sections.groups = {
-        'icon': 'fa fa-users',
-        'text': 'Grupos',
-        'class': '<?php echo $cl_nav_2['charges_groups'] ?>',
-        'cf': 'charges/groups/' + element_id
+        icon: 'fa fa-users',
+        text: 'Grupos',
+        class: '<?= $cl_nav_2['charges_groups'] ?>',
+        cf: 'charges/groups/' + element_id
     };
 
     sections.edit = {
-        'icon': 'fa fa-pencil-alt',
-        'text': 'Editar',
-        'class': '<?php echo $cl_nav_2['charges_edit'] ?>',
-        'cf': 'charges/edit/' + element_id
+        icon: 'fa fa-pencil-alt',
+        text: 'Editar',
+        class: '<?= $cl_nav_2['charges_edit'] ?>',
+        cf: 'charges/edit/' + element_id
     };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['info', 'groups', 'students', 'edit'];
-    sections_rol.admn = ['info'];
-    sections_rol.prpt = ['info', 'students', 'edit'];
+    sections_rol.dvlp = ['explore', 'info', 'groups', 'students', 'edit'];
+    sections_rol.admn = ['explore', 'info'];
+    sections_rol.prpt = ['explore', 'info', 'students', 'edit'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_rol[app_r]) 

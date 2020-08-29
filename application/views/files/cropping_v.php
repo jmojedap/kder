@@ -15,7 +15,7 @@
         $("#crop_form").submit(function () {
             $.ajax({
                 type: "POST",
-                url: app_url + 'files/crop/' + image_id,
+                url: url_api + 'files/crop/' + image_id,
                 data: $("#crop_form").serialize(),
                 success: function (response) {
                     after_submit(response);
@@ -37,7 +37,7 @@
     {
         if ( response.status == 1 )
         {
-            window.location = app_url + back_destination;
+            window.location = url_app + back_destination;
         } else {
             toastr['error'](response.message);
         }
@@ -47,7 +47,7 @@
 <div class="row">
     <div class="col-md-9">
         <div class="img-container">
-            <img id="image" src="<?php echo $src_image ?>" alt="Imagen para recortar">
+            <img id="image" src="<?php echo $url_image ?>" alt="Imagen para recortar">
         </div>
     </div>
     <div class="col-md-3">
@@ -79,14 +79,11 @@
                 </div>
             </div>
             
-            <button type="submit" class="btn btn-success w120p">
-                Recortar
-            </button>
 
             <a class="btn btn-secondary w120p" href="<?php echo base_url($back_destination) ?>">
-                <i class="fa fa-arrow-left"></i>
-                No recortar
+                <i class="fa fa-arrow-left"></i> Cancelar
             </a>
+            <button type="submit" class="btn btn-success w120p">Recortar</button>
         
             <br/>
         

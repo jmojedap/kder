@@ -1,16 +1,16 @@
-<title><?php echo $head_title ?></title>
+<title><?= $head_title ?></title>
         
-        <link rel="shortcut icon" href="<?php echo URL_IMG ?>app/favicon.png"> 
+        <link rel="shortcut icon" href="<?= URL_IMG ?>app/favicon.png"> 
         
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         
-        <script src="<?php echo base_url('resources/js/pcrn.js') ?>"></script>
+        <script src="<?= base_url('resources/js/pcrn.js') ?>"></script>
 
         <?php $this->load->view('assets/bootstrap'); ?>
         
-        <link rel="stylesheet" href="<?php echo base_url('resources/templates/bootstrap/css/main.css') ?>">
+        <link rel="stylesheet" href="<?= base_url('resources/templates/bootstrap/css/main.css') ?>">
         <!--Titles font-->
         <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Ubuntu:500,300'>
 

@@ -3,10 +3,10 @@ class Statistic_model extends CI_Model{
     
     function girls()
     {
-        $this->db->select('COUNT(event.id) AS count_visits, element_id as girl_id, image_id, src_image, src_thumbnail');
+        $this->db->select('COUNT(event.id) AS count_visits, element_id as girl_id, image_id, url_image, url_thumbnail');
         $this->db->where('type_id', 52);
         $this->db->where('event.created_at >=', date('Y-m-d', strtotime(date('Y-m-d H:i:s'). ' - 2 days')));
-        $this->db->group_by('element_id, image_id, src_image, src_thumbnail');
+        $this->db->group_by('element_id, image_id, url_image, url_thumbnail');
         $this->db->join('user', 'event.element_id = user.id');
         $this->db->order_by('COUNT(event.id)', 'desc');
         

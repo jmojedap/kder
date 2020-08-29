@@ -14,20 +14,20 @@
     var sections = [];
     var nav_2 = [];
     var sections_rol = [];
-    var element_id = '<?php echo $row->id ?>';
+    var element_id = '<?= $row->id ?>';
     
     sections.info = {
-        'icon': 'fa fa-info-circle',
-        'text': 'Información',
-        'class': '<?php echo $cl_nav_2['notes_info'] ?>',
-        'cf': 'notes/info/' + element_id
+        icon: 'fa fa-info-circle',
+        text: 'Información',
+        class: '<?= $cl_nav_2['notes_info'] ?>',
+        cf: 'notes/info/' + element_id
     };
 
     sections.edit = {
-        'icon': 'fa fa-pencil-alt',
-        'text': 'Editar',
-        'class': '<?php echo $cl_nav_2['notes_edit'] ?>',
-        'cf': 'notes/edit/' + element_id
+        icon: 'fa fa-pencil-alt',
+        text: 'Editar',
+        class: '<?= $cl_nav_2['notes_edit'] ?>',
+        cf: 'notes/edit/' + element_id
     };
     
     //Secciones para cada rol

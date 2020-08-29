@@ -12,12 +12,12 @@
     <div class="col col-md-4">
         <!-- Page Widget -->
         <div class="card text-center">
-            <img src="<?php echo $att_img['src'] ?>" alt="Imagen del usuario" width="100%">
+            <img src="<?= $row->url_image ?>" alt="Imagen del usuario" class="w100pc" onerror="this.src='<?php echo URL_IMG ?>app/user.png'">
             <div class="card-body">
-                <h4 class="profile-user"><?php echo $this->Item_model->name(58, $row->role) ?></h4>
+                <h4 class="profile-user"><?= $this->Item_model->name(58, $row->role) ?></h4>
 
                 <?php if ($this->session->userdata('rol_id') <= 1) { ?>
-                    <a href="<?php echo base_url("admin/ml/{$row->id}") ?>" role="button" class="btn btn-primary" title="Ingresar como este usuario">
+                    <a href="<?= base_url("admin/ml/{$row->id}") ?>" role="button" class="btn btn-primary" title="Ingresar como este usuario">
                         <i class="fa fa-sign-in"></i>
                         Acceder
                     </a>
@@ -28,7 +28,7 @@
                 <div class="row no-space">
                     <div class="col-12">
                         <?php if ( strlen($row->birth_date) > 0 ) { ?>
-                            <strong class="profile-stat-count"><?php echo $this->pml->age($row->birth_date); ?></strong>
+                            <strong class="profile-stat-count"><?= $this->pml->age($row->birth_date); ?></strong>
                             <span>Años</span>
                         <?php } ?>
                     </div>
@@ -43,63 +43,63 @@
                 <tr>
                     <td class="text-right" width="25%"><span class="text-muted">No. Documento</span></td>
                     <td>
-                        <?php echo $row->id_number ?>
-                        <?php echo $this->Item_model->name(53, $row->id_number_type); ?>
+                        <?= $row->id_number ?>
+                        <?= $this->Item_model->name(53, $row->id_number_type); ?>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="text-right"><span class="text-muted">Nombre</span></td>
-                    <td><?php echo $row->first_name ?></td>
+                    <td><?= $row->first_name ?></td>
                 </tr>
                 <tr>
                     <td class="text-right"><span class="text-muted">Apellidos</span></td>
-                    <td><?php echo $row->last_name ?></td>
+                    <td><?= $row->last_name ?></td>
                 </tr>
 
                 <tr>
                     <td class="text-right"><span class="text-muted">Nombre de usuario</span></td>
-                    <td><?php echo $row->username ?></td>
+                    <td><?= $row->username ?></td>
                 </tr>
 
                 <tr>
                     <td class="text-right"><span class="text-muted">Correo electrónico</span></td>
-                    <td><?php echo $row->email ?></td>
+                    <td><?= $row->email ?></td>
                 </tr>
 
                 <tr>
                     <td class="text-right"><span class="text-muted">Sexo</span></td>
-                    <td><?php echo $this->Item_model->name(59, $row->gender) ?></td>
+                    <td><?= $this->Item_model->name(59, $row->gender) ?></td>
                 </tr>
 
                 <tr>
                     <td class="text-right">Institución</td>
                     <td>
-                        <a href="<?php echo base_url("institutions/info/{$row->institution_id}") ?>">
-                            <?php echo $this->App_model->name_institution($row->institution_id); ?>
+                        <a href="<?= base_url("institutions/info/{$row->institution_id}") ?>">
+                            <?= $this->App_model->name_institution($row->institution_id); ?>
                         </a>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="text-right"><span class="text-muted">Rol de usuario</span></td>
-                    <td><?php echo $this->Item_model->name(58, $row->role) ?></td>
+                    <td><?= $this->Item_model->name(58, $row->role) ?></td>
                 </tr>
 
                 <tr>
                     <td class="text-right"><span class="text-muted">Fecha de nacimiento</span></td>
-                    <td><?php echo $this->pml->date_format($row->birth_date, 'Y-M-d') ?></td>
+                    <td><?= $this->pml->date_format($row->birth_date, 'Y-M-d') ?></td>
                 </tr>
                 <tr>
                     <td class="text-right"><span class="text-muted">Editado</span></td>
                     <td>
-                        <?php echo $this->pml->date_format($row->edited_at, 'Y-m-d h:i') ?> por <?php echo $this->App_model->name_user($row->editor_id, 'du') ?>
+                        <?= $this->pml->date_format($row->updated_at, 'Y-m-d h:i') ?> por <?= $this->App_model->name_user($row->updater_id, 'du') ?>
                     </td>
                 </tr>
                 <tr>
                     <td class="text-right"><span class="text-muted">Creado</span></td>
                     <td>
-                        <?php echo $this->pml->date_format($row->created_at, 'Y-m-d H:i') ?> por <?php echo $this->App_model->name_user($row->creator_id, 'du') ?>
+                        <?= $this->pml->date_format($row->created_at, 'Y-m-d H:i') ?> por <?= $this->App_model->name_user($row->creator_id, 'du') ?>
                     </td>
                 </tr>
                 <?php if ( $this->session->userdata('role') <= 2  ) { ?>

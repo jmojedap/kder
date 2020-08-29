@@ -1,12 +1,12 @@
 <script>    
 // Variables
 //-----------------------------------------------------------------------------
-    var controller = '<?php echo $controller ?>';
-    var str_filters = '<?php echo $str_filters ?>';
-    var num_page = '<?php echo $num_page ?>';
-    var max_page = '<?php echo $max_page ?>';
+    var controller = '<?= $controller ?>';
+    var str_filters = '<?= $str_filters ?>';
+    var num_page = '<?= $num_page ?>';
+    var max_page = '<?= $max_page ?>';
     var selected = '';
-    var all_selected = '<?php echo $all_selected ?>';
+    var all_selected = '<?= $all_selected ?>';
     var element_id = 0;
         
 // Document Ready
@@ -85,7 +85,7 @@
     {
         $.ajax({        
             type: 'POST',
-            url: app_url + controller + '/explore_table/' + num_page + '/?' + str_filters,
+            url: url_app + controller + '/explore_table/' + num_page + '/?' + str_filters,
             data: $("#search_form").serialize(),
             beforeSend: function(){
                 $('#elements_table').html('<div class="text-center"><i class="text-center fa fa-spinner fa-spin fa-2x"></i></div>');
@@ -112,14 +112,14 @@
         max_page = response.max_page;
         selected = '';
         
-        history.pushState(null, null, app_url + controller + '/explore/' + num_page + '/?' + response.str_filters);
+        history.pushState(null, null, url_app + controller + '/explore/' + num_page + '/?' + response.str_filters);
     }
 
     //AJAX - Eliminar elementos selected.
     function delete_selected(){
         $.ajax({        
             type: 'POST',
-            url: app_url + controller + '/delete_selected/',
+            url: url_app + controller + '/delete_selected/',
             data: {
                 selected : selected.substring(1)
             },

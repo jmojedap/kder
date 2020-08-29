@@ -14,27 +14,27 @@
     var sections = [];
     var nav_2 = [];
     var sections_rol = [];
-    var element_id = '<?php echo $row->id ?>';
+    var element_id = '<?= $row->id ?>';
     
     sections.info = {
-        'icon': 'fa fa-shield-alt',
-        'text': 'Información',
-        'class': '<?php echo $cl_nav_2['institutions_info'] ?>',
-        'cf': 'institutions/info/' + element_id
+        icon: 'fa fa-shield-alt',
+        text: 'Información',
+        class: '<?= $cl_nav_2['institutions_info'] ?>',
+        cf: 'institutions/info/' + element_id
     };
 
     sections.calendars = {
-        'icon': 'far fa-calendar',
-        'text': 'Calendarios',
-        'class': '<?php echo $cl_nav_2['institutions_calendars'] ?>',
-        'cf': 'institutions/calendars/' + element_id
+        icon: 'far fa-calendar',
+        text: 'Calendarios',
+        class: '<?= $cl_nav_2['institutions_calendars'] ?>',
+        cf: 'institutions/calendars/' + element_id
     };
 
     sections.edit = {
-        'icon': 'fa fa-pencil-alt',
-        'text': 'Editar',
-        'class': '<?php echo $cl_nav_2['institutions_edit'] ?>',
-        'cf': 'institutions/edit/' + element_id
+        icon: 'fa fa-pencil-alt',
+        text: 'Editar',
+        class: '<?= $cl_nav_2['institutions_edit'] ?>',
+        cf: 'institutions/edit/' + element_id
     };
     
     //Secciones para cada rol

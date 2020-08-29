@@ -264,10 +264,10 @@ class App_model extends CI_Model{
             
         if ( $row_user->image_id > 0 )
         {
-            $src = URL_UPLOADS . $row_user->src_image;
+            $src = $row_user->url_image;
             if ( $prefix == 'sm_' )
             {
-                $src = URL_UPLOADS . $row_user->src_thumbnail;
+                $src = $row_user->url_thumbnail;
             }
         }
         

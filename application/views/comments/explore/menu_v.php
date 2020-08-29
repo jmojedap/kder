@@ -15,17 +15,17 @@
     var sections_rol = [];
     
     sections.explore = {
-        'icon': 'fa fa-list-alt',
-        'text': 'Explorar',
-        'class': '<?php echo $cl_nav_2['comments_explore'] ?>',
-        'cf': 'comments/explore'
+        icon: 'fa fa-list-alt',
+        text: 'Explorar',
+        class: '<?= $cl_nav_2['comments_explore'] ?>',
+        cf: 'comments/explore'
     };
 
     sections.add = {
-        'icon': 'fa fa-plus',
-        'text': 'Nuevo',
-        'class': '<?php echo $cl_nav_2['comments_add'] ?>',
-        'cf': 'comments/add'
+        icon: 'fa fa-plus',
+        text: 'Nuevo',
+        class: '<?= $cl_nav_2['comments_add'] ?>',
+        cf: 'comments/add'
     };
     
     //Secciones para cada rol

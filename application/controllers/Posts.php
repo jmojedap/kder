@@ -23,10 +23,14 @@ class Posts extends CI_Controller{
 //---------------------------------------------------------------------------------------------------
 
     /** Exploración de Posts */
-    function explore()
-    {        
+    function explore($num_page = 1)
+    {
+        //Identificar filtros de búsqueda
+        $this->load->model('Search_model');
+        $filters = $this->Search_model->filters();
+
         //Datos básicos de la exploración
-            $data = $this->Post_model->explore_data(1);
+            $data = $this->Post_model->explore_data($filters, $num_page);
         
         //Opciones de filtros de búsqueda
             $data['options_type'] = $this->Item_model->options('category_id = 33', 'Todos');
@@ -43,7 +47,10 @@ class Posts extends CI_Controller{
      */
     function get($num_page = 1)
     {
-        $data = $this->Post_model->get($num_page);
+        $this->load->model('Search_model');
+        $filters = $this->Search_model->filters();
+
+        $data = $this->Post_model->get($filters, $num_page);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
@@ -54,11 +61,11 @@ class Posts extends CI_Controller{
     function delete_selected()
     {
         $selected = explode(',', $this->input->post('selected'));
-        $data['quan_deleted'] = 0;
+        $data['qty_deleted'] = 0;
         
         foreach ( $selected as $row_id ) 
         {
-            $data['quan_deleted'] += $this->Post_model->delete($row_id);
+            $data['qty_deleted'] += $this->Post_model->delete($row_id);
         }
 
         //Establecer resultado
@@ -66,7 +73,63 @@ class Posts extends CI_Controller{
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
-// CRUD
+// INFORMACÍON LECTURA Y APERTURA
+//-----------------------------------------------------------------------------
+
+    /**
+     * Abrir o redireccionar a la vista pública de un post
+     */
+    function open($post_id)
+    {
+        $row = $this->Db_model->row_id('post', $post_id);
+        $destination = "posts/read/{$post_id}";
+
+        if ( $row->type_id == 2 ) { $destination = "noticias/leer/{$row->id}/{$row->slug}"; }
+        if ( $row->type_id == 5 ) { $destination = "girls/album/{$row->related_1}/{$row->id}"; }
+
+        redirect($destination);
+    }
+
+    /**
+     * Mostrar post en vista lectura
+     */
+    function read($post_id)
+    {
+        //Datos básicos
+        $data = $this->Post_model->basic($post_id);
+        unset($data['nav_2']);
+        $data['view_a'] = $this->Post_model->type_folder($data['row']) . 'read_v';
+
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+    /**
+     * Información general del post
+     */
+    function info($post_id)
+    {        
+        //Datos básicos
+        $data = $this->Post_model->basic($post_id);
+        $data['view_a'] = $this->Post_model->type_folder($data['row']) . 'info_v';
+
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+    /**
+     * Información detallada del post desde la perspectiva de base de datos
+     * 2020-08-18
+     */
+    function details($post_id)
+    {        
+        //Datos básicos
+        $data = $this->Post_model->basic($post_id);
+        $data['view_a'] = 'posts/details_v';
+        $data['fields'] = $this->db->list_fields('post');
+
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+// CREACIÓN DE UN POST
 //-----------------------------------------------------------------------------
 
     /**
@@ -78,7 +141,7 @@ class Posts extends CI_Controller{
             $data['head_title'] = 'Post';
             $data['head_subtitle'] = 'Nuevo';
             $data['nav_2'] = 'posts/explore/menu_v';
-            $data['view_a'] = 'posts/add_v';
+            $data['view_a'] = 'posts/add/add_v';
 
         $this->App_model->view(TPL_ADMIN, $data);
     }
@@ -93,16 +156,7 @@ class Posts extends CI_Controller{
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
-    /**
-     * Información general del post
-     */
-    function info($post_id)
-    {        
-        //Datos básicos
-        $data = $this->Post_model->basic($post_id);
-        $data['view_a'] = 'posts/info_v';
-        $this->App_model->view(TPL_ADMIN, $data);
-    }
+    
     
 // EDICIÓN Y ACTUALIZACIÓN
 //-----------------------------------------------------------------------------
@@ -121,7 +175,7 @@ class Posts extends CI_Controller{
         //Array data espefícicas
             $data['nav_2'] = 'posts/menu_v';
             $data['head_subtitle'] = 'Editar';
-            $data['view_a'] = $this->edit_view($data['row']);
+            $data['view_a'] = $this->Post_model->type_folder($data['row']) . 'edit_v';
         
         $this->App_model->view(TPL_ADMIN, $data);
     }
@@ -136,24 +190,14 @@ class Posts extends CI_Controller{
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
-    /**
-     * Nombre de la vista con el formulario para la edición del post. Puede cambiar dependiendo
-     * del tipo (type_id).
-     * 2020-02-23
-     */
-    function edit_view($row)
-    {
-        $edit_view = 'posts/edit_v';
-        if ( $row->type_id == 19) {
-            $edit_view = 'posts/types/glossary/edit_v';
-        }
-
-        return $edit_view;
-    }
+    
     
 // IMAGEN PRINCIPAL DEL POST
 //-----------------------------------------------------------------------------
 
+    /**
+     * Vista de imagen y formulario para asignación de imagen principal a un POST
+     */
     function image($post_id)
     {
         $data = $this->Post_model->basic($post_id);        
@@ -169,7 +213,7 @@ class Posts extends CI_Controller{
         $data = $this->Post_model->basic($post_id);        
 
         $data['image_id'] = $data['row']->image_id;
-        $data['src_image'] = $data['att_img']['src'];
+        $data['url_image'] = $data['row']->url_image;
         $data['back_destination'] = "posts/image/{$post_id}";
 
         $data['view_a'] = 'files/cropping_v';
@@ -257,6 +301,47 @@ class Posts extends CI_Controller{
         $this->App_model->view(TPL_ADMIN, $data);
     }
 
+// Asignación a usuario
+//-----------------------------------------------------------------------------
 
+    /**
+     * Asigna un contenido digital a un usuario
+     */
+    function add_to_user($post_id, $user_id)
+    {
+        $data = $this->Post_model->add_to_user($post_id, $user_id);
 
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    /**
+     * Retira un contenido digital a un usuario
+     * 2020-04-30
+     */
+    function remove_to_user($post_id, $meta_id)
+    {
+        $data = $this->Post_model->remove_to_user($post_id, $meta_id);
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+
+    /**
+     * ESPECIAL
+     * Asigna un contenido digital a un usuario descontando del saldo o crédito disponible
+     * 2020-08-20
+     */
+    function add_to_user_payed($post_id, $user_id)
+    {
+        $data = array('status' => 0, 'message' => 'Saldo insuficiente');
+        $price = $this->Db_model->field_id('post', $post_id, 'integer_2');
+        if ( $price <= $this->session->userdata('credit') )
+        {
+            $data = $this->Post_model->add_to_user_payed($post_id, $user_id, $price);
+        }
+
+        //Salida JSON
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
 }

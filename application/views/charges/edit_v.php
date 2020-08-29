@@ -30,14 +30,14 @@
                 <div class="form-group row">
                     <label for="charge_type_id" class="col-md-4 col-form-label text-right">Tipo</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('charge_type_id', $options_charge_type, '', 'class="form-control" v-model="form_values.charge_type_id"') ?>
+                        <?= form_dropdown('charge_type_id', $options_charge_type, '', 'class="form-control" v-model="form_values.charge_type_id"') ?>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="generation" class="col-md-4 col-form-label text-right">Año generación</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('generation', $options_generation, '0', 'class="form-control" v-model="form_values.generation"') ?>
+                        <?= form_dropdown('generation', $options_generation, '0', 'class="form-control" v-model="form_values.generation"') ?>
                     </div>
                 </div>
 
@@ -102,10 +102,10 @@
 
 <script>
     //Cargar valor en formulario
-    var form_values = <?php echo json_encode($row) ?>;
-    form_values.charge_type_id = '0<?php echo $row->charge_type_id ?>';
-    form_values.generation = '0<?php echo $row->generation ?>';
-    form_values.date_2 = '<?php echo substr($row->date_2, 0, 10) ?>';
+    var form_values = <?= json_encode($row) ?>;
+    form_values.charge_type_id = '0<?= $row->charge_type_id ?>';
+    form_values.generation = '0<?= $row->generation ?>';
+    form_values.date_2 = '<?= substr($row->date_2, 0, 10) ?>';
     
     new Vue({
     el: '#app_edit',
@@ -115,7 +115,7 @@
         },
         methods: {
             send_form: function() {
-                axios.post(app_url + 'charges/save/' + this.row_id, $('#edit_form').serialize())
+                axios.post(url_app + 'charges/save/' + this.row_id, $('#edit_form').serialize())
                     .then(response => {
                         console.log('status: ' + response.data.message);
                         if (response.data.status == 1)

@@ -30,7 +30,7 @@
             <div class="modal-content">
                 <form accept-charset="utf-8" method="POST" id="calendar_form" @submit.prevent="send_form">
                     <input type="hidden" name="type_id" value="4021">
-                    <input type="hidden" name="related_1" value="<?php echo $row->id ?>">
+                    <input type="hidden" name="related_1" value="<?= $row->id ?>">
                     <div class="modal-header">
                         <h5 class="modal-title" id="form_modalTitle">Calendario</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -93,14 +93,14 @@ new Vue({
         this.get_list();
     },
     data: {
-        institution_id: '<?php echo $row->id ?>',
+        institution_id: '<?= $row->id ?>',
         calendar_id: 0,
         list: [],
         form_values: form_values
     },
     methods: {
         get_list: function() {
-            axios.get(app_url + 'institutions/get_calendars/' + this.institution_id)
+            axios.get(url_app + 'institutions/get_calendars/' + this.institution_id)
             .then(response => {
                 this.list = response.data.list;
             })
@@ -109,7 +109,7 @@ new Vue({
             });
         },
         send_form: function(){
-            axios.post(app_url + 'posts/save/' + this.calendar_id, $('#calendar_form').serialize())
+            axios.post(url_app + 'posts/save/' + this.calendar_id, $('#calendar_form').serialize())
             .then(response => {
                 type = 'warning';
                 if (response.data.status) {
@@ -129,7 +129,7 @@ new Vue({
             console.log(this.calendar_id);
         },
         delete_element: function(){
-            axios.get(app_url + 'posts/delete/' + this.calendar_id)
+            axios.get(url_app + 'posts/delete/' + this.calendar_id)
             .then(response => {
                 if ( response.data.status == 1 ) {
                     toastr['info']('El Calendario fue eliminado');

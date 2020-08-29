@@ -1,7 +1,7 @@
 <script>
 // Variables
 //-----------------------------------------------------------------------------
-    user_id = '<?php echo $row->id ?>';
+    user_id = '<?= $row->id ?>';
 
 // Document Ready
 //-----------------------------------------------------------------------------
@@ -18,9 +18,9 @@
     function set_activation_key(){
         $.ajax({        
             type: 'POST',
-            url: app_url + 'users/set_activation_key/' + user_id,
+            url: url_app + 'users/set_activation_key/' + user_id,
             success: function(response){
-                $('#activation_key').html(app_url + 'accounts/activation/' + response);
+                $('#activation_key').html(url_app + 'accounts/activation/' + response);
                 toastr['success']('Se actualizó la clave de activación');
             }
         });

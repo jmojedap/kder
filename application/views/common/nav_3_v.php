@@ -1,5 +1,5 @@
 <div id="nav_3_vue" class="mb-2">
-    <div class="d-none d-sm-block">
+    <div class="only-lg">
         <ul class="nav nav-pills" role="tablist">
             <li class="nav-item" v-for="(element, key) in nav_3">
                 <a
@@ -14,11 +14,34 @@
             </li>
         </ul>
     </div>
+
+    <div class="dropdown only-sm">
+        <button class="btn btn-secondary btn-block " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ current.text }}
+            <span class="float-right">
+                <i class="fa fa-ellipsis-v"></i>
+            </span>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu2" style="width: 100%">
+            <button class="dropdown-item" type="button"
+                v-for="(element, key) in nav_3"
+                v-bind:class="element.class"
+                v-on:click="activate_menu(key)"
+                >
+                <i class="w30p" v-bind:class="element.icon"></i>
+                {{ element.text }}
+            </button>
+            
+        </div>
+    </div>
 </div>
 
 <script>
     new Vue({
         el: '#nav_3_vue',
+        created: function(){
+            this.set_current();
+        },
         data: {
             nav_3: nav_3  //Elementos contenido del menú
         },
@@ -32,8 +55,15 @@
             },
             load_view_a: function(key){
                 app_cf = this.nav_3[key].cf;
-                console.log(app_cf);
+                //console.log(app_cf);
                 load_sections('nav_3'); //Función global
+            },
+            set_current: function(){
+                for ( i in this.nav_3 ){
+                    if ( this.nav_3[i].class == 'active' ) {
+                        this.current = this.nav_3[i];
+                    }
+                }
             }
         }
     });

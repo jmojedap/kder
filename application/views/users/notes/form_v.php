@@ -1,5 +1,5 @@
 <form accept-charset="utf-8" method="POST" id="note_form" @submit.prevent="send_form">
-    <input type="hidden" value="<?php echo $row->id ?>" name="related_1">
+    <input type="hidden" value="<?= $row->id ?>" name="related_1">
     <div class="form-group row">
         <label class="col-md-2 text-right col-form-label" for="post_name">Asunto</label>
         <div class="col-md-10">
@@ -37,7 +37,7 @@
     <div class="form-group row">
         <label for="cat_1" class="col-md-2 col-form-label text-right">Tipo</label>
         <div class="col-md-10">
-            <?php echo form_dropdown('cat_1', $options_type, '', 'class="form-control" required v-bind:value="form_values.cat_1"') ?>
+            <?= form_dropdown('cat_1', $options_type, '', 'class="form-control" required v-bind:value="form_values.cat_1"') ?>
         </div>
     </div>
     

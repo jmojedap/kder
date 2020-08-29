@@ -8,7 +8,7 @@
     <title>Document</title>
     <?php $this->load->view('assets/bootstrap') ?>
 
-    <script src="<?php echo URL_RESOURCES ?>assets/slidr/slidr.min.js"></script>
+    <script src="<?= URL_RESOURCES ?>assets/slidr/slidr.min.js"></script>
 
     
 </head>
@@ -18,9 +18,9 @@
         <h1>Hola</h1>
 
         <div id="slidr-img" style="display: inline-block">
-            <img data-slidr="one" src="<?php echo URL_CONTENT ?>galleries/200081/public/00375-00290.jpg">
-            <img data-slidr="two" src="<?php echo URL_CONTENT ?>galleries/200081/public/00375-00280.jpg">
-            <img data-slidr="tres" src="<?php echo URL_CONTENT ?>galleries/200081/public/00375-00270.jpg">
+            <img data-slidr="one" src="<?= URL_CONTENT ?>galleries/200081/public/00375-00290.jpg">
+            <img data-slidr="two" src="<?= URL_CONTENT ?>galleries/200081/public/00375-00280.jpg">
+            <img data-slidr="tres" src="<?= URL_CONTENT ?>galleries/200081/public/00375-00270.jpg">
         </div>
     </div>
 

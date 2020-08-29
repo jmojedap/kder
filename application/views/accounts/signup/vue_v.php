@@ -1,6 +1,4 @@
 <script>
-    var app_url = '<?php echo base_url() ?>';
-    var url_api = '<?php echo URL_API ?>';
     new Vue({
         el: '#signup_app',
         data: {
@@ -24,7 +22,7 @@
                     .then(response => {
                         console.log(response.data.message);
                         if ( response.data.status == 1 ) {
-                            window.location = app_url + 'accounts/registered/' + response.data.user_id;
+                            window.location = url_app + 'accounts/registered/' + response.data.user_id;
                         } else {
                             this.recaptcha_message = response.data.recaptcha_message;
                         }

@@ -23,12 +23,12 @@
             <form id="add_form" accept-charset="utf-8" @submit.prevent="send_form">
 
                 <?php if ( $this->session->userdata('institution_id') > 0 ) { ?>
-                    <input type="hidden" name="institution_id" value="<?php echo $this->session->userdata('institution_id') ?>">
+                    <input type="hidden" name="institution_id" value="<?= $this->session->userdata('institution_id') ?>">
                 <?php } else { ?>
                     <div class="form-group row">
-                        <label for="institution_id" class="col-md-4 controle-label">Institución</label>
+                        <label for="institution_id" class="col-md-4 col-form-label text-right">Institución</label>
                         <div class="col-md-8">
-                            <?php echo form_dropdown('institution_id', $options_institution, '', 'id="field-institution_id" class="form-control form-control-chosen" required v-model="form_values.institution_id"') ?>
+                            <?= form_dropdown('institution_id', $options_institution, '', 'id="field-institution_id" class="form-control form-control-chosen" required v-model="form_values.institution_id"') ?>
                         </div>
                     </div>
                 <?php } ?>
@@ -52,14 +52,14 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="level" class="col-md-4 controle-label">Nivel escolar</label>
+                    <label for="level" class="col-md-4 col-form-label text-right">Nivel escolar</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('level', $options_level, '', 'id="field-level" class="form-control" required v-model="form_values.level"') ?>
+                        <?= form_dropdown('level', $options_level, '', 'id="field-level" class="form-control" required v-model="form_values.level"') ?>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="letter" class="col-md-4 controle-label">Letra o número</label>
+                    <label for="letter" class="col-md-4 col-form-label text-right">Letra o número</label>
                     <div class="col-md-8">
                         <input
                             id="field-letter"
@@ -99,16 +99,16 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="teacher_id" class="col-md-4 controle-label">Asignado a:</label>
+                    <label for="teacher_id" class="col-md-4 col-form-label text-right">Asignado a:</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('teacher_id', $options_teacher, '', 'id="field-level" class="form-control form-control-chosen" required v-model="form_values.teacher_id"') ?>
+                        <?= form_dropdown('teacher_id', $options_teacher, '', 'id="field-level" class="form-control form-control-chosen" required v-model="form_values.teacher_id"') ?>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="schedule" class="col-md-4 controle-label">Jornada horario</label>
+                    <label for="schedule" class="col-md-4 col-form-label text-right">Jornada horario</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('schedule', $options_schedule, '', 'id="field-schedule" class="form-control" required v-model="form_values.schedule"') ?>
+                        <?= form_dropdown('schedule', $options_schedule, '', 'id="field-schedule" class="form-control" required v-model="form_values.schedule"') ?>
                     </div>
                 </div>
 
@@ -160,14 +160,14 @@
         },
         methods: {
             send_form: function() {
-                axios.post(app_url + 'groups/insert/', $('#add_form').serialize())
+                axios.post(url_app + 'groups/insert/', $('#add_form').serialize())
                     .then(response => {
                         console.log('status: ' + response.data.mensaje);
                         if (response.data.status == 1)
                         {
                             toastr['success']('El grupo fue creado con éxito');
                             setTimeout(() => {
-                                window.location = app_url + 'groups/info/' + response.data.saved_id;
+                                window.location = url_app + 'groups/info/' + response.data.saved_id;
                             }, 2000);
                         }
                     })

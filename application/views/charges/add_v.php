@@ -23,12 +23,12 @@
             <form id="add_form" accept-charset="utf-8" @submit.prevent="send_form">
 
                 <?php if ( $this->session->userdata('institution_id') > 0 ) { ?>
-                    <input type="hidden" name="institution_id" value="<?php echo $this->session->userdata('institution_id') ?>">
+                    <input type="hidden" name="institution_id" value="<?= $this->session->userdata('institution_id') ?>">
                 <?php } else { ?>
                     <div class="form-group row">
                         <label for="institution_id" class="col-md-4 controle-label text-right">Institución</label>
                         <div class="col-md-8">
-                            <?php echo form_dropdown('institution_id', $options_institution, '', 'id="field-institution_id" class="form-control form-control-chosen" required v-model="form_values.institution_id"') ?>
+                            <?= form_dropdown('institution_id', $options_institution, '', 'id="field-institution_id" class="form-control form-control-chosen" required v-model="form_values.institution_id"') ?>
                         </div>
                     </div>
                 <?php } ?>
@@ -52,14 +52,14 @@
                 <div class="form-group row">
                     <label for="charge_type_id" class="col-md-4 col-form-label text-right">Tipo</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('charge_type_id', $options_charge_type, '', 'class="form-control" v-model="form_values.charge_type_id"') ?>
+                        <?= form_dropdown('charge_type_id', $options_charge_type, '', 'class="form-control" v-model="form_values.charge_type_id"') ?>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="generation" class="col-md-4 col-form-label text-right">Año generación</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('generation', $options_generation, '0', 'class="form-control" v-model="form_values.generation"') ?>
+                        <?= form_dropdown('generation', $options_generation, '0', 'class="form-control" v-model="form_values.generation"') ?>
                     </div>
                 </div>
 
@@ -141,14 +141,14 @@
         },
         methods: {
             send_form: function() {
-                axios.post(app_url + 'charges/save/', $('#add_form').serialize())
+                axios.post(url_app + 'charges/save/', $('#add_form').serialize())
                     .then(response => {
                         console.log('status: ' + response.data.message);
                         if (response.data.status == 1)
                         {
                             toastr['success']('Cobro creado');
                             setTimeout(() => {
-                                window.location = app_url + 'charges/info/' + response.data.saved_id;
+                                window.location = url_app + 'charges/info/' + response.data.saved_id;
                             }, 2000);
                         }
                     })

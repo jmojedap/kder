@@ -4,7 +4,7 @@
   $( function() {
       
         $("#field-user").autocomplete({
-            source: "<?php echo base_url('app/arr_elements/user') ?>",
+            source: "<?= base_url('app/arr_elements/user') ?>",
             minLength: 3,
             select: function( event, ui ) { log(ui.item); }
         });

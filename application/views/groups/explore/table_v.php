@@ -10,18 +10,13 @@
 <div class="table-responsive">
     <table class="table table-hover bg-white">
         <thead>
-            <th width="46px">
-                <div class="checkbox-custom checkbox-primary">
-                    <input type="checkbox" @click="select_all" v-model="all_selected">
-                    <label for="inputUnchecked"></label>
-                </div>
-            </th>
+            <th width="10px"><input type="checkbox" @change="select_all" v-model="all_selected"></th>
             <th class="w100p"></th>
-            <th class="<?php echo $cl_col['level'] ?>">Nivel</th>
-            <th class="<?php echo $cl_col['teacher'] ?>">
+            <th class="<?= $cl_col['level'] ?>">Nivel</th>
+            <th class="<?= $cl_col['teacher'] ?>">
                 Profesor
             </th>
-            <th class="<?php echo $cl_col['qty_students'] ?>">
+            <th class="<?= $cl_col['qty_students'] ?>">
                 Estudiantes
             </th>
             
@@ -29,36 +24,31 @@
         </thead>
         <tbody>
             <tr v-for="(element, key) in list" v-bind:id="`row_` + element.id">
-                <td>
-                    <div class="checkbox-custom checkbox-primary">
-                        <input type="checkbox" v-model="selected" v-bind:value="element.id">
-                        <label for="inputUnchecked"></label>
-                    </div>
-                </td>
+                <td><input type="checkbox" v-bind:id="`check_` + element.id" v-model="selected" v-bind:value="element.id"></td>
                 
-                <td class="<?php echo $cl_col['title'] ?>">
-                    <a v-bind:href="`<?php echo base_url("groups/students/") ?>` + element.id" class="btn btn-primary w100p">
+                <td class="<?= $cl_col['title'] ?>">
+                    <a v-bind:href="`<?= base_url("groups/students/") ?>` + element.id" class="btn btn-primary w100p">
                         {{ element.name }}
                     </a>
                 </td>
 
-                <td class="<?php echo $cl_col['level'] ?>">
+                <td class="<?= $cl_col['level'] ?>">
                     {{ element.level | level_name }}
                 </td>
 
-                <td class="<?php echo $cl_col['teacher'] ?>">
-                    <a v-bind:href="`<?php echo base_url("users/profile/") ?>` + element.teacher_id" class="">
+                <td class="<?= $cl_col['teacher'] ?>">
+                    <a v-bind:href="`<?= base_url("users/profile/") ?>` + element.teacher_id" class="">
                         {{ element.teacher_name }}
                     </a>
                 </td>
 
-                <td class="<?php echo $cl_col['qty_students'] ?>">
+                <td class="<?= $cl_col['qty_students'] ?>">
                     {{ element.qty_students }}
                     <i class="fa fa-exclamation-triangle text-warning" v-show="element.qty_students <= 0"></i>
                 </td>
                 
                 <td>
-                    <button class="btn btn-light btn-sm w27p" data-toggle="modal" data-target="#detail_modal" @click="set_current(key)">
+                    <button class="a4" data-toggle="modal" data-target="#detail_modal" @click="set_current(key)">
                         <i class="fa fa-info"></i>
                     </button>
                 </td>

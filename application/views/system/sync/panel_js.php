@@ -1,25 +1,25 @@
-<script src="<?php //echo app_url('js/Math.uuid.js') ?>"></script>
+<script src="<?php //echo url_app('js/Math.uuid.js') ?>"></script>
 
 <script>
 //Variables 
 //-----------------------------------------------------------------------------
-        var url_sync = '<?php echo URL_SYNC ?>';
+        var url_sync = '<?= URL_SYNC ?>';
         
         var json_download = '';
         var json_tables_status = '';
         
         var table = '';             //Tabla actual
-        var method_id_url = <?php echo $method_id ?>;      //Método de sincronización en URL
-        var method_id = <?php echo $method_id ?>;          //Método de sincronización actual
+        var method_id_url = <?= $method_id ?>;      //Método de sincronización en URL
+        var method_id = <?= $method_id ?>;          //Método de sincronización actual
         var since_id = 0;                   //ID since el cual se descargan los registros
-        var limit = <?php echo $limit ?>;   //Número máximo de registros por cycle de descarga
+        var limit = <?= $limit ?>;   //Número máximo de registros por cycle de descarga
         var quan_rows = 0;                  //Cantidad de registros en la table actual
         var quan_cycles = 1;                //Cantidad de cycles necesarios para descargar todos los datos
         var quan_inserted = 0;              //Cantidad de registros inserted actualmente
         var cycle = 0;                      //Número del cycle actual
         var percent = 0;                    //Porcentaje de registros inserted
-        var user_id = '<?php echo $this->session->userdata('user_id') ?>';                   //ID Usuario en sesión local
-        var username = '<?php echo $this->session->userdata('username') ?>';                  //Username en sesión local
+        var user_id = '<?= $this->session->userdata('user_id') ?>';                   //ID Usuario en sesión local
+        var username = '<?= $this->session->userdata('username') ?>';                  //Username en sesión local
         
         
         var message = '';
@@ -84,7 +84,7 @@
     {
         $.ajax({
             type: 'POST',
-            url: app_url + 'sync/save_server_status/',
+            url: url_app + 'sync/save_server_status/',
             data: {
                 json_tables_status : json_tables_status
             },
@@ -93,7 +93,7 @@
             },
             success: function(response){
                 console.log(response);
-                window.location = app_url + 'sync/panel/';
+                window.location = url_app + 'sync/panel/';
                 
             }
         });
@@ -109,7 +109,7 @@
 
         $.ajax({       
             type: 'POST',
-            url: app_url + 'sync/start_sync/' + table,
+            url: url_app + 'sync/start_sync/' + table,
             success: function(response){
                 console.log(response.message);
             }
@@ -123,7 +123,7 @@
     function clean_table(){
         $.ajax({        
             type: 'POST',
-            url: app_url + 'sync/clean_table/' + table,
+            url: url_app + 'sync/clean_table/' + table,
             beforeSend : function(){
                 $('#status_' + table).html('Limpiando tabla local...');
             },
@@ -203,7 +203,7 @@
     {
         $.ajax({
             type: 'POST',
-            url: app_url + 'sync/insert_rows/' + table,
+            url: url_app + 'sync/insert_rows/' + table,
             data: {
                 json_download : JSON.stringify(json_download)
             },
@@ -226,7 +226,7 @@
     {
         $.ajax({
             type: 'POST',
-            url: app_url + 'sync/update_sync_data/' + table,
+            url: url_app + 'sync/update_sync_data/' + table,
             data: {
                 quan_rows : quan_rows
             },

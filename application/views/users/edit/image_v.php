@@ -12,8 +12,8 @@
 <script>
 // Variables
 //-----------------------------------------------------------------------------
-    var user_id = '<?php echo $row->id ?>';
-    var src_default = '<?php echo URL_IMG ?>app/nd.png';
+    var user_id = '<?= $row->id ?>';
+    var src_default = '<?= URL_IMG ?>app/nd.png';
 
 // Document Ready
 //-----------------------------------------------------------------------------
@@ -46,7 +46,7 @@
             processData: false,  // Important!
             contentType: false,
             cache: false,
-            url: app_url + 'users/set_image/' + user_id,
+            url: url_app + 'users/set_image/' + user_id,
             data: form_data,
             beforeSend: function(){
                 $('#status_text').html('Enviando archivo');
@@ -70,7 +70,7 @@
     {
        $.ajax({
             type: 'POST',
-            url: app_url + 'users/remove_image/' + user_id,
+            url: url_app + 'users/remove_image/' + user_id,
             success: function (response) {
                 if ( response.status == 1 )
                 {
@@ -84,19 +84,19 @@
     }
 </script>
 
-<div class="card center_box_450" id="image_section" style="<?php echo $style_image_section ?>">
+<div class="card center_box_450" id="image_section" style="<?= $style_image_section ?>">
     <img
         id="user_image"
         class="card-img-top"
         width="100%"
-        src="<?php echo $att_img['src'] ?>"
+        src="<?= $att_img['src'] ?>"
         alt="Imagen usuario"
-        onerror="<?php echo $att_img['onerror'] ?>"
+        onerror="<?= $att_img['onerror'] ?>"
     >
     <div class="card-body">
         
 
-        <a class="btn btn-info" id="btn_crop" href="<?php echo base_url("posts/cropping/{$row->id}") ?>">
+        <a class="btn btn-info" id="btn_crop" href="<?= base_url("posts/cropping/{$row->id}") ?>">
             <i class="fa fa-crop"></i> Recortar
         </a>
         <button class="btn btn-warning" id="btn_remove_image">
@@ -105,7 +105,7 @@
     </div>
 </div>
 
-<div id="image_form" style="<?php echo $style_form_section ?>">
+<div id="image_form" style="<?= $style_form_section ?>">
     <div class="card center_box_750">
         <div class="card-body">
             <form accept-charset="utf-8" method="POST" id="file_form">

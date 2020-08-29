@@ -75,7 +75,7 @@ class Student_model extends CI_Model{
         $role_filter = $this->role_filter($this->session->userdata('user_id'));
 
         //Construir consulta
-            $this->db->select('user.id, username, display_name, id_number, email, group_id, src_image, src_thumbnail, user.status, code, groups.title AS group_title');
+            $this->db->select('user.id, username, display_name, id_number, email, group_id, url_image, url_thumbnail, user.status, code, groups.title AS group_title');
             $this->db->join('groups', 'user.group_id = groups.id', 'left');
         
         //Crear array con términos de búsqueda
@@ -92,7 +92,7 @@ class Student_model extends CI_Model{
                 $order_type = $this->pml->if_strlen($filters['ot'], 'ASC');
                 $this->db->order_by($filters['o'], $order_type);
             } else {
-                $this->db->order_by('user.edited_at', 'DESC');
+                $this->db->order_by('user.updated_at', 'DESC');
             }
             
         //Filtros
@@ -285,7 +285,7 @@ class Student_model extends CI_Model{
                 $arr_row['birth_date'] = date('Y-m-d H:i:s', $this->pml->dexcel_unix($row_data[5]));
                 $arr_row['code'] = $row_data[6];
                 $arr_row['creator_id'] = $this->session->userdata('user_id');
-                $arr_row['editor_id'] = $this->session->userdata('user_id');
+                $arr_row['updater_id'] = $this->session->userdata('user_id');
 
                 //Guardar en tabla user
                 $data_insert = $this->User_model->insert($arr_row);
@@ -310,7 +310,7 @@ class Student_model extends CI_Model{
      */
     function relatives($user_id)
     {
-        $this->db->select('user.id, display_name, username, email, phone_number, src_thumbnail, item_name AS relation_type');
+        $this->db->select('user.id, display_name, username, email, phone_number, url_thumbnail, item_name AS relation_type');
         $this->db->join('user_meta', "user.id = user_meta.related_1 AND user_meta.user_id = {$user_id}");
         $this->db->join('item', 'item.cod = user_meta.cat_1 AND item.category_id = 171');
         $this->db->where('user_meta.type_id', 1051);
@@ -333,7 +333,7 @@ class Student_model extends CI_Model{
             $arr_row['related_1'] = $relative_id;   //ID del usuario familiar
             $arr_row['cat_1'] = $relation_type;     //Tipo de familiar
             $arr_row['creator_id'] = $this->session->userdata('user_id');
-            $arr_row['editor_id'] = $this->session->userdata('user_id');
+            $arr_row['updater_id'] = $this->session->userdata('user_id');
 
             $meta_id = $this->save_meta($arr_row);
 

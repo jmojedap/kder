@@ -26,7 +26,7 @@
                     <div class="form-group row">
                         <label for="institution_id" class="col-md-4 col-form-label text-right">Institución</label>
                         <div class="col-md-8">
-                            <?php echo form_dropdown('institution_id', $options_institution, '', 'id="field-institution_id" class="form-control form-control-chosen" required v-model="form_values.institution_id"') ?>
+                            <?= form_dropdown('institution_id', $options_institution, '', 'id="field-institution_id" class="form-control form-control-chosen" required v-model="form_values.institution_id"') ?>
                         </div>
                     </div>
                 <?php } ?>
@@ -35,7 +35,7 @@
                 <div class="form-group row">
                     <label for="level" class="col-md-4 col-form-label text-right">Nivel escolar</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('level', $options_level, '', 'id="field-level" class="form-control" required v-model="form_values.level"') ?>
+                        <?= form_dropdown('level', $options_level, '', 'id="field-level" class="form-control" required v-model="form_values.level"') ?>
                     </div>
                 </div>
 
@@ -82,14 +82,14 @@
                 <div class="form-group row">
                     <label for="teacher_id" class="col-md-4 col-form-label text-right">Asignado a:</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('teacher_id', $options_teacher, '', 'id="field-level" class="form-control form-control-chosen" required v-model="form_values.teacher_id"') ?>
+                        <?= form_dropdown('teacher_id', $options_teacher, '', 'id="field-level" class="form-control form-control-chosen" required v-model="form_values.teacher_id"') ?>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="schedule" class="col-md-4 col-form-label text-right">Jornada horario</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('schedule', $options_schedule, '', 'id="field-schedule" class="form-control" required v-model="form_values.schedule"') ?>
+                        <?= form_dropdown('schedule', $options_schedule, '', 'id="field-schedule" class="form-control" required v-model="form_values.schedule"') ?>
                     </div>
                 </div>
 
@@ -141,21 +141,21 @@
 
 <script>
     //Cargar valor en formulario
-    var form_values = <?php echo json_encode($row) ?>;
-    form_values.institution_id = '0<?php echo $row->institution_id ?>';
-    form_values.level = '0<?php echo $row->level ?>';
-    form_values.teacher_id = '0<?php echo $row->teacher_id ?>';
-    form_values.schedule = '0<?php echo $row->schedule ?>';
+    var form_values = <?= json_encode($row) ?>;
+    form_values.institution_id = '0<?= $row->institution_id ?>';
+    form_values.level = '0<?= $row->level ?>';
+    form_values.teacher_id = '0<?= $row->teacher_id ?>';
+    form_values.schedule = '0<?= $row->schedule ?>';
     
     new Vue({
     el: '#app_edit',
         data: {
             form_values: form_values,
-            row_id: '<?php echo $row->id ?>'
+            row_id: '<?= $row->id ?>'
         },
         methods: {
             send_form: function() {
-                axios.post(app_url + 'groups/update/' + this.row_id, $('#edit_form').serialize())
+                axios.post(url_app + 'groups/update/' + this.row_id, $('#edit_form').serialize())
                     .then(response => {
                         if (response.data.status == 1)
                         {

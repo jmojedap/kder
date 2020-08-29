@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col col-md-6">
+    <div class="col col-md-7">
         <div class="card">
             <div class="card-body">      
                 <?= form_open_multipart($destination_form) ?>
@@ -35,15 +35,11 @@
         </div>
     </div>
     
-    <div class="col col-md-6">
+    <div class="col col-md-5">
         <div class="card">
             <div class="card-body">
-                <h4 class="text-success">¿En qué consiste este proceso?</h4>
+                <h5>¿En qué consiste este proceso?</h5>
                 <p>
-                    Usted puede importar masivamente datos a la plataforma utilizando un archivo de Excel con un formato definido.
-                </p>
-                <p>
-                    <i class="fa fa-info-circle text-info"></i>
                     <?php echo $help_note ?>
                 </p>
 
@@ -51,7 +47,6 @@
                 <ul>
                     <li>El tipo de archivo requerido es <b class="text-success">Excel (.xlsx)</b>.</li>
                     <li>Verifique que el primer registro esté ubicado en la <b class="text-success">fila 2</b> de la hoja de cálculo.</li>
-                    <li>El nombre por defecto de la Hoja de cálculo en el archivo de Excel de ejemplo es '<b class="text-success"><?php echo $sheet_name ?></b>', sin embargo ustede puede cambiarlo.</li>
                     <?php foreach($help_tips as $tip) : ?>
                         <li>
                             <?php echo $tip ?>

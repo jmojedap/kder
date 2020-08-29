@@ -8,12 +8,12 @@
     <div class="col col-md-3">
         <!-- Page Widget -->
         <div class="card text-center">
-            <img src="<?php echo $att_img['src'] ?>" alt="Imagen del usuario" width="100%">
+            <img src="<?= $att_img['src'] ?>" alt="Imagen del usuario" width="100%">
             <div class="card-body">
-                <h4 class="profile-user"><?php echo $this->Item_model->name(58, $row->role) ?></h4>
+                <h4 class="profile-user"><?= $this->Item_model->name(58, $row->role) ?></h4>
 
                 <?php if ($this->session->userdata('role') <= 1) { ?>
-                    <a href="<?php echo base_url("admin/ml/{$row->id}") ?>" role="button" class="btn btn-primary" title="Ingresar como este usuario">
+                    <a href="<?= base_url("admin/ml/{$row->id}") ?>" role="button" class="btn btn-primary" title="Ingresar como este usuario">
                         <i class="fa fa-sign-in"></i>
                         Acceder
                     </a>
@@ -28,39 +28,39 @@
                 <tr>
                     <td class="text-right" width="25%"><span class="text-muted">No. Documento</span></td>
                     <td>
-                        <?php echo $row->id_number ?>
-                        <?php echo $this->Item_model->name(53, $row->id_number_type); ?>
+                        <?= $row->id_number ?>
+                        <?= $this->Item_model->name(53, $row->id_number_type); ?>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="text-right"><span class="text-muted">Nombre</span></td>
-                    <td><?php echo $row->display_name ?></td>
+                    <td><?= $row->display_name ?></td>
                 </tr>
 
                 <tr>
                     <td class="text-right"><span class="text-muted">Username</span></td>
-                    <td><?php echo $row->username ?></td>
+                    <td><?= $row->username ?></td>
                 </tr>
 
                 <tr>
                     <td class="text-right"><span class="text-muted">Correo electrónico</span></td>
-                    <td><?php echo $row->email ?></td>
+                    <td><?= $row->email ?></td>
                 </tr>
 
                 <tr>
                     <td class="text-right"><span class="text-muted">Sexo</span></td>
-                    <td><?php echo $this->Item_model->name(59, $row->gender) ?></td>
+                    <td><?= $this->Item_model->name(59, $row->gender) ?></td>
                 </tr>
 
                 <tr>
                     <td class="text-right"><span class="text-muted">Rol de usuario</span></td>
-                    <td><?php echo $this->Item_model->name(58, $row->role) ?></td>
+                    <td><?= $this->Item_model->name(58, $row->role) ?></td>
                 </tr>
 
                 <tr>
                     <td class="text-right"><span class="text-muted">Fecha de nacimiento</span></td>
-                    <td><?php echo $this->pml->date_format($row->birth_date, 'Y-M-d') ?></td>
+                    <td><?= $this->pml->date_format($row->birth_date, 'Y-M-d') ?></td>
                 </tr>
             </tbody>
         </table>

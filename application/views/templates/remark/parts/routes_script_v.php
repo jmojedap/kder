@@ -1,8 +1,8 @@
 <script>
-    const app_url = '<?php echo base_url() ?>';
-    const url_api = '<?php echo URL_API ?>';
-    const app_r = '<?php echo $this->session->userdata('role_abbr') ?>';
-    var app_cf = '<?php echo $this->uri->segment(1) . '/' . $this->uri->segment(2); ?>';
+    const url_app = '<?= base_url() ?>';
+    const url_api = '<?= URL_API ?>';
+    const app_r = '<?= $this->session->userdata('role_abbr') ?>';
+    var app_cf = '<?= $this->uri->segment(1) . '/' . $this->uri->segment(2); ?>';
 
 
     //Set New CF (Controller Function), and load sections
@@ -17,7 +17,7 @@
     function load_sections(menu_type)
     {
         $.ajax({
-            url: app_url + app_cf + '/?json=' + menu_type,
+            url: url_app + app_cf + '/?json=' + menu_type,
             beforeSend: function(){
                 before_send_load_sections(menu_type);
             },
@@ -44,7 +44,7 @@
         //console.log('CF Respuesta: ' + result.head_title);
         //console.log('View A: ' + result.view_a);
         document.title = result.head_title;
-        history.pushState(null, null, app_url + app_cf);
+        history.pushState(null, null, url_app + app_cf);
         
         $('#head_title').html(result.head_title);
         $('#head_subtitle').html(result.head_subtitle);

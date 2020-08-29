@@ -31,10 +31,10 @@
             </button>
         </div>
     </div>
-    <div id="adv_filters" style="<?php echo $filters_style ?>">
+    <div id="adv_filters" style="<?= $filters_style ?>">
         <div class="form-group row">
             <div class="col-md-9">
-                <?php echo form_dropdown('y', $options_generation, $filters['y'], 'class="form-control" title="Filtrar por año generación"'); ?>
+                <?= form_dropdown('y', $options_generation, $filters['y'], 'class="form-control" title="Filtrar por año generación"'); ?>
             </div>
             <label for="a" class="col-md-3 control-label">Nivel</label>
         </div>

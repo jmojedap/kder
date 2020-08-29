@@ -14,10 +14,10 @@
                     <label for="inputUnchecked"></label>
                 </div>
             </th>
-            <th class="<?php echo $cl_col['image'] ?>" width="50px"></th>
-            <th class="<?php echo $cl_col['title'] ?>">Nombre</th>
-            <th class="<?php echo $cl_col['group'] ?>">Grupo</th>
-            <th class="<?php echo $cl_col['numbers'] ?>">Identificación</th>
+            <th class="<?= $cl_col['image'] ?>" width="50px"></th>
+            <th class="<?= $cl_col['title'] ?>">Nombre</th>
+            <th class="<?= $cl_col['group'] ?>">Grupo</th>
+            <th class="<?= $cl_col['numbers'] ?>">Identificación</th>
             <th width="50px"></th>
         </thead>
         <tbody>
@@ -28,31 +28,31 @@
                         <label for="inputUnchecked"></label>
                     </div>
                 </td>
-                <td class="<?php echo $cl_col['image'] ?>">
-                    <a v-bind:href="`<?php echo base_url("users/profile/") ?>` + element.id" class="">
+                <td class="<?= $cl_col['image'] ?>">
+                    <a v-bind:href="`<?= base_url("users/profile/") ?>` + element.id" class="">
                         <img
-                            v-bind:src="`<?php echo URL_UPLOADS ?>` + element.src_thumbnail"
+                            v-bind:src="`<?= URL_UPLOADS ?>` + element.url_thumbnail"
                             class="rounded-circle"
                             v-bind:alt="element.id"
                             width="40px"
-                            onerror="this.src='<?php echo URL_IMG ?>users/sm_user.png'"
+                            onerror="this.src='<?= URL_IMG ?>users/sm_user.png'"
                         >
                     </a>
                 </td>
-                <td class="<?php echo $cl_col['title'] ?>">
-                    <a v-bind:href="`<?php echo base_url("users/profile/") ?>` + element.id + `/` + element.username">
+                <td class="<?= $cl_col['title'] ?>">
+                    <a v-bind:href="`<?= base_url("users/profile/") ?>` + element.id + `/` + element.username">
                         {{ element.display_name }}
                     </a>
                 </td>
                     
                 </td>
-                <td class="<?php echo $cl_col['group'] ?>">
-                    <a v-bind:href="`<?php echo base_url("groups/students/") ?>` + element.group_id">
+                <td class="<?= $cl_col['group'] ?>">
+                    <a v-bind:href="`<?= base_url("groups/students/") ?>` + element.group_id">
                         {{ element.group_title }}
                     </a>
                 </td>
 
-                <td class="<?php echo $cl_col['numbers'] ?>">
+                <td class="<?= $cl_col['numbers'] ?>">
                     <span class="text-muted">No Documento</span>
                     <span class="text-info">{{ element.id_number }}</span>
                     &middot;

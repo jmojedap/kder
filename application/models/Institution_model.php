@@ -104,7 +104,7 @@ class Institution_model extends CI_Model{
                 $order_type = $this->pml->if_strlen($filters['ot'], 'ASC');
                 $this->db->order_by($filters['o'], $order_type);
             } else {
-                $this->db->order_by('institution.edited_at', 'DESC');
+                $this->db->order_by('institution.updated_at', 'DESC');
             }
             
         //Filtros
@@ -281,7 +281,7 @@ class Institution_model extends CI_Model{
         $this->load->model('Account_model');
         
         $arr_row = $this->input->post();
-        $arr_row['editor_id'] = $this->session->userdata('user_id');
+        $arr_row['updater_id'] = $this->session->userdata('user_id');
         
         if ( $process == 'insert' )
         {
@@ -490,7 +490,7 @@ class Institution_model extends CI_Model{
         $arr_row['type_id'] = 1053;
         $arr_row['related_1'] = $institution_id;
         $arr_row['cat_1'] = $role;
-        $arr_row['editor_id'] = $this->session->userdata('user_id');
+        $arr_row['updater_id'] = $this->session->userdata('user_id');
         $arr_row['creator_id'] = $this->session->userdata('user_id');
 
         //Guardar solicitud

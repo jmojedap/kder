@@ -13,10 +13,10 @@
 <?php $this->load->view('institutions/image/script_v') ?>
 
 <div style="max-width: 600px; margin: 0 auto;">
-    <div id="section_image" class="<?php echo $cl_elements['image'] ?>">
+    <div id="section_image" class="<?= $cl_elements['image'] ?>">
         <div class="card">
             <div class="card-body">
-                <a class="btn btn-light" id="btn_crop" href="<?php echo base_url($link_cropping) ?>">
+                <a class="btn btn-light" id="btn_crop" href="<?= base_url($link_cropping) ?>">
                     <i class="fa fa-crop"></i>
                 </a>
                 <button class="btn btn-warning" id="btn_remove_image" title="Eliminar imagen">
@@ -26,14 +26,14 @@
                     id="element_image"
                     class="img-rounded"
                     width="100%"
-                    src="<?php echo $att_img['src'] ?>"
-                    alt="<?php echo $att_img['alt'] ?>"
-                    onerror="<?php echo $att_img['onerror'] ?>"
+                    src="<?= $att_img['src'] ?>"
+                    alt="<?= $att_img['alt'] ?>"
+                    onerror="<?= $att_img['onerror'] ?>"
                 >
             </div>
         </div>
     </div>
-    <div id="section_upload" class="<?php echo $cl_elements['alert'] ?>">
+    <div id="section_upload" class="<?= $cl_elements['alert'] ?>">
         <div class="alert alert-info">
             <i class="fa fa-info-circle"></i>
             La institución no tiene imagen asignada

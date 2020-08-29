@@ -1,4 +1,4 @@
-<script src="<?php echo URL_RESOURCES . 'js/pcrn.js' ?>"></script>
+<script src="<?= URL_RESOURCES . 'js/pcrn.js' ?>"></script>
 <?php $this->load->view('assets/momentjs') ?>
 
 <div id="app_notes">
@@ -7,7 +7,7 @@
             
 
             <form accept-charset="utf-8" method="POST" id="search_form" @submit.prevent="get_list">
-                <input type="hidden" name="u" value="<?php echo $row->id ?>">
+                <input type="hidden" name="u" value="<?= $row->id ?>">
                 <div class="input-group">
                     <input
                         type="text"
@@ -52,7 +52,7 @@
                 <div class="card-body" v-bind:id="`note_content_` + note.id" v-show="edition_id != note.id">
                     <div class="media">
                         <img
-                            v-bind:src="`<?php echo URL_UPLOADS ?>` + note.creator_src_thumbnail"
+                            v-bind:src="`<?= URL_UPLOADS ?>` + note.creator_url_thumbnail"
                             class="mr-3 rounded-circle w50p"
                             v-bind:alt="note.creator_display_name"
                         >

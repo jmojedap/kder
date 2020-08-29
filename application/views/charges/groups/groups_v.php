@@ -80,8 +80,8 @@
                                 </div>
                             </td>
                             <td>
-                                {{ student.edited_at | date_format }}
-                                <small>{{ student.edited_at | ago }}</small>
+                                {{ student.updated_at | date_format }}
+                                <small>{{ student.updated_at | ago }}</small>
                             </td>
                         </tr>
                     </tbody>

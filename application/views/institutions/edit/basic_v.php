@@ -80,7 +80,7 @@
                         </span>
                     </div>
                     <div class="col-md-4">
-                        <?php echo form_dropdown('id_number_type', $options_id_number_type, '', 'class="form-control" required v-model="form_values.id_number_type"') ?>
+                        <?= form_dropdown('id_number_type', $options_id_number_type, '', 'class="form-control" required v-model="form_values.id_number_type"') ?>
                     </div>
                 </div>
 
@@ -89,8 +89,8 @@
                     <div class="col-md-8">
                         <input
                             type="number"
-                            min="<?php echo date('Y') - 2 ?>"
-                            max="<?php echo date('Y') + 2 ?>"
+                            min="<?= date('Y') - 2 ?>"
+                            max="<?= date('Y') + 2 ?>"
                             id="field-generation"
                             name="generation"
                             required
@@ -122,7 +122,7 @@
                 <div class="form-group row">
                     <label for="city_id" class="col-md-4 control-form-label text-right">Ciudad ubicación</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('city_id', $options_city, $row->city_id, 'id="field-city_id" class="form-control form-control-chosen" required') ?>
+                        <?= form_dropdown('city_id', $options_city, $row->city_id, 'id="field-city_id" class="form-control form-control-chosen" required') ?>
                     </div>
                 </div>
 
@@ -156,21 +156,21 @@
 
 <script>
     var form_values = {
-            name: '<?php echo $row->name ?>',
-            full_name: '<?php echo $row->full_name ?>',
-            email: '<?php echo $row->email ?>',
-            id_number: '<?php echo $row->id_number ?>',
-            id_number_type: '0<?php echo $row->id_number_type ?>',
-            address: '<?php echo $row->address ?>',
-            city_id: '0<?php echo $row->city_id ?>',
-            phone_number: '<?php echo $row->phone_number ?>',    
-            generation: '<?php echo $row->generation ?>'            
+            name: '<?= $row->name ?>',
+            full_name: '<?= $row->full_name ?>',
+            email: '<?= $row->email ?>',
+            id_number: '<?= $row->id_number ?>',
+            id_number_type: '0<?= $row->id_number_type ?>',
+            address: '<?= $row->address ?>',
+            city_id: '0<?= $row->city_id ?>',
+            phone_number: '<?= $row->phone_number ?>',    
+            generation: '<?= $row->generation ?>'            
         };
     new Vue({
     el: '#app_edit',
         data: {
             form_values: form_values,
-            row_id: '<?php echo $row->id ?>',
+            row_id: '<?= $row->id ?>',
             validation: {
                 email_is_unique: true,
                 id_number_is_unique: true
@@ -178,7 +178,7 @@
         },
         methods: {
             validate: function() {
-                axios.post(app_url + 'institutions/validate/' + this.row_id, $('#edit_form').serialize())
+                axios.post(url_app + 'institutions/validate/' + this.row_id, $('#edit_form').serialize())
                 .then(response => {
                     //this.formulario_valido = response.data.status;
                     this.validation = response.data.validation;
@@ -188,7 +188,7 @@
                 });
             },
             validate_send: function () {
-                axios.post(app_url + 'institutions/validate/' + this.row_id, $('#edit_form').serialize())
+                axios.post(url_app + 'institutions/validate/' + this.row_id, $('#edit_form').serialize())
                 .then(response => {
                     if (response.data.status == 1) {
                     this.send_form();
@@ -201,7 +201,7 @@
                 });
             },
             send_form: function() {
-                axios.post(app_url + 'institutions/update/' + this.row_id, $('#edit_form').serialize())
+                axios.post(url_app + 'institutions/update/' + this.row_id, $('#edit_form').serialize())
                     .then(response => {
                         result = 'error';
                         if ( response.data.status == 1 ){ result = 'success'; }

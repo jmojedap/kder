@@ -19,7 +19,7 @@
                         placeholder="Buscar evento"
                         autofocus
                         title="Buscar evento"
-                        value="<?php echo $filters['q'] ?>"
+                        value="<?= $filters['q'] ?>"
                         >
                     <div class="input-group-append" title="Buscar">
                         <button type="button" class="btn btn-secondary btn-block" id="alternar_avanzada" title="Búsqueda avanzada">
@@ -36,9 +36,9 @@
             </div>
         </div>
 
-        <div class="form-group row <?php echo $adv_filters_cl['type'] ?>">
+        <div class="form-group row <?= $adv_filters_cl['type'] ?>">
             <div class="col-md-9">
-                <?php echo form_dropdown('type', $options_type, $filters['type'], 'class="form-control" title="Filtrar por tipo de evento"'); ?>
+                <?= form_dropdown('type', $options_type, $filters['type'], 'class="form-control" title="Filtrar por tipo de evento"'); ?>
             </div>
             <label for="type" class="col-md-3 control-label">Tipo</label>
         </div>

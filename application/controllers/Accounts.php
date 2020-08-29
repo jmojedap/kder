@@ -43,7 +43,7 @@ class Accounts extends CI_Controller {
                 $data['head_title'] = APP_NAME;
                 $data['view_a'] = 'accounts/login_v';
                 $data['g_client'] = $this->Account_model->g_client(); //Para botón login con Google
-                $this->load->view('templates/remark/start_v', $data);
+                $this->load->view('templates/admin_pml/start_v', $data);
             }
     }
 
@@ -335,7 +335,7 @@ class Accounts extends CI_Controller {
         {
             $view_a = 'files/cropping_v';
             $data['image_id'] = $data['row']->image_id;
-            $data['src_image'] = URL_UPLOADS . $data['row']->src_image;
+            $data['url_image'] = URL_UPLOADS . $data['row']->url_image;
             $data['back_destination'] = "accounts/edit/image";
         }
         

@@ -263,24 +263,13 @@ class Pml {
 
     /**
      * Convierte una fecha de excel en mktime de Unix
+     * @param type $date_excel
+     * @return type
      */
     function dexcel_unix($date_excel)
     {
         $hours_diff = 19; //Diferencia GMT
         return (( $date_excel - 25568 ) * 86400) - ($hours_diff * 60 * 60);
-    }
-
-    /**
-     * Convierte una fecha de excel en Fecha formato MySQL
-     * 2020-02-20
-     */
-    function dexcel_dmysql($date_excel)
-    {
-        $date = '';
-        $mktime = $this->dexcel_unix($date_excel);
-        if ( $mktime > 0 ) { $date = date('Y-m-d H:i:s', $mktime); }
-
-        return $date;
     }
 
     /**

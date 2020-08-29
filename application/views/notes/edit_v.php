@@ -28,7 +28,7 @@
                 <div class="form-group row">
                     <label for="cat_1" class="col-md-4 col-form-label text-right">Tipo</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('cat_1', $options_type, '', 'class="form-control" required v-model="form_values.cat_1"') ?>
+                        <?= form_dropdown('cat_1', $options_type, '', 'class="form-control" required v-model="form_values.cat_1"') ?>
                     </div>
                 </div>
 
@@ -82,21 +82,21 @@
 
     //Loading values in variable
     var form_values = {
-            post_name: '<?php echo $row->post_name ?>',
-            excerpt: '<?php echo $row->excerpt ?>',
-            content: '<?php echo $row->content ?>',
-            cat_1: '0<?php echo $row->cat_1 ?>',
-            status: '0<?php echo $row->status ?>'
+            post_name: '<?= $row->post_name ?>',
+            excerpt: '<?= $row->excerpt ?>',
+            content: '<?= $row->content ?>',
+            cat_1: '0<?= $row->cat_1 ?>',
+            status: '0<?= $row->status ?>'
     };
     new Vue({
     el: '#app_edit',
         data: {
             form_values: form_values,
-            row_id: '<?php echo $row->id ?>'
+            row_id: '<?= $row->id ?>'
         },
         methods: {
             send_form: function() {
-                axios.post(app_url + 'notes/save/' + this.row_id, $('#edit_form').serialize())
+                axios.post(url_app + 'notes/save/' + this.row_id, $('#edit_form').serialize())
                     .then(response => {
                         if (response.data.status == 1)
                         {

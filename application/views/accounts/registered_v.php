@@ -5,7 +5,7 @@
                 <div class="card-body">
                     <h1>
                         <i class="fa fa-check text-success"></i><br/>
-                        Ya estás en <?php echo APP_NAME ?>
+                        Ya estás en <?= APP_NAME ?>
                     </h1>
                     <p>
                         <i class="fa fa-check-circle text-success"></i>
@@ -32,7 +32,7 @@
 
     <br/>
 
-    <p>¿Ya tienes una cuenta? <a href="<?php echo base_url('accounts/login') ?>">Ingresar</a></p>
+    <p>¿Ya tienes una cuenta? <a href="<?= base_url('accounts/login') ?>">Ingresar</a></p>
 </div>
 
 

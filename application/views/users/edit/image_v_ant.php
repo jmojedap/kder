@@ -11,8 +11,8 @@
 // Variables
 //-----------------------------------------------------------------------------
 
-    var user_id = <?php echo $row->id ?>;
-    var src_default = '<?php echo URL_IMG . 'users/user.png' ?>';
+    var user_id = <?= $row->id ?>;
+    var src_default = '<?= URL_IMG . 'users/user.png' ?>';
     
 // Document Ready
 //-----------------------------------------------------------------------------
@@ -53,7 +53,7 @@
             success: function(response){
                 if ( response.status == 1 )
                 {
-                    window.location = app_url + 'users/edit/' + user_id +'/cropping';
+                    window.location = url_app + 'users/edit/' + user_id +'/cropping';
                 }
             }
         });
@@ -64,7 +64,7 @@
     {
        $.ajax({
             type: 'POST',
-            url: app_url + 'users/remove_image/' + user_id,
+            url: url_app + 'users/remove_image/' + user_id,
             success: function (response) {
                 console.log(response.status);
                 if ( response.status == 1 )
@@ -80,10 +80,10 @@
 </script>
 
 <div class="card" style="max-width: 500px; margin: 0px auto;">
-    <img id="user_image" src="<?php echo $att_img['src'] ?>" alt="Imagen usuario" width="100%" class="card-img-top">
+    <img id="user_image" src="<?= $att_img['src'] ?>" alt="Imagen usuario" width="100%" class="card-img-top">
     <div class="card-body">
         <?php if ( $row->image_id > 0 ) { ?>
-            <a class="btn btn-info" id="btn_crop" href="<?php echo base_url("users/edit/{$row->id}/cropping") ?>">
+            <a class="btn btn-info" id="btn_crop" href="<?= base_url("users/edit/{$row->id}/cropping") ?>">
                 <i class="fa fa-crop"></i>
                 Recortar
             </a>

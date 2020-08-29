@@ -1,0 +1,152 @@
+/*
+ * Skin: DeKinder
+ * ----------
+ */
+.skin-dekinder .main-header .navbar {
+  background-color: #FEFEFE;
+  padding: 0px;
+}
+.skin-dekinder .main-header .navbar .nav > li > a {
+  color: #ffffff;
+}
+.skin-dekinder .main-header .navbar .nav > li > a:hover,
+.skin-dekinder .main-header .navbar .nav > li > a:active,
+.skin-dekinder .main-header .navbar .nav > li > a:focus,
+.skin-dekinder .main-header .navbar .nav .open > a,
+.skin-dekinder .main-header .navbar .nav .open > a:hover,
+.skin-dekinder .main-header .navbar .nav .open > a:focus {
+  background: rgba(0, 0, 0, 0.1);
+  color: #f6f6f6;
+}
+.skin-dekinder .main-header .navbar .navbar-custom-menu > .nav {
+  margin-right: 10px;
+}
+.skin-dekinder .main-header .navbar .sidebar-toggle {
+  color: #ffffff;
+}
+.skin-dekinder .main-header .navbar .sidebar-toggle:hover {
+  color: #333;
+  background: rgba(0, 0, 0, 0.1);
+}
+.skin-dekinder .main-header .navbar .sidebar-toggle {
+  color: #666;
+}
+.skin-dekinder .main-header .navbar .sidebar-toggle:hover {
+  background-color: #f1f1f1;
+}
+.skin-dekinder .main-header .logo {
+  background-color: #FEFEFE;
+  color: #ffffff;
+  border-bottom: 0px solid transparent;
+  height: 51px;
+}
+.skin-dekinder .main-header .logo > a {
+  color: #ffffff;
+}
+.skin-dekinder .main-header .logo:hover {
+  background: #FAFAFA;
+}
+.skin-dekinder .main-header li.user-header {
+  background-color: #008BEF;
+}
+.navbar-nav > .user-menu > .dropdown-menu > li.user-header > img {
+  border-color: #1899F5;
+}
+.skin-dekinder .content-header {
+  background: transparent;
+}
+.skin-dekinder .user-panel > .info,
+.skin-dekinder .user-panel > .info > a {
+  color: #fff;
+}
+.skin-dekinder .sidebar-menu > li.header {
+  color: #4b646f;
+  background: #1a2226;
+}
+.skin-dekinder .sidebar-menu > li > a {
+  border-left: 4px solid transparent;
+  margin-right: 1px;
+}
+.skin-dekinder .sidebar-menu > li > a:hover,
+.skin-dekinder .sidebar-menu > li.active > a {
+  color: #ffffff;
+  background: #1e282c;
+  border-left-color: #1899F5;
+}
+
+.skin-dekinder .sidebar-menu > li > .treeview-menu {
+  margin: 0 0px;
+  background: #2c3b41;
+}
+.skin-dekinder .wrapper,
+.skin-dekinder .main-sidebar,
+.skin-dekinder .left-side {
+  background: #222d32;
+}
+.skin-dekinder .sidebar a {
+  color: #b8c7ce;
+}
+.skin-dekinder .sidebar a:hover {
+  text-decoration: none;
+}
+.skin-dekinder .treeview-menu > li > a {
+  color: #8aa4af;
+}
+.skin-dekinder .treeview-menu li {
+  border-left: 4px solid #2c3b41;
+}
+.skin-dekinder .treeview-menu > li.active > a,
+.skin-dekinder .treeview-menu > li > a:hover {
+  color: #ffffff;
+}
+.skin-dekinder .treeview-menu li.active {
+  border-left: 4px solid #E80F40;
+}
+.skin-dekinder .sidebar-form {
+  border-radius: 3px;
+  border: 1px solid #374850;
+  margin: 10px 10px;
+}
+.skin-dekinder .sidebar-form input[type="text"],
+.skin-dekinder .sidebar-form .btn {
+  box-shadow: none;
+  background-color: #374850;
+  border: 1px solid transparent;
+  height: 35px;
+  -webkit-transition: all 0.3s cubic-bezier(0.32, 1.25, 0.375, 1.15);
+  -o-transition: all 0.3s cubic-bezier(0.32, 1.25, 0.375, 1.15);
+  transition: all 0.3s cubic-bezier(0.32, 1.25, 0.375, 1.15);
+}
+.skin-dekinder .sidebar-form input[type="text"] {
+  color: #666;
+  border-top-left-radius: 2px !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 2px !important;
+}
+.skin-dekinder .sidebar-form input[type="text"]:focus,
+.skin-dekinder .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
+  background-color: #fff;
+  color: #666;
+}
+.skin-dekinder .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
+  border-left-color: #fff;
+}
+.skin-dekinder .sidebar-form .btn {
+  color: #999;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 2px !important;
+  border-bottom-right-radius: 2px !important;
+  border-bottom-left-radius: 0 !important;
+}
+.skin-dekinder.layout-top-nav .main-header > .logo {
+  background-color: #3c8dbc;
+  color: #ffffff;
+  border-bottom: 0px solid transparent;
+}
+.skin-dekinder.layout-top-nav .main-header > .logo > a {
+  color: #ffffff;
+}
+.skin-dekinder.layout-top-nav .main-header > .logo:hover {
+  background: #3b8ab8;
+}

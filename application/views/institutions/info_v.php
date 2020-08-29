@@ -9,13 +9,13 @@
         <!-- Page Widget -->
         <div class="card text-center">
             <img
-                src="<?php echo $att_img['src'] ?>"
+                src="<?= $att_img['src'] ?>"
                 alt="Imagen de la institución"
                 width="100%"
-                onerror="this.src='<?php echo URL_IMG . 'app/institution.png' ?>'"
+                onerror="this.src='<?= URL_IMG . 'app/institution.png' ?>'"
                 >
             <div class="card-body">
-                <h4 class="profile-user"><?php echo $row->name ?></h4>
+                <h4 class="profile-user"><?= $row->name ?></h4>
             </div>
             <div class="card-footer">
                 <div class="row no-space">
@@ -41,37 +41,37 @@
                 <tr>
                     <td class="" width="35%"><span class="text-muted">No. Identificación</span></td>
                     <td width="65%">
-                        <?php echo $row->id_number ?>
+                        <?= $row->id_number ?>
                     </td>
                 </tr>
 
                 <tr>
                     <td class=""><span class="text-muted">Nombre / Marca Comercial</span></td>
-                    <td><?php echo $row->name ?></td>
+                    <td><?= $row->name ?></td>
                 </tr>
                 <tr>
                     <td class=""><span class="text-muted">Nombre Completo / Razón Social</span></td>
-                    <td><?php echo $row->full_name ?></td>
+                    <td><?= $row->full_name ?></td>
                 </tr>
 
                 <tr>
                     <td class=""><span class="text-muted">Usuario Propietario</span></td>
-                    <td><?php echo $row->creator_id ?></td>
+                    <td><?= $row->creator_id ?></td>
                 </tr>
 
                 <tr>
                     <td class=""><span class="text-muted">Correo electrónico</span></td>
-                    <td><?php echo $row->email ?></td>
+                    <td><?= $row->email ?></td>
                 </tr>
 
                 <tr>
                     <td class=""><span class="text-muted">Página Web</span></td>
-                    <td><?php echo $row->webpage ?></td>
+                    <td><?= $row->webpage ?></td>
                 </tr>
 
                 <tr>
                     <td class=""><span class="text-muted">Teléfono</span></td>
-                    <td><?php echo $row->phone_number ?></td>
+                    <td><?= $row->phone_number ?></td>
                 </tr>
             </tbody>
         </table>

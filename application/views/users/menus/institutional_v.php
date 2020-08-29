@@ -14,33 +14,41 @@
     var sections = [];
     var nav_2 = [];
     var sections_rol = [];
-    var element_id = '<?php echo $row->id ?>';
+    var element_id = '<?= $row->id ?>';
+
+    sections.explore = {
+        icon: 'fa fa-arrow-left',
+        text: 'Explorar',
+        class: '<?= $cl_nav_2['users_explore'] ?>',
+        cf: 'users/explore/',
+        'anchor': true
+    };
     
     sections.profile = {
-        'icon': 'fa fa-user',
-        'text': 'Perfil',
-        'class': '<?php echo $cl_nav_2['users_profile'] ?>',
-        'cf': 'users/profile/' + element_id
+        icon: 'fa fa-user',
+        text: 'Perfil',
+        class: '<?= $cl_nav_2['users_profile'] ?>',
+        cf: 'users/profile/' + element_id
     };
 
     sections.groups = {
-        'icon': 'fa fa-users',
-        'text': 'Grupos',
-        'class': '<?php echo $cl_nav_2['users_groups'] ?>',
-        'cf': 'users/groups/' + element_id
+        icon: 'fa fa-users',
+        text: 'Grupos',
+        class: '<?= $cl_nav_2['users_groups'] ?>',
+        cf: 'users/groups/' + element_id
     };
 
     sections.edit = {
-        'icon': 'fa fa-pencil-alt',
-        'text': 'Editar',
-        'class': '<?php echo $cl_nav_2['users_edit'] ?>',
-        'cf': 'users/edit/' + element_id
+        icon: 'fa fa-pencil-alt',
+        text: 'Editar',
+        class: '<?= $cl_nav_2['users_edit'] ?>',
+        cf: 'users/edit/' + element_id
     };
     
     //Secciones para cada rol
-    sections_rol.dvlp = ['profile', 'groups', 'edit'];
-    sections_rol.admn = ['profile'];
-    sections_rol.prpt = ['profile', 'edit'];
+    sections_rol.dvlp = ['explore', 'profile', 'groups', 'edit'];
+    sections_rol.admn = ['explore', 'profile'];
+    sections_rol.prpt = ['explore', 'profile', 'edit'];
     
     //Recorrer el sections del rol actual y cargarlos en el menú
     for ( key_section in sections_rol[app_r]) 

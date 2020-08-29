@@ -20,43 +20,43 @@
                 <th>Inicio</th>
                 <th>Hace</th>
                 
-                <th class="<?php echo $col_classes['type_id'] ?>">Tipo</th>
-                <th class="<?php echo $col_classes['element_id'] ?>">Elemento</th>
-                <th class="<?php echo $col_classes['user'] ?>">Usuario</th>
+                <th class="<?= $col_classes['type_id'] ?>">Tipo</th>
+                <th class="<?= $col_classes['element_id'] ?>">Elemento</th>
+                <th class="<?= $col_classes['user'] ?>">Usuario</th>
             </tr>
         </thead>
     <tbody>
         <?php foreach ($elements->result() as $row_element){ ?>
 
-            <tr id="row_<?php echo $row_element->id ?>">
+            <tr id="row_<?= $row_element->id ?>">
                 <td>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input check_row" data-id="<?php echo $row_element->id ?>" id="check_<?php echo $row_element->id ?>">
-                        <label class="custom-control-label" for="check_<?php echo $row_element->id ?>">
+                        <input type="checkbox" class="custom-control-input check_row" data-id="<?= $row_element->id ?>" id="check_<?= $row_element->id ?>">
+                        <label class="custom-control-label" for="check_<?= $row_element->id ?>">
                             <span class="text-hide">-</span>
                         </label>
                     </div>
                 </td>
                 
-                <td><?php echo $row_element->id ?></td>
+                <td><?= $row_element->id ?></td>
                 
                 <td>
-                    <?php echo $this->pml->date_format($row_element->start) ?>
+                    <?= $this->pml->date_format($row_element->start) ?>
                 </td>
 
                 <td>
-                    <?php echo $this->pml->ago($row_element->start, FALSE);  ?>
+                    <?= $this->pml->ago($row_element->start, FALSE);  ?>
                 </td>
                 
-                <td class="<?php echo $col_classes['type_id'] ?>">
-                    <?php echo $arr_types[$row_element->type_id] ?>
+                <td class="<?= $col_classes['type_id'] ?>">
+                    <?= $arr_types[$row_element->type_id] ?>
                 </td>
-                <td class="<?php echo $col_classes['element_id'] ?>">
-                    <?php echo $row_element->element_id ?>
+                <td class="<?= $col_classes['element_id'] ?>">
+                    <?= $row_element->element_id ?>
                 </td>
-                <td class="<?php echo $col_classes['user'] ?>">
-                    <a href="<?php echo base_url("events/explore/1/?u={$row_element->user_id}") ?>">
-                        <?php echo $row_element->display_name ?>
+                <td class="<?= $col_classes['user'] ?>">
+                    <a href="<?= base_url("events/explore/1/?u={$row_element->user_id}") ?>">
+                        <?= $row_element->display_name ?>
                     </a>
                 </td>
             </tr>

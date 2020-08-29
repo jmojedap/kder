@@ -26,11 +26,11 @@
             <i class="icon wb-more-horizontal" aria-hidden="true"></i>
         </button>
         <div class="navbar-brand navbar-brand-center site-gridmenu-toggle" data-toggle="gridmenu">
-            <a href="<?php echo base_url() ?>" class="" style="text-decoration: none;">
-                <img class="navbar-brand-logo" src="<?php echo URL_IMG ?>app/logo_square.png">
+            <a href="<?= base_url() ?>" class="" style="text-decoration: none;">
+                <img class="navbar-brand-logo" src="<?= URL_IMG ?>app/logo_square.png">
             </a>
             <span class="navbar-brand-text hidden-xs-down">
-                <?php echo APP_NAME ?>
+                <?= APP_NAME ?>
             </span>
         </div>
         <button type="button" class="navbar-toggler collapsed" data-target="#site-navbar-search"
@@ -45,13 +45,13 @@
         <div class="collapse navbar-collapse navbar-collapse-toolbar" id="site-navbar-collapse">
             <div class="float-left" style="padding-top: 12px; font-size: 2em;">
                 <span id="head_title">
-                    <?php echo $head_title ?>
+                    <?= $head_title ?>
                 </span>
                 <span class="text-muted"></span>
                 <?php if ( isset($head_subtitle) ) { ?>
                     &middot;
                     <small id="head_subtitle">
-                        <?php echo $head_subtitle ?>
+                        <?= $head_subtitle ?>
                     </small>
                 <?php } ?>
             </div>
@@ -62,16 +62,16 @@
                     <a class="nav-link navbar-avatar" data-toggle="dropdown" href="#" aria-expanded="false"
                        data-animation="scale-up" role="button">
                         <span class="avatar">
-                            <img src="<?php echo $this->session->userdata('src_img') ?>" alt="Imagen usuario" onerror="this.src='<?php echo URL_IMG . 'users/sm_user.png' ?>';">
+                            <img src="<?= $this->session->userdata('src_img') ?>" alt="Imagen usuario" onerror="this.src='<?= URL_IMG . 'users/sm_user.png' ?>';">
                         </span>
                     </a>
                     <div class="dropdown-menu" role="menu">
-                        <a class="dropdown-item" href="<?php echo base_url('accounts/profile/') ?>" role="menuitem">
+                        <a class="dropdown-item" href="<?= base_url('accounts/profile/') ?>" role="menuitem">
                             <i class="icon wb-user" aria-hidden="true"></i> Perfil
                         </a>
                         <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-settings" aria-hidden="true"></i> Configuración</a>
                         <div class="dropdown-divider" role="presentation"></div>
-                        <a class="dropdown-item" href="<?php echo base_url('accounts/logout') ?>" role="menuitem"><i class="icon wb-power" aria-hidden="true"></i> Salir</a>
+                        <a class="dropdown-item" href="<?= base_url('accounts/logout') ?>" role="menuitem"><i class="icon wb-power" aria-hidden="true"></i> Salir</a>
                     </div>
                 </li>
             </ul>

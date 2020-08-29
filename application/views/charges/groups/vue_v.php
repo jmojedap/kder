@@ -20,7 +20,7 @@
             this.get_list();
         },
         data: {
-            charge_id: '<?php echo $row->id ?>',
+            charge_id: '<?= $row->id ?>',
             list: [],
             group: [],
             group_id: 0,
@@ -30,7 +30,7 @@
         },
         methods: {
             get_list: function(){
-                axios.get(app_url + 'charges/get_groups/' + this.charge_id)
+                axios.get(url_app + 'charges/get_groups/' + this.charge_id)
                 .then(response => {
                     this.list = response.data.list;
                 })
@@ -44,7 +44,7 @@
             },
             set_group: function(key){
                 this.set_current(key);
-                axios.get(app_url + 'charges/set_group/' + this.charge_id + '/' + this.group_id)
+                axios.get(url_app + 'charges/set_group/' + this.charge_id + '/' + this.group_id)
                 .then(response => {
                     console.log(response.data.message)
                     if ( response.data.status == 1 ) {
@@ -59,7 +59,7 @@
             },
             unset_group: function(){
                 var meta_id = this.group.meta_id;
-                axios.get(app_url + 'charges/unset_group/' + this.charge_id + '/' + meta_id)
+                axios.get(url_app + 'charges/unset_group/' + this.charge_id + '/' + meta_id)
                 .then(response => {
                     console.log(response.data.message)
                     if ( response.data.status == 1 ) {
@@ -81,7 +81,7 @@
                 this.show_detail = false;  
             },
             get_students: function(){
-                axios.get(app_url + 'charges/get_students_group/' + this.charge_id + '/' + this.group.id)
+                axios.get(url_app + 'charges/get_students_group/' + this.charge_id + '/' + this.group.id)
                 .then(response => {
                     this.students = response.data.students;
                 })
@@ -95,7 +95,7 @@
             },
             set_payed: function(key_student, payment_status){
                 this.set_student(key_student);
-                var url = app_url + 'payments/set_payed/' + this.student.payment_id + '/' + this.charge_id + '/' + payment_status;
+                var url = url_app + 'payments/set_payed/' + this.student.payment_id + '/' + this.charge_id + '/' + payment_status;
                 axios.get(url)
                 .then(response => {
                     if ( response.data.status == 1 ) {

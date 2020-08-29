@@ -17,7 +17,7 @@
                     v-on:change="get_list"
                     >
                 <div class="input-group-append" title="Buscar">
-                    <button type="button" class="btn btn-secondary btn-block" v-on:click="toggle_filters" title="Búsqueda avanzada">
+                    <button type="button" class="btn btn-light btn-block" v-on:click="toggle_filters" title="Búsqueda avanzada">
                         <i class="fa fa-chevron-up" v-show="showing_filters"></i>
                         <i class="fa fa-chevron-down" v-show="!showing_filters"></i>
                     </button>
@@ -31,10 +31,10 @@
             </button>
         </div>
     </div>
-    <div id="adv_filters" style="<?php echo $filters_style ?>">
+    <div id="adv_filters" style="<?= $filters_style ?>">
         <div class="form-group row">
             <div class="col-md-9">
-                <?php echo form_dropdown('role', $options_role, $filters['role'], 'class="form-control" title="Filtrar por rol" v-model="filters.role"'); ?>
+                <?= form_dropdown('role', $options_role, $filters['role'], 'class="form-control" title="Filtrar por rol" v-model="filters.role"'); ?>
             </div>
             <label for="type" class="col-md-3 control-label align-middle">Rol</label>
         </div>

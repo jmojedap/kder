@@ -6,7 +6,7 @@
 
 <div id="add_user">
     <form id="add_form" accept-charset="utf-8" @submit.prevent="validate_send">
-        <input type="hidden" name="institution_id" value="<?php echo $this->session->userdata('institution_id'); ?>">
+        <input type="hidden" name="institution_id" value="<?= $this->session->userdata('institution_id'); ?>">
 
         <div class="form-group row">
             <label for="first_name" class="col-md-4 col-form-label text-right">Nombres | Apellidos</label>
@@ -80,7 +80,7 @@
                 </span>
             </div>
             <div class="col-md-4">
-                <?php echo form_dropdown('id_number_type', $id_number_type_options, '', 'class="form-control" required v-model="form_values.id_number_type"') ?>
+                <?= form_dropdown('id_number_type', $id_number_type_options, '', 'class="form-control" required v-model="form_values.id_number_type"') ?>
             </div>
         </div>
         
@@ -153,14 +153,14 @@
         <div class="form-group row">
             <label for="role" class="col-md-4 col-form-label text-right">Rol</label>
             <div class="col-md-8">
-                <?php echo form_dropdown('role', $role_options, '021', 'class="form-control" required v-model="form_values.role"') ?>
+                <?= form_dropdown('role', $role_options, '021', 'class="form-control" required v-model="form_values.role"') ?>
             </div>
         </div>
         
         <div class="form-group row">
             <label for="gender" class="col-md-4 col-form-label text-right">Sexo</label>
             <div class="col-md-8">
-                <?php echo form_dropdown('gender', $gender_options, '', 'class="form-control" required v-model="form_values.gender"') ?>
+                <?= form_dropdown('gender', $gender_options, '', 'class="form-control" required v-model="form_values.gender"') ?>
             </div>
         </div>
 

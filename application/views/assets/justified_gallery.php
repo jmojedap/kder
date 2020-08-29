@@ -1,2 +1,2 @@
-<link rel="stylesheet" href="<?php echo URL_RESOURCES ?>assets/justified_gallery/dist/css/justifiedGallery.css" />
-<script src="<?php echo URL_RESOURCES ?>assets/justified_gallery/dist/js/jquery.justifiedGallery.js"></script>
+<link rel="stylesheet" href="<?= URL_RESOURCES ?>assets/justified_gallery/dist/css/justifiedGallery.css" />
+<script src="<?= URL_RESOURCES ?>assets/justified_gallery/dist/js/jquery.justifiedGallery.js"></script>

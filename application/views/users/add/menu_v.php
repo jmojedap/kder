@@ -16,17 +16,17 @@
     //var element_id = '<?php //echo $this->uri->segment(3) ?>';
     
     sections.institutional = {
-        'icon': '',
-        'text': 'Institucional',
-        'class': '<?php echo $cl_nav_3['institutional'] ?>',
-        'cf': 'users/add/institutional'
+        icon: '',
+        text: 'Institucional',
+        class: '<?= $cl_nav_3['institutional'] ?>',
+        cf: 'users/add/institutional'
     };
 
     sections.student = {
-        'icon': '',
-        'text': 'Estudiante',
-        'class': '<?php echo $cl_nav_3['student'] ?>',
-        'cf': 'users/add/student'
+        icon: '',
+        text: 'Estudiante',
+        class: '<?= $cl_nav_3['student'] ?>',
+        cf: 'users/add/student'
     };
     
     //Secciones para cada rol

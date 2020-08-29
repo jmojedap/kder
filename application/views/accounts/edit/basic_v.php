@@ -72,7 +72,7 @@
                         </span>
                     </div>
                     <div class="col-md-4">
-                        <?php echo form_dropdown('id_number_type', $options_id_number_type, '', 'class="form-control" required v-model="form_values.id_number_type"') ?>
+                        <?= form_dropdown('id_number_type', $options_id_number_type, '', 'class="form-control" required v-model="form_values.id_number_type"') ?>
                     </div>
                 </div>
 
@@ -130,7 +130,7 @@
                 <div class="form-group row">
                     <label for="city_id" class="col-md-4 col-form-label text-right">Ciudad residencia</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('city_id', $options_city, $row->city_id, 'id="field-city_id" class="form-control form-control-chosen"') ?>
+                        <?= form_dropdown('city_id', $options_city, $row->city_id, 'id="field-city_id" class="form-control form-control-chosen"') ?>
                     </div>
                 </div>
 
@@ -150,7 +150,7 @@
                 <div class="form-group row">
                     <label for="gender" class="col-md-4 col-form-label text-right">Sexo</label>
                     <div class="col-md-8">
-                        <?php echo form_dropdown('gender', $options_gender, $row->gender, 'class="form-control" required') ?>
+                        <?= form_dropdown('gender', $options_gender, $row->gender, 'class="form-control" required') ?>
                     </div>
                 </div>
 
@@ -183,23 +183,23 @@
 
 <script>
     var form_values = {
-        first_name: '<?php echo $row->first_name ?>',
-        last_name: '<?php echo $row->last_name ?>',
-        display_name: '<?php echo $row->display_name ?>',
-        id_number: '<?php echo $row->id_number ?>',
-        id_number_type: '0<?php echo $row->id_number_type ?>',
-        username: '<?php echo $row->username ?>',
-        email: '<?php echo $row->email ?>',
-        city_id: '0<?php echo $row->city_id ?>',
-        birth_date: '<?php echo $row->birth_date ?>',
-        gender: '<?php echo $row->gender ?>',
-        phone_number: '<?php echo $row->phone_number ?>',
+        first_name: '<?= $row->first_name ?>',
+        last_name: '<?= $row->last_name ?>',
+        display_name: '<?= $row->display_name ?>',
+        id_number: '<?= $row->id_number ?>',
+        id_number_type: '0<?= $row->id_number_type ?>',
+        username: '<?= $row->username ?>',
+        email: '<?= $row->email ?>',
+        city_id: '0<?= $row->city_id ?>',
+        birth_date: '<?= $row->birth_date ?>',
+        gender: '<?= $row->gender ?>',
+        phone_number: '<?= $row->phone_number ?>',
     };
     new Vue({
     el: '#app_edit',
         data: {
             form_values: form_values,
-            row_id: '<?php echo $row->id ?>',
+            row_id: '<?= $row->id ?>',
             validation: {
                 username_unique: true,
                 email_valid: true,
@@ -249,7 +249,7 @@
                 params.append('first_name', this.form_values.first_name);
                 params.append('last_name', this.form_values.last_name);
                 
-                axios.post(app_url + 'users/username/', params)
+                axios.post(url_app + 'users/username/', params)
                 .then(response => {
                     this.form_values.username = response.data;
                 })

@@ -2,7 +2,7 @@
 <script>
 // Variables
 //-----------------------------------------------------------------------------
-    var role_names = <?php echo json_encode($arr_roles); ?>;
+    var role_names = <?= json_encode($arr_roles); ?>;
     var status_icons = {
         "0":'<i class="far fa-circle text-danger" title="Inactivo"></i>',
         "1":'<i class="fa fa-check-circle text-success" title="Activo"></i>'
@@ -32,25 +32,25 @@
             //this.get_list();
         },
         data: {
-            cf: '<?php echo $cf; ?>',
-            controller: '<?php echo $controller; ?>',
+            cf: '<?= $cf; ?>',
+            controller: '<?= $controller; ?>',
             num_page: 1,
             max_page: 1,
-            list: <?php echo json_encode($list) ?>,
+            list: <?= json_encode($list) ?>,
             element: [],
             selected: [],
             all_selected: false,
-            filters: <?php echo json_encode($filters) ?>,
+            filters: <?= json_encode($filters) ?>,
             showing_filters: false
         },
         methods: {
             get_list: function(){
-                axios.post(app_url + this.controller + '/get/' + this.num_page, $('#search_form').serialize())
+                axios.post(url_app + this.controller + '/get/' + this.num_page, $('#search_form').serialize())
                 .then(response => {
                     this.list = response.data.list;
                     this.max_page = response.data.max_page;
                     $('#head_subtitle').html(response.data.search_num_rows);
-                    history.pushState(null, null, app_url + this.cf + this.num_page +'/?' + response.data.str_filters);
+                    history.pushState(null, null, url_app + this.cf + this.num_page +'/?' + response.data.str_filters);
                     this.all_selected = false;
                     this.selected = [];
                 })
@@ -60,7 +60,7 @@
             },
             select_all: function() {
                 this.selected = [];
-                if (!this.all_selected) {
+                if (this.all_selected) {
                     for (element in this.list) {
                         this.selected.push(this.list[element].id);
                     }
@@ -74,7 +74,7 @@
                 var params = new FormData();
                 params.append('selected', this.selected);
                 
-                axios.post(app_url + this.controller + '/delete_selected', params)
+                axios.post(url_app + this.controller + '/delete_selected', params)
                 .then(response => {
                     this.hide_deleted();
                     this.selected = [];

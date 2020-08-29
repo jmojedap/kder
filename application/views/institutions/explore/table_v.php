@@ -1,52 +1,34 @@
-<?php
-    //Clases columnas
-        $cl_col['id'] = 'd-none d-md-table-cell d-lg-table-cell';
-        $cl_col['title'] = 'd-none d-md-table-cell d-lg-table-cell';
-        $cl_col['owner'] = 'd-none d-md-table-cell d-lg-table-cell';
-        $cl_col['city'] = 'd-none d-md-table-cell d-lg-table-cell';
-?>
-
 <div class="table-responsive">
-    <table class="table table-hover bg-white">
+    <table class="table bg-white">
         <thead>
-            <th width="46px">
-                <div class="checkbox-custom checkbox-primary">
-                    <input type="checkbox" @click="select_all" v-model="all_selected">
-                    <label for="inputUnchecked"></label>
-                </div>
-            </th>
+            <th width="10px"><input type="checkbox" @change="select_all" v-model="all_selected"></th>
             <th>Nombre</th>
-            <th class="<?php echo $cl_col['owner'] ?>">Propietario</th>
-            <th class="<?php echo $cl_col['city'] ?>">Ciudad</th>
+            <th>Propietario</th>
+            <th>Ciudad</th>
             
             <th width="50px"></th>
         </thead>
         <tbody>
             <tr v-for="(element, key) in list" v-bind:id="`row_` + element.id">
-                <td>
-                    <div class="checkbox-custom checkbox-primary">
-                        <input type="checkbox" v-model="selected" v-bind:value="element.id">
-                        <label for="inputUnchecked"></label>
-                    </div>
-                </td>
+                <td><input type="checkbox" v-bind:id="`check_` + element.id" v-model="selected" v-bind:value="element.id"></td>
                 
-                <td class="<?php echo $cl_col['title'] ?>">
-                    <a v-bind:href="`<?php echo base_url("institutions/info/") ?>` + element.id">
+                <td>
+                    <a v-bind:href="`<?= base_url("institutions/info/") ?>` + element.id">
                         {{ element.name }}
                     </a>
                 </td>
-                <td class="<?php echo $cl_col['owner'] ?>">
-                    <a v-bind:href="`<?php echo base_url("users/profile/") ?>` + element.owner_id">
+                <td>
+                    <a v-bind:href="`<?= base_url("users/profile/") ?>` + element.owner_id">
                         {{ element.owner_name }}
                     </a>
                 </td>
 
-                <td class="<?php echo $cl_col['city'] ?>">
+                <td>
                     {{ element.place_name }}
                 </td>
                 
                 <td>
-                    <button class="btn btn-light btn-sm w27p" data-toggle="modal" data-target="#detail_modal" @click="set_current(key)">
+                    <button class="a4" data-toggle="modal" data-target="#detail_modal" @click="set_current(key)">
                         <i class="fa fa-info"></i>
                     </button>
                 </td>

@@ -104,7 +104,7 @@ class Group_model extends CI_Model{
                 $order_type = $this->pml->if_strlen($filters['ot'], 'ASC');
                 $this->db->order_by($filters['o'], $order_type);
             } else {
-                $this->db->order_by('groups.edited_at', 'DESC');
+                $this->db->order_by('groups.updated_at', 'DESC');
             }
             
         //Filtros
@@ -267,7 +267,7 @@ class Group_model extends CI_Model{
     function arr_row($process = 'update')
     {
         $arr_row = $this->input->post();
-        $arr_row['editor_id'] = $this->session->userdata('user_id');
+        $arr_row['updater_id'] = $this->session->userdata('user_id');
         
         if ( $process == 'insert' )
         {
@@ -486,7 +486,7 @@ class Group_model extends CI_Model{
 
     function students($group_id)
     {
-        $this->db->select('group_user.id AS gu_id, user.id, user.display_name, user.src_thumbnail, user.username');
+        $this->db->select('group_user.id AS gu_id, user.id, user.display_name, user.url_thumbnail, user.username');
         $this->db->join('group_user', 'user.id = group_user.user_id');
         $this->db->where('group_user.group_id', $group_id);
         $this->db->order_by('last_name', 'ASC');    
@@ -506,7 +506,7 @@ class Group_model extends CI_Model{
         //Construir registro para tabla grupo_usuerio
         $arr_row['group_id'] = $group_id;
         $arr_row['user_id'] = $user_id;
-        $arr_row['editor_id'] = $this->session->userdata('user_id');
+        $arr_row['updater_id'] = $this->session->userdata('user_id');
         $arr_row['creator_id'] = $this->session->userdata('user_id');
 
         //Guardar

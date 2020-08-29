@@ -15,17 +15,17 @@
     var sections_rol = [];
     
     sections.explore = {
-        'icon': 'fa fa-search',
-        'text': 'Explorar',
-        'class': '<?php echo $cl_nav_2['students_explore'] ?>',
-        'cf': 'students/explore'
+        icon: 'fa fa-search',
+        text: 'Explorar',
+        class: '<?= $cl_nav_2['students_explore'] ?>',
+        cf: 'students/explore'
     };
 
     sections.import = {
-        'icon': 'fa fa-upload',
-        'text': 'Importar',
-        'class': '<?php echo $cl_nav_2['students_import'] ?>',
-        'cf': 'students/import'
+        icon: 'fa fa-upload',
+        text: 'Importar',
+        class: '<?= $cl_nav_2['students_import'] ?>',
+        cf: 'students/import'
     };
     
     //Secciones para cada rol

@@ -174,7 +174,7 @@ class Users extends CI_Controller{
         {
             $view_a = 'files/cropping_v';
             $data['image_id'] = $data['row']->image_id;
-            $data['src_image'] = URL_UPLOADS . $data['row']->src_image;
+            $data['url_image'] = URL_UPLOADS . $data['row']->url_image;
             $data['back_destination'] = "users/edit/{$user_id}/image";
         }
         

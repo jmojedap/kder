@@ -107,7 +107,7 @@ new Vue({
     },
     methods: {
         get_list: function() {
-            axios.get(app_url + 'admin/get_options/')
+            axios.get(url_app + 'admin/get_options/')
                 .then(response => {
                     this.list = response.data.options;
                 })
@@ -127,7 +127,7 @@ new Vue({
             this.form_values = this.list[key];
         },
         save_option: function() {
-            axios.post(app_url + 'admin/save_option/' + this.option_id, $('#option_form').serialize())
+            axios.post(url_app + 'admin/save_option/' + this.option_id, $('#option_form').serialize())
                 .then(response => {
                     toastr["success"](response.data.message);
                     this.get_list();
@@ -138,7 +138,7 @@ new Vue({
                 });
         },
         delete_element: function() {
-            axios.get(app_url + 'admin/delete_option/' + this.option_id)
+            axios.get(url_app + 'admin/delete_option/' + this.option_id)
                 .then(response => {
                     toastr['info'](response.data.message);
                     this.get_list();

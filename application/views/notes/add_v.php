@@ -98,14 +98,14 @@
         },
         methods: {
             send_form: function() {
-                axios.post(app_url + 'notes/insert/', $('#add_form').serialize())
+                axios.post(url_app + 'notes/insert/', $('#add_form').serialize())
                     .then(response => {
                         console.log('status: ' + response.data.mensaje);
                         if (response.data.status == 1)
                         {
                             toastr['success']('Anotación guardada');
                             setTimeout(() => {
-                                window.location = app_url + 'notes/info/' + response.data.saved_id;
+                                window.location = url_app + 'notes/info/' + response.data.saved_id;
                             }, 2000);
                         }
                     })

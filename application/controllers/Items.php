@@ -18,23 +18,21 @@ class Items extends CI_Controller{
     
     /**
      * Vista filtra items por categoría, CRUD de items.
-     * 
-     * @param type $category_id
-     * @param type $item_id
      */
-    function manage($category_id = '058')
+    function manage($category_id = '58')
     {
         //Variables específicas
             $data['category_id'] = $category_id;
-            $data['arr_categories'] = $this->Item_model->options('category_id = 0');
+            $data['arr_categories'] = $this->Item_model->arr_item('category_id = 0', 'cod_num');
         
         //Array data generales
             $data['head_title'] = 'Ítems';
             $data['head_subtitle'] = 'parámetros del sistema';
-            $data['view_a'] = 'system/items/manage_v';
+            $data['view_a'] = 'system/items/manage/manage_v';
+            $data['nav_2'] = 'system/items/menu_v';
             
         //Cargar vista
-            $this->App_model->view('templates/remark/main_v', $data);
+            $this->App_model->view(TPL_ADMIN, $data);
     }
     
     /**
@@ -46,10 +44,7 @@ class Items extends CI_Controller{
     function get_list($category_id = '058')
     {
         $items = $this->Item_model->items($category_id);
-        
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($items->result()));
+        $this->output->set_content_type('application/json')->set_output(json_encode($items->result()));
     }
     
     /**
@@ -63,10 +58,7 @@ class Items extends CI_Controller{
         $arr_row = $this->input->post();
         
         $data = $this->Item_model->save($arr_row, $item_id);
-        
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($data));
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
     /**
@@ -75,16 +67,8 @@ class Items extends CI_Controller{
      */
     function delete($item_id, $category_id)
     {
-        $conditions['id'] = $item_id;
-        $conditions['category_id'] = $category_id;
-        $this->Item_model->delete($conditions);
-        
-        $data['result'] = 0;
-        if ( $this->db->affected_rows() ) { $data['result'] = 1; }
-        
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($data));
+        $data = $this->Item_model->delete($item_id, $category_id);   
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     
     /**
@@ -103,5 +87,55 @@ class Items extends CI_Controller{
         }
         
         echo count($selected);
-    }   
+    }
+
+// IMPORTACIÓN DE ITEMS
+//-----------------------------------------------------------------------------
+
+    /**
+     * Mostrar formulario de importación de items
+     * con archivo Excel. El resultado del formulario se envía a 
+     * 'items/import_e'
+     */
+    function import()
+    {
+        $data = $this->Item_model->import_config();
+
+        $data['url_file'] = URL_RESOURCES . 'import_templates/' . $data['template_file_name'];
+        
+
+        $data['head_title'] = 'Items';
+        $data['nav_2'] = 'system/items/menu_v';
+        $data['view_a'] = 'common/import_v';
+        
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
+
+    //Ejecuta la importación de items con archivo Excel
+    function import_e()
+    {
+        //Proceso
+        $this->load->library('excel');            
+        $imported_data = $this->excel->arr_sheet_default($this->input->post('sheet_name'));
+        
+        if ( $imported_data['status'] == 1 )
+        {
+            $data = $this->Item_model->import($imported_data['arr_sheet']);
+        }
+
+        //Cargue de variables
+            $data['status'] = $imported_data['status'];
+            $data['message'] = $imported_data['message'];
+            $data['arr_sheet'] = $imported_data['arr_sheet'];
+            $data['sheet_name'] = $this->input->post('sheet_name');
+            $data['back_destination'] = "items/manage/";
+        
+        //Cargar vista
+            $data['head_title'] = 'Items';
+            $data['head_subtitle'] = 'Import result';
+            $data['view_a'] = 'common/import_result_v';
+            $data['nav_2'] = 'system/items/menu_v';
+
+        $this->App_model->view(TPL_ADMIN, $data);
+    }
 }

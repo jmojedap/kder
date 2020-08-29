@@ -1,8 +1,8 @@
 <?php $this->load->view('assets/jquery_autocomplete') ?>
 
 <script>
-    var group_id = '<?php echo $row->id ?>';
-    var students_source = '<?php echo base_url("groups/students_autocomplete/{$row->id}/{$row->institution_id}") ?>';
+    var group_id = '<?= $row->id ?>';
+    var students_source = '<?= base_url("groups/students_autocomplete/{$row->id}/{$row->institution_id}") ?>';
 
     $( function() {
       
@@ -15,9 +15,9 @@
         function add_student(item){
             $.ajax({
                 type: 'POST',
-                url: app_url + 'groups/add_student/' + group_id + '/' + item.id,
+                url: url_app + 'groups/add_student/' + group_id + '/' + item.id,
                 success: function(response){
-                    window.location = app_url + 'groups/students/' + group_id;
+                    window.location = url_app + 'groups/students/' + group_id;
                 }
             });
         }
@@ -43,18 +43,18 @@
         <tbody>
             <tr v-for="(student, key) in list">
                 <td>
-                    <a v-bind:href="`<?php echo base_url('users/profile/') ?>` + student.id">
+                    <a v-bind:href="`<?= base_url('users/profile/') ?>` + student.id">
                         <img
                             class="rounded"
-                            v-bind:src="`<?php echo URL_UPLOADS ?>` + student.src_thumbnail"
+                            v-bind:src="`<?= URL_UPLOADS ?>` + student.url_thumbnail"
                             alt="Imagen estudiante"
                             style="width: 60px;"
-                            onerror="this.src='<?php echo URL_IMG ?>users/sm_user.png'"
+                            onerror="this.src='<?= URL_IMG ?>users/sm_user.png'"
                             >
                     </a>
                 </td>
                 <td>
-                    <a v-bind:href="`<?php echo base_url('users/profile/') ?>` + student.id">
+                    <a v-bind:href="`<?= base_url('users/profile/') ?>` + student.id">
                         {{ student.display_name }}
                     </a>
                     <br/>
